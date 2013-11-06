@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility/</loc>
+        <lastmod>2013-08-03T20:06:01+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli/</loc>
+        <lastmod>2013-08-03T20:49:34+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/</loc>
+        <lastmod>2013-08-03T20:49:34+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/blog/archives/</loc>
+        <lastmod>2013-08-03T20:49:34+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/robots.txt</loc>
+        <lastmod>2013-08-03T18:02:00+08:00</lastmod>
+    </url>
+</urlset>

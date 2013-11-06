@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>broken pipe in php cli - atom.</title>
+  <meta name="author" content="jqlblue">
+
+  
+  <meta name="description" content="下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行： 下线一台服务器，另起目录安装php5.5 安装过程与php5.3差不多，要开启zend opcache的话，需要在
+configure时&mdash;enable-opcache。在php.ini中配置时， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="atom." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+function addBlankTargetForLinks () {
+
+  $('a[href^="http"]').each(function(){
+
+      $(this).attr('target', '_blank');
+
+  });
+
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+
+  addBlankTargetForLinks();
+
+});
+
+</script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">atom.</a></h1>
+  
+    <h2>Make live easier.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jqlblue.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Broken Pipe in Php Cli</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-03T20:08:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
+
+<hr />
+
+<ul>
+<li>下线一台服务器，另起目录安装php5.5</li>
+</ul>
+
+
+<p>安装过程与php5.3差不多，要开启zend opcache的话，需要在
+configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_extension的
+形式加载。</p>
+
+<ul>
+<li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access_log | awk <span class="s1">&#39;{print $7}&#39;</span> | awk -F <span class="s2">&quot;?&quot;</span> <span class="s1">&#39;{print $1}&#39;</span> | sort | uniq -c | sort -nr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地
+ 址（包括相关参数）</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>access_log | grep  <span class="s1">&#39;/api/test&#39;</span> | head -n 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</li>
+</ul>
+
+
+<hr />
+
+<p>进行到第三步，就卡住了。：（</p>
+
+<p>“cat access_log | grep  &lsquo;/api/test&rsquo; | head -n 1”这条命令在shell下执行
+没有问题，但是如果用php的shell_exec运行，就会出现 “grep: writing
+output: Broken pipe”。</p>
+
+<p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做
+了下加工后，发现一切正常了，修改后的python代码如下</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">subprocess</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">signal</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">reset_sigpipe</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s">&quot;cat access_log | grep  &#39;/api/test&#39; | head -n 1&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">reset_sigpipe</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是我是要用php来做这件事，下面是php相关代码</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$source</span> <span class="o">=</span> <span class="s1">&#39;./source_url.txt&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$dest</span> <span class="o">=</span> <span class="s1">&#39;./dest_url.txt&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$res</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
+</span><span class='line'><span class="nb">pcntl_signal</span><span class="p">(</span><span class="nx">SIGPIPE</span><span class="p">,</span> <span class="nx">SIG_DFL</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$row</span> <span class="o">=</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$command</span> <span class="o">=</span> <span class="s2">&quot;cat access_log | grep  &#39;</span><span class="si">{</span><span class="nv">$row</span><span class="si">}</span><span class="s2">&#39; | head -n 1 | awk &#39;{print </span><span class="se">\$</span><span class="s2">6</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;\$</span><span class="s2">7}&#39; | awk -F &#39;</span><span class="se">\&quot;</span><span class="s2">&#39; &#39;{print $2}&#39; | awk &#39;{print $1</span><span class="se">\&quot;</span><span class="s2"> http://test.api.com</span><span class="se">\&quot;</span><span class="s2">$2}&#39;&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$check</span> <span class="o">=</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+</span><span class='line'>    <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="nv">$check</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">,</span> <span class="nx">FILE_APPEND</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是
+这句:</p>
+
+<pre><code>pcntl_signal(SIGPIPE, SIG_DFL)
+</code></pre>
+
+<p>当php进程接收到SIGPIPE信号时，重置
+为系统默认处理方式，即接收子进程的返回值。</p>
+
+<p><strong>问题解决了，但是原因呢？</strong></p>
+
+<p>我们再看看这行命令</p>
+
+<pre><code>cat access_log | grep  '/api/test' | head -n 1
+</code></pre>
+
+<p>head命令在取得一行后立即退出（exit），此时pipe的读端就没了，但grep还会
+继续往pipe写，此时pipe就会发送SIGPIPE信号，默认动作是终止程序。在shell
+下执行时，grep收到SIGPIPE信号就退出了，所以运行没有问题。</p>
+
+<p>但在通过php的shell_exec或者system运行为何就有问题。应该是php忽略了
+SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于是就出现了</p>
+
+<pre><code>grep: writing output: Broken pipe
+</code></pre>
+
+<p>在天朝，有图也不一定是真相。所以应该是，也不一定是。废话少说，我们直接
+上代码：</p>
+
+<pre><code>$grep -r 'SIGPIPE' ./
+./sapi/cli/php_cli.c:   signal(SIGPIPE, SIG_IGN); /* ignore SIGPIPE in standalone mode so
+</code></pre>
+
+<p>所以php以cli的形式运行时，会忽略SIGPIPE信号。</p>
+
+<p>reference：</p>
+
+<blockquote><p><a href="https://blogs.oracle.com/opal/entry/using_php_5_5_s">https://blogs.oracle.com/opal/entry/using_php_5_5_s</a></p></blockquote>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">jqlblue</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-03T20:08:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <style>
+.flash-video {
+    display:none;
+}
+</style>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a href="http://www.jiathis.com/share?uid=1823276" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1359039158528928" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1823276"></script>
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/03/check-php5-dot-5-compatibility/" title="Previous Post: check php5.5 compatibility">&laquo; check php5.5 compatibility</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/04/guide-of-packet-mobile-capture/" title="Next Post: 移动应用无线抓包指南">移动应用无线抓包指南 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>版权协议</h1>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh"><img alt="知识共享许可协议" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/devops/'>devops (2)</a></li>
+<li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mobile/'>mobile (1)</a></li>
+<li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/blog/categories/php/'>php (4)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/31/september/">九月[september]</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/18/an-introduction-to-systemtap/">An Introduction to Systemtap</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/10/php-5-dot-5-upgrade-guide/">Php 5.5 Upgrade Guide</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/09/php-5-dot-5-upgrade-guide/">Php 5.5 Upgrade Guide</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: NaN%" href="/tags/systemtap/">systemtap</a>
+
+  </ul>
+</section>
+
+<section>
+    <h1>新浪微博</h1>
+    <ul id="weibo">
+    <li>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1282083982&verifier=f2e5e0d3&dpc=1"></iframe>
+      </li>
+    </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - jqlblue -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
