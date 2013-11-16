@@ -2,50 +2,54 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/09/php-5-dot-5-upgrade-guide/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/10/php-5-dot-5-upgrade-guide/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/18/an-introduction-to-systemtap/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/08/31/september/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2013/10/26/fcitx-fedora/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
     <url>
-        <loc>http://jqlblue.github.io/blog/archives/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jqlblue.github.io/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jqlblue.github.io/robots.txt</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <loc>http://jqlblue.github.io/blog/2013/11/16/pdo-mysql-escape-string/</loc>
+        <lastmod>2013-11-16T19:21:48+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/about/</loc>
-        <lastmod>2013-11-06T16:16:10+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/</loc>
+        <lastmod>2013-11-16T19:21:48+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/blog/archives/</loc>
+        <lastmod>2013-11-16T19:21:48+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/robots.txt</loc>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
 </urlset>
