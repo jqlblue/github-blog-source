@@ -1,61 +1,115 @@
 ---
 layout: post
-title: "analysis android applications performance"
+title: "初探android应用性能分析"
 description: "android app profile tools performance 安卓 应用 渲染 性能 分析 工具"
 date: 2013-11-22 18:03
 comments: true
 categories: [mobile]
 ---
-如果一个安卓应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？
+如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？
 
 本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。
 
 在分析之前，我们先补充点android基础知识。
 ### android基础知识 ###
+我们所说的android应用，一般都是通过将一个以apk结尾的文件安装在手机等移动设备上才能运行起来的。所以我们先从apk说起。
 
-##### 1.android平台架构 #####
+##### 什么是apk #####
+
+我们先从网上下载一个apk
+    $ wget http://shouji.360tpcdn.com/131106/0124832c4cf8c35a762cfece3bac52b1/com.sina.weibo_650.apk
+
+然后查看这个文件的类型
+    $ file com.sina.weibo_650.apk 
+    com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
+
+会发现*com.sina.weibo_650.apk*是一个zip压缩文件。解压缩后的文件，主要包括*一些资源文件*，*一些配置文件*，*一些类库*，还有*一个class.dex*。目录结构如下
+    AndroidManifest.xml
+    assets
+    classes.dex
+    lib
+    META-INF
+    org
+    res
+    resources.arsc
+
+粗略一看，发现 *class.dex* 这个文件有5.9M，这应该就是主角。继续执行如下命令
+    $ file classes.dex
+    classes.dex: Dalvik dex file version 035
+
+因为没有开发过android应用，不明白用java开发的app和这个Dalvik dex file之间有什么关系？所以我们先跳出apk的视角。
+
+##### android平台架构 #####
+
 {% img /images/mobile/android_architecture.png 'android architecture images' %}
 
-android操作系统在软件层面上主要分为下面四个部分：
+如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。
 
-    Applications - 默认的安卓应用，如浏览器，照相机等
+因为`dex`是`Dalvik VM` Executes的全称，即android `Dalvik`虚拟机执行程序。
 
-    Application framework - 为android应用提供了一些允许与android系统交互的API
+那一个apk的生产和执行过程将是：
+`*.java -> *.class -> classes.dex（classes.dex将由Dalvik VM转换成机器码，由linux内核交给cpu去执行）`
 
-    Libraries and runtime - 供Application Framework调用的类库，以及android运行时环境（包括运行android应用的Dalvik虚拟机以及核心的java类库）
+这样的话，在linux系统上使用profile软件的经验，也将派上用场。
 
-    Linux kernel - 这层用于与设备硬件通讯
-##### 2.什么是android #####
-android是一个为移动设备（手机，平板，智能手表）开发的操作系统，它基于linux操作系统，并开放源代码。使用linux内核与设备的硬件进行交互。
-Android is an operating system used to develop mobile operating system.  
-android is an open source operating system developed on linux.  android uses the kernel of linux to to access the hardware.
+android相关基础知识先介绍到此，感兴趣的请进一步查阅本文后面的参看资料。
+### android应用性能分析 ###
 
+##### apk启动速度 #####
 
+在分析之前，我们先看看android程序的执行流程
+{% img /images/mobile/android_application_execute_flow.png 'android application execute flow images' %}
 
-at present android support java language for programming. later on there may be a chance of android programming in c or c++.
+只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。
 
+    adb logcat | grep ActivityManager
+其中"Displayed"对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：
 
-to start development you need to use eclipse as editor and download the android sdk from android official website.  although you can use other editor it will be easy to configure and develop application in eclipse.
-before starting development you must have knowledge of java programming language.
-##### 3.什么是apk #####
-使用java
-http://www.oschina.net/question/923224_85777
-apk已经是编译好的class以及其他资源的压缩包了
+    adb logcat -c && adb logcat -s ActivityManager | grep  "Displayed"
+* 要使用 `adb`，需要先用usb线连接电脑和手机，并在手机的`设置`->`开发者选项`中开启`USB调试`
+* `adb`这个工具，可以通过在android sdk的platform-tools目录中找到。后面介绍的systrace也在这个目录。
 
-adb install 只是把apk上传到设备/模拟器, 并安装.
+##### 页面渲染性能 #####
 
-把apk用winrar解压软件解压, class.dex就是所有的类文件, 不过是加密的.
-##### 4.Android程序执行流程图 #####
-http://www.cnblogs.com/taobox/articles/3405931.html
-说明安卓app是什么？
-* android执行流程
+android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
+{% img /images/mobile/android_view_execute_flow.png 'android view execute flow images' %}
 
-### apk启动速度 ###
+即：
+`计算视图大小（measure） -> 安置视图的位置（layout） -> 绘制（draw）视图`
 
-### 页面渲染性能 ###
-### 过渡绘制 ###
-### 使用systrace进一步分析 ###
-### 使用tcpdump分析接口性能 ###
+通过收集每帧的处理时间，即可以了解页面的渲染性能。
+
+>当fps（每秒处理帧数，页面刷新率）为60时，页面的渲染看起来会比较平滑，这就需要每帧的处理时间不能大于16ms（1000/60）
+
+要检测一个应用在渲染页面时的每帧处理时间，通过如下命令，即可获得每帧的处理时间
+    adb shell dumpsys gfxinfo com.sina.weibo
+
+在输出日志的`Profile`数据段，包含了三列`Draw`，`Process`，`Execute`分别对应的处理时间，单位是ms。这三列的总和，就是渲染每帧时的处理时间。如
+    Draw	Process	Execute
+    0.95	0.93	0.72
+    0.84	1.16	0.56
+    0.83	0.89	0.69
+    1.32	2.15	1.14
+    1.29	1.37	1.01
+>在进行分析之前，需要在`设置`->`开发者选项`中点击`GPU呈现模式分析`，选择`在adb shell dumpsys gfxinfo中`。
+
+收集步骤：
+    1.重新启动app
+    2.在界面完全加载完之后，在界面上慢慢上下滑动几个像素
+    3.在终端执行adb shell dumpsys gfxinfo com.sina.weibo
+这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的`insert`->`chart`，即可生成相关图表
+{% img /images/mobile/frame_render_time.png 'frame render time images' %}
+
+>其中`com.sina.weibo`就是app的包名
+
+获取包名的方法:
+    adb shell pm list packages
+    
+##### 使用systrace进一步分析  #####
+
+`ddd`
 
 reference：
 http://www.vogella.com/articles/AndroidTools/article.html 
+http://blog.csdn.net/aaa2832/article/details/7849400
+http://www.cnblogs.com/taobox/articles/3405931.html
