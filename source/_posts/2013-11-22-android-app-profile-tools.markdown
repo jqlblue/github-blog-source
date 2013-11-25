@@ -23,7 +23,7 @@ categories: [mobile]
     $ file com.sina.weibo_650.apk 
     com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
 
-会发现*com.sina.weibo_650.apk*是一个zip压缩文件。解压缩后的文件，主要包括*一些资源文件*，*一些配置文件*，*一些类库*，还有*一个class.dex*。目录结构如下
+会发现`com.sina.weibo_650.apk`是一个zip压缩文件。解压缩后的文件，主要包括*一些资源文件*，*一些配置文件*，*一些类库*，还有*一个class.dex*。目录结构如下
     AndroidManifest.xml
     assets
     classes.dex
@@ -33,7 +33,7 @@ categories: [mobile]
     res
     resources.arsc
 
-粗略一看，发现 *class.dex* 这个文件有5.9M，这应该就是主角。继续执行如下命令
+粗略一看，发现 `class.dex` 这个文件有5.9M，这应该就是主角。继续执行如下命令
     $ file classes.dex
     classes.dex: Dalvik dex file version 035
 
@@ -60,14 +60,14 @@ android相关基础知识先介绍到此，感兴趣的请进一步查阅本文�
 在分析之前，我们先看看android程序的执行流程
 {% img /images/mobile/android_application_execute_flow.png 'android application execute flow images' %}
 
-只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。
+如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。
 
     adb logcat | grep ActivityManager
 其中"Displayed"对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：
 
     adb logcat -c && adb logcat -s ActivityManager | grep  "Displayed"
 * 要使用 `adb`，需要先用usb线连接电脑和手机，并在手机的`设置`->`开发者选项`中开启`USB调试`
-* `adb`这个工具，可以通过在android sdk的platform-tools目录中找到。后面介绍的systrace也在这个目录。
+* `adb`这个工具，可以通过在android sdk的platform-tools目录中找到。后面介绍的`systrace`也在这个目录。
 
 ##### 页面渲染性能 #####
 
@@ -106,10 +106,52 @@ android应用中的页面，是由android系统一帧，一帧地绘制的，其
     adb shell pm list packages
     
 ##### 使用systrace进一步分析  #####
+通过收集该apk的启动速度和每帧的渲染时间，并与竟品进行对比发现。该app启动时间的确比较慢，也偶尔有丢帧的现象发生。如何近一步分析呢？这时就需要`systrace`了。
 
-`ddd`
+示例使用方法如下：
+    cd android-sdk-linux/platform-tools/systrace
+    python systrace.py --app=com.qihoo.appstore gfx view
+
+上面这条命令将会在`android-sdk-linux/platform-tools/systrace`目录下生成`trace.html`。其中收集了包名为`com.qihoo.appstore`的应用在android系统上针对`gfx`和`view` category的执行数据。
+
+`trace.html`在浏览器中打开如下图：
+{% img /images/mobile/android_systrace_output.png 'android systrace output images' %}
+
+可以使用如下方法，对`trace.html`进行进一步分析：
+* 通过鼠标点击左侧的`+`，`-`可以展开或者收缩相关显示数据
+* 通过键盘上的`a`，`d`可以使显示的内容沿着顶部的时间轴向左或者向右移动
+* 通过键盘上的`w`，`s`可以对显示的内容进行放大或者缩小
+* 使用鼠标点击内容页面的某一个块，在下方会显示详情
+* 使用鼠标选择一块内容页面，在下方会显示汇总信息
+
+
+将光标定位到最后一行，使用`w`进行放大，使用`d`向左移动到2260ms左右，如下图：
+{% img /images/mobile/android_systrace_output_zoom.png 'android systrace output detail images' %}
+
+发现对于那些`performTraversals`处理超过16ms的帧，其中`eglSwapBuffers`处理的时间都比较长，这应该就是问题所在。
+
+使用usb线连接上手机，在命令行下运行：
+    python systrace.py -h
+
+可以查看相关使用方法。
+> systrace是在在android4.1上新增的工具，在4.1,4.2和4.3上使用的方法不同
 
 reference：
-http://www.vogella.com/articles/AndroidTools/article.html 
-http://blog.csdn.net/aaa2832/article/details/7849400
-http://www.cnblogs.com/taobox/articles/3405931.html
+
+[^1] http://www.curious-creature.org/docs/android-performance-case-study-1.html
+
+[^2] http://www.curious-creature.org/docs/android-performance-case-study-1.html
+
+[^3] http://www.vogella.com/articles/AndroidTools/article.html
+
+[^4] http://blog.csdn.net/aaa2832/article/details/7849400
+
+[^5] http://www.cnblogs.com/taobox/articles/3405931.html
+
+[^6] http://bigflake.com/systrace/
+
+[^7] http://developer.android.com/tools/debugging/systrace.html
+
+[^8] http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html
+
+[^9] http://udinic.wordpress.com/tag/rendering/
