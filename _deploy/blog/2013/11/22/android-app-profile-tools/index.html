@@ -1,24 +1,118 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: mobile | atom.]]></title>
-  <link href="http://jqlblue.github.io/blog/categories/mobile/atom.xml" rel="self"/>
-  <link href="http://jqlblue.github.io/"/>
-  <updated>2013-11-25T11:49:25+08:00</updated>
-  <id>http://jqlblue.github.io/</id>
-  <author>
-    <name><![CDATA[jqlblue]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>初探android应用性能分析 - atom.</title>
+  <meta name="author" content="jqlblue">
 
   
-  <entry>
-    <title type="html"><![CDATA[初探android应用性能分析]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools/"/>
-    <updated>2013-11-22T18:03:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools</id>
-    <content type="html"><![CDATA[<p>如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？</p>
+  <meta name="description" content="android app profile tools performance 安卓 应用 渲染 性能 分析 工具">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="atom." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+function addBlankTargetForLinks () {
+
+  $('a[href^="http"]').each(function(){
+
+      $(this).attr('target', '_blank');
+
+  });
+
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+
+  addBlankTargetForLinks();
+
+});
+
+</script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">atom.</a></h1>
+  
+    <h2>Make live easier.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jqlblue.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">初探android应用性能分析</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-22T18:03:00+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？</p>
 
 <p>本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。</p>
 
@@ -63,7 +157,7 @@ classes.dex: Dalvik dex file version 035
 
 <h5>android平台架构</h5>
 
-<p><img src="/images/mobile/android_architecture.png" title="&lsquo;android architecture images&rsquo;" ></p>
+<p><img src="/images/mobile/android_architecture.png" title="'android architecture images'" ></p>
 
 <p>如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。</p>
 
@@ -81,14 +175,14 @@ classes.dex: Dalvik dex file version 035
 <h5>apk启动速度</h5>
 
 <p>在分析之前，我们先看看android程序的执行流程
-<img src="/images/mobile/android_application_execute_flow.png" title="&lsquo;android application execute flow images&rsquo;" ></p>
+<img src="/images/mobile/android_application_execute_flow.png" title="'android application execute flow images'" ></p>
 
 <p>如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。</p>
 
 <pre><code>adb logcat | grep ActivityManager
 </code></pre>
 
-<p>其中"Displayed"对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：</p>
+<p>其中&#8221;Displayed&#8221;对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：</p>
 
 <pre><code>adb logcat -c &amp;&amp; adb logcat -s ActivityManager | grep  "Displayed"
 </code></pre>
@@ -102,7 +196,7 @@ classes.dex: Dalvik dex file version 035
 <h5>页面渲染性能</h5>
 
 <p>android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
-<img src="/images/mobile/android_view_execute_flow.png" title="&lsquo;android view execute flow images&rsquo;" ></p>
+<img src="/images/mobile/android_view_execute_flow.png" title="'android view execute flow images'" ></p>
 
 <p>即：
 <code>计算视图大小（measure） -&gt; 安置视图的位置（layout） -&gt; 绘制（draw）视图</code></p>
@@ -136,7 +230,7 @@ classes.dex: Dalvik dex file version 035
 </code></pre>
 
 <p>这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的<code>insert</code>&ndash;><code>chart</code>，即可生成相关图表
-<img src="/images/mobile/frame_render_time.png" title="&lsquo;frame render time images&rsquo;" ></p>
+<img src="/images/mobile/frame_render_time.png" title="'frame render time images'" ></p>
 
 <blockquote><p>其中<code>com.sina.weibo</code>就是app的包名</p></blockquote>
 
@@ -158,7 +252,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p>上面这条命令将会在<code>android-sdk-linux/platform-tools/systrace</code>目录下生成<code>trace.html</code>。其中收集了包名为<code>com.qihoo.appstore</code>的应用在android系统上针对<code>gfx</code>和<code>view</code> category的执行数据。</p>
 
 <p><code>trace.html</code>在浏览器中打开如下图：
-<img src="/images/mobile/android_systrace_output.png" title="&lsquo;android systrace output images&rsquo;" ></p>
+<img src="/images/mobile/android_systrace_output.png" title="'android systrace output images'" ></p>
 
 <p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
 * 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
@@ -168,7 +262,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 * 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
 
 <p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
-<img src="/images/mobile/android_systrace_output_zoom.png" title="&lsquo;android systrace output detail images&rsquo;" ></p>
+<img src="/images/mobile/android_systrace_output_zoom.png" title="'android systrace output detail images'" ></p>
 
 <p>发现对于那些<code>performTraversals</code>处理超过16ms的帧，其中<code>eglSwapBuffers</code>处理的时间都比较长，这应该就是问题所在。</p>
 
@@ -200,118 +294,166 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p>[^8] <a href="http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html">http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html</a></p>
 
 <p>[^9] <a href="http://udinic.wordpress.com/tag/rendering/">http://udinic.wordpress.com/tag/rendering/</a></p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[移动应用无线抓包指南]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture/"/>
-    <updated>2013-08-04T11:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture</id>
-    <content type="html"><![CDATA[<h3>引子</h3>
 
-<p>如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
-包装进一节节车厢，然后组成一列火车在铁道上穿行。手机，笔记本等终端，可
-以理解为车站，每天都有很多人进进出出。</p>
+<span class="byline author vcard">Posted by <span class="fn">jqlblue</span></span>
 
-<p>有一天，你突然发现车站少了个东西，或者想了解下都有些什么人出站，什么人
-入站。这时，我们就需要抓包（Capturing Packages）。</p>
+      
 
-<p>继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
-进行检查就可以了。</p>
 
-<p>但突然有天发现某个车站是德国人给造的，我们要私自设置
-关卡的话，就没有保修了。</p>
 
-<p>实际上，我们私自设置关卡也无防。现在的东西更新换代太快，等坏的时候，直
-接入手一个新的，或许比保修还经济呢。</p>
 
-<p>等要动手的时候，想起这个德国制造，还是有些不忍。</p>
 
-<p>在你正想点燃那支兰州的当儿，想起西边有你表哥建造的一个车站。所以可以代
-理一把，让要进出的火车先去你表哥的车站。</p>
 
-<h3>抓包的三种方式</h3>
 
-<p>至此，我们可以看到抓包的三种方式：</p>
 
-<pre><code>1. 本地抓包
-2. 远程服务器抓包
-3. 代理抓包
-</code></pre>
-
-<h3>本地抓包</h3>
-
-<p>不管使用手机还是平板，进出的数据包，都会经过该设备的网卡。如果你的设备
-已经root，可以使用tcpdump将抓包数据存成xxx.pcap，然后在电脑上就可以使
-用wireshark进行查看。也可以使用webview
-<a href="http://www.cloudshark.org">cloudshark</a>。
-更多信息请上google查询。</p>
-
-<h3>远程服务器抓包</h3>
-
-<p>从设备上发出的请求，在网络通畅的情况下，最终都会达到某个服务器。所以我
-们可以在远程服务器上抓包。可以使用tcpdump，但是我更推荐ngrep(network
-grep)。</p>
-
-<p>在centos上，直接</p>
-
-<pre><code>yum install ngrep
-</code></pre>
-
-<p>下面是一些简单示例</p>
-
-<pre><code>ngrep -t -d any port 25
-ngrep -q -W byline "(GET|POST).*"
-</code></pre>
-
-<p>更多用法请查看</p>
-
-<pre><code>man ngrep
-</code></pre>
-
-<h3>代理抓包</h3>
-
-<p>开始废话说地有点多，这才是本文的重点。</p>
-
-<p>设置代理，就是要在你的移动终端和某台电脑之间网络互通的情况下：</p>
-
-<pre><code>1. 在电脑上设置代理
-2. 移动终端上网的时候连接这个代理
-</code></pre>
-
-<p>就可以在电脑上进行抓包了（<em>把一个陌生的概念转行成一个很熟悉的概念，
-fiddle抓包嘛，码农应该都知道</em>）。</p>
-
-<p>我们以移动终端与要进行代理抓包的电脑之间网络不通的情况为例进行说明（<em>如
-果电脑和移动终端可以连接同一wifi，只要按照设置代理的部分进行操作就好</em>）</p>
-
-<ul>
-<li><p>在电脑上创建无线网络</p>
-
-<p>  我们使用360随身wifi在电脑上创建无线网络。要购买的话，现阶段需要时常关注
-  <a href="http://wifi.360.cn/">官网</a>,因为不定期会在京东开启抢购。安装非常简
-  单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）</p>
-
-<p>  <img src="/images/360wifi_1.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_2.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_3.png" title="&lsquo;360 wifi images&rsquo;" ></p></li>
-<li><p>在电脑上用fiddle设置代理</p>
-
-<p>  <img src="/images/360wifi_fiddle.png" title="&lsquo;360 wifiproxy fidlle images&rsquo;" ></p></li>
-<li><p>修改手机上的网络设置，并设置代理</p>
-
-<p>  <img src="/images/360wifi_proxy_1.png" title="&lsquo;360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_2.png" title="'360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_3.png" title="'360 wifi mobile network" ></p>
-
-<p>  代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
-  fiddle中设置的"listen on port"</p>
-
-<p>  <img src="/images/360wifi_proxy_ip.png" title="&lsquo;360 wifi mobile network" ></p></li>
-</ul>
-
-]]></content>
-  </entry>
   
-</feed>
+
+
+<time datetime="2013-11-22T18:03:00+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mobile/'>mobile</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <style>
+.flash-video {
+    display:none;
+}
+</style>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a href="http://www.jiathis.com/share?uid=1823276" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1359039158528928" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1823276"></script>
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/11/16/pdo-mysql-escape-string/" title="Previous Post: 在php5.5中使用pdo和mysql_escape_string的一个坑">&laquo; 在php5.5中使用pdo和mysql_escape_string的一个坑</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>版权协议</h1>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh"><img alt="知识共享许可协议" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/devops/'>devops (2)</a></li>
+<li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
+<li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/blog/categories/php/'>php (5)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/31/september/">九月[september]</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/18/an-introduction-to-systemtap/">An Introduction to Systemtap</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: NaN%" href="/tags/systemtap/">systemtap</a>
+
+  </ul>
+</section>
+
+<section>
+    <h1>新浪微博</h1>
+    <ul id="weibo">
+    <li>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1282083982&verifier=f2e5e0d3&dpc=1"></iframe>
+      </li>
+    </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - jqlblue -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
