@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | atom.]]></title>
   <link href="http://jqlblue.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2013-11-25T13:11:33+08:00</updated>
+  <updated>2013-11-25T13:15:49+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -98,19 +98,6 @@ gdb也工作于用户态，它的目标是进行交互式的调试</li>
 <a href="http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf">http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf</a>
 <a href="http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/">http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/</a>
 <a href="http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/">http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/09/php-5-dot-5-upgrade-guide/"/>
-    <updated>2013-08-09T23:04:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/09/php-5-dot-5-upgrade-guide</id>
-    <content type="html"><![CDATA[<h3>The reason</h3>
-
-<p>人实际上是一种非常厉害的生物。只要给他一个足够的理由，</p>
-
-<h3>how</h3>
 ]]></content>
   </entry>
   

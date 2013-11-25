@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | atom.]]></title>
   <link href="http://jqlblue.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2013-11-25T13:11:33+08:00</updated>
+  <updated>2013-11-25T13:15:49+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -296,19 +296,6 @@ Speed=42514 pages/min, 1727526 bytes/sec.
 Requests: 42514 susceed, 0 failed.
 PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/09/php-5-dot-5-upgrade-guide/"/>
-    <updated>2013-08-09T23:04:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/09/php-5-dot-5-upgrade-guide</id>
-    <content type="html"><![CDATA[<h3>The reason</h3>
-
-<p>人实际上是一种非常厉害的生物。只要给他一个足够的理由，</p>
-
-<h3>how</h3>
 ]]></content>
   </entry>
   
