@@ -4,7 +4,7 @@
   <title><![CDATA[atom.]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2013-11-25T11:49:25+08:00</updated>
+  <updated>2013-11-25T13:11:33+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -160,12 +160,16 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p><code>trace.html</code>在浏览器中打开如下图：
 <img src="http://jqlblue.github.io/images/mobile/android_systrace_output.png" title="'android systrace output images'" ></p>
 
-<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
-* 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
-* 通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动
-* 通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小
-* 使用鼠标点击内容页面的某一个块，在下方会显示详情
-* 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
+<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：</p>
+
+<ul>
+<li>通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据</li>
+<li>通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动</li>
+<li>通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小</li>
+<li>使用鼠标点击内容页面的某一个块，在下方会显示详情</li>
+<li>使用鼠标选择一块内容页面，在下方会显示汇总信息</li>
+</ul>
+
 
 <p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
 <img src="http://jqlblue.github.io/images/mobile/android_systrace_output_zoom.png" title="'android systrace output detail images'" ></p>
