@@ -9,7 +9,7 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？ 本文将在没有apk源码的情况下， &hellip;">
+  <meta name="description" content="Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（Error，Exception），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。 Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk： Python，PHP &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,322 @@ $(document).bind('DOMNodeInserted', function(event) {
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-18T11:10:00+08:00" pubdate data-updated="true">Dec 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
+
+<p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
+
+<p><code>Python</code>，<code>PHP</code>，<code>Ruby</code>，<code>Javascript</code>，<code>Java</code>，<code>Nodejs</code>，<code>IOS</code></p>
+
+<p>项目地址：<a href="https://github.com/getsentry/sentry">https://github.com/getsentry/sentry</a></p>
+
+<p>本文以收集<code>PHP</code>错误为例。</p>
+
+<h3>安装步骤</h3>
+
+<p>Sentry的文档清晰且完善，包括<code>安装</code>，<code>配置</code>，<code>调优</code>以及<code>客户端调用</code>，正式使用之前，建议看看，以加深理解。地址：<a href="http://sentry.readthedocs.org/en/latest/">http://sentry.readthedocs.org/en/latest/</a></p>
+
+<h4>python环境安装</h4>
+
+<p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包</p>
+
+<figure class='code'><figcaption><span>python2.7.3-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>yum install -y bzip2-devel.x86_64
+</span><span class='line'>yum install -y sqlite-devel.x86_64
+</span><span class='line'>yum install -y readline-devel.x86_64
+</span><span class='line'>wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2
+</span><span class='line'>tar jxvf Python-2.7.3.tar.bz2
+</span><span class='line'><span class="nb">cd </span>Python-2.7.3
+</span><span class='line'>./configure --prefix<span class="o">=</span>/usr/local/python2.7.3
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span><span class='line'>
+</span><span class='line'>wget https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz --no-check-certificate
+</span><span class='line'>tar zxvf distribute-0.6.49.tar.gz
+</span><span class='line'><span class="nb">cd </span>distribute-0.6.49
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenv
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install -i http://e.pypi.python.org/simple virtualenvwrapper
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
+
+<pre><code>/usr/local/python2.7.3/bin/python
+</code></pre>
+
+<h4>安装Sentry server</h4>
+
+<p>初始化安装目录</p>
+
+<pre><code>mkdir -p /data/server/python-envs
+</code></pre>
+
+<p>添加相关环境变量</p>
+
+<pre><code>vim ~/.bashrc
+</code></pre>
+
+<p>添加：</p>
+
+<pre><code>export WORKON_HOME=/data/server/python-envs
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/python2.7.3/bin/python
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/python2.7.3/bin/virtualenv
+source /usr/local/python2.7.3/bin/virtualenvwrapper.sh
+</code></pre>
+
+<p>使环境变量生效</p>
+
+<pre><code>source ~/.bashrc
+</code></pre>
+
+<p>安装Sentry server</p>
+
+<pre><code>mkvirtualenv sentry
+pip install sentry
+pip install sentry[mysql]
+pip install sentry[mysql] --upgrade
+</code></pre>
+
+<p>修改<code>~/.bashrc</code>，添加如下代码，以便登录后自动切换到相关python环境</p>
+
+<pre><code>source /data/server/python-envs/sentry/bin/activate
+</code></pre>
+
+<h3>快速配置</h3>
+
+<p>或许你还没有做好决定，只是想尽快体验下Sentry，在完成上面的安装之后，通过下面三个步骤即可满足你的愿望：</p>
+
+<p>1 初始化配置</p>
+
+<pre><code>sentry init ~/sentry.conf.py
+</code></pre>
+
+<p>2 修改配置</p>
+
+<p>修改初始配置中的如下两项就行</p>
+
+<p><code>SENTRY_WEB_HOST</code>，<code>SENTRY_URL_PREFIX</code>，如：</p>
+
+<pre><code>SENTRY_URL_PREFIX = 'http://10.16.15.1:9000'
+SENTRY_WEB_HOST = '10.16.15.1'
+</code></pre>
+
+<p>3 创建超级管理员帐号，启动server</p>
+
+<pre><code>sentry --config=~/sentry.conf.py upgrade
+sentry --config=~/sentry.conf.py createsuperuser
+sentry --config=~/sentry.conf.py start
+</code></pre>
+
+<p>然后就可以通过url <a href="http://server_host:port">http://server_host:port</a> ，使用创建的帐号登录系统后台，进行项目，帐号等管理，和已收集日志的查看等等</p>
+
+<h3>配置在生产环境中使用</h3>
+
+<h4>Sentry server</h4>
+
+<p><em>我们在生产环境下的使用状况：</em></p>
+
+<ul>
+<li><p>使用<code>mysql</code>作为后端数据存储</p></li>
+<li><p>使用<code>celery</code>任务队列（<code>broker</code>使用<code>redis</code>），处理数据入库，发送邮件提醒等工作</p></li>
+<li><p>同时，使用<code>redis</code>作为<code>Update Buffers</code>，用于将频繁出现的相同事件合并，这在高并发时会相当有用</p></li>
+<li><p>使用<code>memcache</code>作为前端<code>Cache</code>，管理后台通过轮询的访问获取是否有新的事件提醒，使用<code>memcache</code>，可以减轻直接查询数据库的压力</p></li>
+<li><p>使用<code>Udp</code>协议发送并接收相关事件</p></li>
+<li><p>使用<code>Nginx</code>反向代理前端http请求，并使用<code>HttpLimitReqModule</code>限制请求的发送速率</p></li>
+<li><p>使用<code>supervisor</code>管理<code>celery</code>和<code>sentry</code>server</p></li>
+</ul>
+
+
+<p><em>相关安装步骤：</em></p>
+
+<pre><code>pip install redis hiredis nydus
+pip install redis hiredis nydus --upgrade
+pip install python-memcached
+pip install gevent
+pip install eventlet
+pip install supervisor
+</code></pre>
+
+<p><em>初始化配置</em></p>
+
+<pre><code>mkdir -p /data/server/sentry/etc
+sentry init /data/server/sentry/etc/sentry.conf.py
+</code></pre>
+
+<p><em>创建超级管理员帐号</em></p>
+
+<pre><code>sentry --config=/data/server/sentry/etc/sentry.conf.py upgrade
+sentry --config=/data/server/sentry/etc/sentry.conf.py createsuperuser
+</code></pre>
+
+<p><em>初始化supervisor配置</em></p>
+
+<pre><code>echo_supervisord_conf &gt; /data/server/sentry/etc/supervisord.conf
+</code></pre>
+
+<p><em>配置Sentry</em></p>
+
+<p>示例配置请参见 <a href="https://gist.github.com/jqlblue/8018185">https://gist.github.com/jqlblue/8018185</a></p>
+
+<p>修改<code>/data/server/sentry/etc/supervisord.conf</code>，添加：</p>
+
+<pre><code>[program:web]
+command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start
+process_name=%(program_name)s_%(process_num)02d
+numprocs=3
+numprocs_start=0
+startsecs=5
+startretries=3
+stopsignal=QUIT
+stopwaitsecs=10
+stopasgroup=true
+killasgroup=true
+environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
+directory=/data/server/python-envs/sentry/
+
+[program:sentry_udp]
+command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start udp
+process_name=sentry_udp_server
+numprocs=1
+numprocs_start=0
+startsecs=5
+startretries=3
+stopsignal=QUIT
+stopwaitsecs=10
+stopasgroup=true
+killasgroup=true
+environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
+directory=/data/server/python-envs/sentry/
+
+[program:celeryd]
+command=/data/server/python-envs/sentry/bin/sentry celery worker -c 6 -P processes -l WARNING -n worker-%(process_num)02d.worker
+process_name=%(program_name)s_%(process_num)02d
+numprocs=1
+numprocs_start=0
+startsecs=1
+startretries=3
+stopsignal=TERM
+stopwaitsecs=10
+stopasgroup=false
+killasgroup=true
+environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
+directory=/data/server/python-envs/sentry/
+</code></pre>
+
+<p><em>管理Sentry server</em></p>
+
+<ul>
+<li>启动superviord</li>
+</ul>
+
+
+<p>执行如下命令，同时，<code>celery</code>，<code>sentry web</code>，<code>sentry udp server</code>也将随之启动</p>
+
+<pre><code>supervisord -c /data/server/sentry/etc/supervisord.conf
+</code></pre>
+
+<ul>
+<li>停止sentry相关server</li>
+</ul>
+
+
+<p>执行如下命令</p>
+
+<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
+</code></pre>
+
+<ul>
+<li>停止superviord</li>
+</ul>
+
+
+<p>执行如下命令，同时，已启动的<code>centry</code>相关server也将停止</p>
+
+<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
+</code></pre>
+
+<p><code>supervisor</code>更多使用方法请参见 <a href="http://supervisord.org/">http://supervisord.org/</a></p>
+
+<p><code>nginx</code>配置请参见 <a href="https://gist.github.com/jqlblue/8019629">https://gist.github.com/jqlblue/8019629</a></p>
+
+<h4>Sentry client</h4>
+
+<p>可以通过在程序中<code>registerExceptionHandler</code>和<code>registerErrorHandler</code>将相关信息即时发送至server端。</p>
+
+<p>相关sdk项目地址 <a href="https://github.com/getsentry/raven-php">https://github.com/getsentry/raven-php</a></p>
+
+<p>实例化<code>Raven_Client</code>时使用的<code>DSN</code>中的<code>public:secret</code>可以在使用管理员登录后台后，在<code>项目</code>&ndash;<code>设置</code>下面查看到。示例地址：<a href="http://sentry_host/team_name/project_name/docs/php/">http://sentry_host/team_name/project_name/docs/php/</a></p>
+
+<p>我们采用通过增量读取php error log，使用crontab将错误信息上报。</p>
+
+<p>基于sentry php sdk修改之后的代码地址：<a href="https://gist.github.com/jqlblue/8019312">https://gist.github.com/jqlblue/8019312</a></p>
+
+<p>安装依赖</p>
+
+<pre><code>yum install -y logcheck.noarch
+</code></pre>
+
+<p><code>logcheck</code>中的<code>logtail2</code>用于增量读取日志，<code>flock</code>用于防止定时任务堆积。</p>
+
+<blockquote><p>另外，需要安装php的sockets扩展</p></blockquote>
+
+<p>添加定时任务</p>
+
+<pre><code>* * * * * /usr/bin/flock -xn /tmp/sentry_client.lock /opt/php-5.5.4/bin/php /path/client.php --project=project_name 2&gt;&amp;1 &gt; /dev/null
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -257,16 +573,12 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p><code>trace.html</code>在浏览器中打开如下图：
 <img src="/images/mobile/android_systrace_output.png" title="'android systrace output images'" ></p>
 
-<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：</p>
-
-<ul>
-<li>通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据</li>
-<li>通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动</li>
-<li>通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小</li>
-<li>使用鼠标点击内容页面的某一个块，在下方会显示详情</li>
-<li>使用鼠标选择一块内容页面，在下方会显示汇总信息</li>
-</ul>
-
+<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
+* 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
+* 通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动
+* 通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小
+* 使用鼠标点击内容页面的某一个块，在下方会显示详情
+* 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
 
 <p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
 <img src="/images/mobile/android_systrace_output_zoom.png" title="'android systrace output detail images'" ></p>
@@ -1342,7 +1654,7 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/devops/'>devops (1)</a></li>
+    <li class='category'><a href='/blog/categories/devops/'>devops (2)</a></li>
 <li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
 <li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
@@ -1354,6 +1666,10 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a>
@@ -1369,10 +1685,6 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
     
       <li class="post">
         <a href="/blog/2013/08/31/september/">九月[september]</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/18/an-introduction-to-systemtap/">An Introduction to Systemtap</a>
       </li>
     
   </ul>
