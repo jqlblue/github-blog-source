@@ -8,17 +8,13 @@ footer: true
 ---
 
 ### About jqlblue ###
-jqlblue是我（高原）在网络上使用的昵称。
+互联网从业人员，飘在北京，从事于服务端web开发工作。当然，还负责服务端基础开发环境的搭建，系统优化，与ops等兄弟部门的沟通等工作。
 
-我是一名互联网从业人员，目前就职于Qihoo360，主要从事于服务端开发工作。
-当然，偶尔要写写文档，打打酱油。
+使用feodra操作系统和emacs，目前使用64位的fedora20和emacs24.3。
 
-我使用feodra操作系统和emacs，目前使用64位的fedora19和emacs24.3。
+平常使用的开发语言是：php，python，bash，awk，lua
 
-平常使用的开发语言是：php，python，bash，awk
-
-熟悉基于linux的服务端环境的安装与部署。了解java环境的部署，了解elisp，
-lua，c语言
+擅长php，python，java等平台在linux服务端环境的安装与部署，以及lnmp等web系统的性能优化。
 
 对于服务端基础环境，如：开发，测试，部署（代码发布于review），度量
 （profile），监控（monitor）等很感兴趣。
@@ -31,10 +27,10 @@ lua，c语言
 概念（演绎）。
 
 为了把一个东西说地更明了些，有时需要去翻阅别人的文章，在这种不断对比的
-过程中，有时就把这个东西想地更明白了（类比）。
+过程中，就把这个东西想地更明白了（类比）。
 
-虽然做的是一些普通的事情，还是希望能够通过这种简单的分享，让大家都活地更容易
-写（Make Live Easier!）
+虽然做的只是一些普通的事情，还是希望能够通过这种简单的分享，让大家都活地更容易
+些（Make Live Easier!）
 
 ### Contact me ###
 Email: gaoyuan.blue@gmail.com
