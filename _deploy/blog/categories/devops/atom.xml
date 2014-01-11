@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | atom.]]></title>
   <link href="http://jqlblue.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-01-10T18:52:57+08:00</updated>
+  <updated>2014-01-11T19:48:57+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -28,7 +28,7 @@
 
 <p><code>tcpcopy</code>是一种请求复制工具。可以将线上流量拷贝到测试机器，实时的模拟线上环境。在不影响线上用户的情况下，使用线上流量进行测试，以尽早发现bug。也可以通过放大流量，进行压力测试，评估系统承载能力。</p>
 
-<p><code>tcpcopy</code>可以从线上服务器的<code>IP</code>层抓取在线请求的数据包，修改相关属性，利用<code>row socket output</code>技术（<code>packet injection</code> 技术之一）将其发送给测试服务器进行测试。</p>
+<p><code>tcpcopy</code>可以从线上服务器的<code>IP</code>层抓取在线请求的数据包，修改相关属性，利用<code>raw socket output</code>技术（<code>packet injection</code> 技术之一）将其发送给测试服务器进行测试。</p>
 
 <p>发送到测试服务器的数据包会在<code>TCP/IP</code>协议栈被识别，其中带有<code>payload</code>（tcp data）的数据包最终进入到测试服务器的上层应用（如nginx），上层应用在处理完请求之后，将响应传递给测试服务器的<code>TCP/IP</code>协议栈。</p>
 
