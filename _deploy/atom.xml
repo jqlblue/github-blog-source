@@ -4,7 +4,7 @@
   <title><![CDATA[atom.]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-02-28T18:30:50+08:00</updated>
+  <updated>2014-02-28T21:40:38+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -53,6 +53,7 @@ sudo make install
 <pre><code>ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 cd /usr/local/Library &amp;&amp; git stash &amp;&amp; git clean -d -f
 brew install emacs --cocoa
+brew linkapps
 </code></pre>
 
 <p>顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。</p>
