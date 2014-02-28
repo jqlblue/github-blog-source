@@ -4,7 +4,7 @@
   <title><![CDATA[atom.]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-02-28T21:40:38+08:00</updated>
+  <updated>2014-02-28T22:55:54+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -76,6 +76,10 @@ ln -s /somepath/goblin-emacs ~/.emacs.d
 <p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
 
 <p><img src="http://jqlblue.github.io/images/emacs/startup.png" title="'emacs start up" ></p>
+
+<p>因为很多快捷键的起始键都是Ctrl，所以最好交换<code>Ctrl</code>和<code>Caps-Lock</code>，mac上的交换方法如下图</p>
+
+<p><img src="http://jqlblue.github.io/images/emacs/caps-lock-swap.png" title="'caps-lock swap" ></p>
 ]]></content>
   </entry>
   
