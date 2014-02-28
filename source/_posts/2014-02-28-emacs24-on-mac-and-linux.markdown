@@ -37,6 +37,7 @@ mac系统上，在安装了gcc和autoconf之后，也可以通过下载源代码
     ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
     cd /usr/local/Library && git stash && git clean -d -f
     brew install emacs --cocoa
+    brew linkapps
 
 顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。
 
