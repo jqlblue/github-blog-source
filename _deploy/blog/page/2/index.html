@@ -9,9 +9,7 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="出生 九月份，我出生来到了这个世界。 然后一天天地长大。 我遇到了很多人很多事；有好心的老师和同学，当然也有不好的人和事，但是一
-切终究过去。 北上 九月份，我选择北上帝度。 拎着老爸买的行李箱，和老爸张罗给找的同伴一起出发。
-至今，即将十年。 当时应该是满怀着梦想。在近20个小时的路途中， &hellip;">
+  <meta name="description" content="从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。 一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +86,96 @@ $(document).bind('DOMNodeInserted', function(event) {
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-26T12:30:00+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
+
+<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
+
+<h3>安装步骤</h3>
+
+<figure class='code'><figcaption><span>fcitx install step </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
+</span><span class='line'>yum install fcitx-configtool.x86_64
+</span><span class='line'>yum install fcitx-gtk3.x86_64
+</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
+</span><span class='line'>yum install fcitx-table-chinese.noarch
+</span><span class='line'>yum intall fcitx-qt4.x86_64
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>配置</h3>
+
+<p>编辑~/.bashrc，添加：</p>
+
+<pre><code>export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+</code></pre>
+
+<p>重启系统或者logout，使之生效。</p>
+
+<pre><code>如果将im_module设置为xim，系统重启时可能会造成应用程序卡死。
+此时可以通过键盘快捷键“CTRL+ALT+F2”，切换成tty2，
+通过console模式登录系统杀死fcitx进程，再切回X window，或者直接重启。
+</code></pre>
+
+<h3>相关设置</h3>
+
+<p>如下图所示：</p>
+
+<pre><code>1. 在“input method”Tab，可以添加或者删除输入法
+2. “Global Config”Tab，主要用于设置相关快捷键
+3. “Appearance”列用于设置输入法弹出框的显示界面
+4. 点击“Addon”Tab，通过Cloud Pinyin可以设置云拼音。即可以将谷歌拼音，搜狗，百度，QQ输入法的内容合并进来。
+   下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
+</code></pre>
+
+<p><img src="/images/fcitx_config.png" title="'fcitx_config images'" >
+<img src="/images/fcitx_config_cloud_pinyin.png" title="'fcitx_config_cloud_pinyin images'" ></p>
+
+<p>reference：</p>
+
+<blockquote><p><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></p></blockquote>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -686,181 +774,6 @@ fiddle抓包嘛，码农应该都知道</em>）。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/03/broken-pipe-in-php-cli/">Broken Pipe in Php Cli</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-03T20:08:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
-
-<hr />
-
-<ul>
-<li>下线一台服务器，另起目录安装php5.5</li>
-</ul>
-
-
-<p>安装过程与php5.3差不多，要开启zend opcache的话，需要在
-configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_extension的
-形式加载。</p>
-
-<ul>
-<li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序</li>
-</ul>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access_log | awk <span class="s1">&#39;{print $7}&#39;</span> | awk -F <span class="s2">&quot;?&quot;</span> <span class="s1">&#39;{print $1}&#39;</span> | sort | uniq -c | sort -nr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地
- 址（包括相关参数）</li>
-</ul>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>access_log | grep  <span class="s1">&#39;/api/test&#39;</span> | head -n 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</li>
-</ul>
-
-
-<hr />
-
-<p>进行到第三步，就卡住了。：（</p>
-
-<p>“cat access_log | grep  &lsquo;/api/test&rsquo; | head -n 1”这条命令在shell下执行
-没有问题，但是如果用php的shell_exec运行，就会出现 “grep: writing
-output: Broken pipe”。</p>
-
-<p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做
-了下加工后，发现一切正常了，修改后的python代码如下</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">subprocess</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">signal</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">reset_sigpipe</span><span class="p">():</span>
-</span><span class='line'>    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s">&quot;cat access_log | grep  &#39;/api/test&#39; | head -n 1&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">reset_sigpipe</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
-</span><span class='line'><span class="k">print</span> <span class="n">output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>但是我是要用php来做这件事，下面是php相关代码</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="nv">$source</span> <span class="o">=</span> <span class="s1">&#39;./source_url.txt&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$dest</span> <span class="o">=</span> <span class="s1">&#39;./dest_url.txt&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$res</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
-</span><span class='line'><span class="nb">pcntl_signal</span><span class="p">(</span><span class="nx">SIGPIPE</span><span class="p">,</span> <span class="nx">SIG_DFL</span><span class="p">);</span>
-</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$row</span> <span class="o">=</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">continue</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nv">$command</span> <span class="o">=</span> <span class="s2">&quot;cat access_log | grep  &#39;</span><span class="si">{</span><span class="nv">$row</span><span class="si">}</span><span class="s2">&#39; | head -n 1 | awk &#39;{print </span><span class="se">\$</span><span class="s2">6</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;\$</span><span class="s2">7}&#39; | awk -F &#39;</span><span class="se">\&quot;</span><span class="s2">&#39; &#39;{print $2}&#39; | awk &#39;{print $1</span><span class="se">\&quot;</span><span class="s2"> http://test.api.com</span><span class="se">\&quot;</span><span class="s2">$2}&#39;&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$check</span> <span class="o">=</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
-</span><span class='line'>    <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="nv">$check</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">,</span> <span class="nx">FILE_APPEND</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是
-这句:</p>
-
-<pre><code>pcntl_signal(SIGPIPE, SIG_DFL)
-</code></pre>
-
-<p>当php进程接收到SIGPIPE信号时，重置
-为系统默认处理方式，即接收子进程的返回值。</p>
-
-<p><strong>问题解决了，但是原因呢？</strong></p>
-
-<p>我们再看看这行命令</p>
-
-<pre><code>cat access_log | grep  '/api/test' | head -n 1
-</code></pre>
-
-<p>head命令在取得一行后立即退出（exit），此时pipe的读端就没了，但grep还会
-继续往pipe写，此时pipe就会发送SIGPIPE信号，默认动作是终止程序。在shell
-下执行时，grep收到SIGPIPE信号就退出了，所以运行没有问题。</p>
-
-<p>但在通过php的shell_exec或者system运行为何就有问题。应该是php忽略了
-SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于是就出现了</p>
-
-<pre><code>grep: writing output: Broken pipe
-</code></pre>
-
-<p>在天朝，有图也不一定是真相。所以应该是，也不一定是。废话少说，我们直接
-上代码：</p>
-
-<pre><code>$grep -r 'SIGPIPE' ./
-./sapi/cli/php_cli.c:   signal(SIGPIPE, SIG_IGN); /* ignore SIGPIPE in standalone mode so
-</code></pre>
-
-<p>所以php以cli的形式运行时，会忽略SIGPIPE信号。</p>
-
-<p>reference：</p>
-
-<blockquote><p><a href="https://blogs.oracle.com/opal/entry/using_php_5_5_s">https://blogs.oracle.com/opal/entry/using_php_5_5_s</a></p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -883,6 +796,7 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
+<li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
 <li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
 <li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
@@ -894,6 +808,10 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac或者linux上使用emacs24打造web开发环境</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
@@ -909,10 +827,6 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
     
       <li class="post">
         <a href="/blog/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a>
       </li>
     
   </ul>

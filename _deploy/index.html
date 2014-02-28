@@ -9,7 +9,7 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="假设我们要上线一个两年内不会宕机的先进架构。在上线前，免不了单元测试，功能测试，还有使用ab，webbench等等进行压力测试。 但这些步骤非生产环境下正式用户的行为。或许你会想到灰度上线，但毕竟可能会影响到部分用户，这怎么对得起我们两年内不宕机的承诺呢？ 好在网易的 王斌 开发了tcpcopy &hellip;">
+  <meta name="description" content="安装emacs24.3 Linux系统上安装 可以通过如下地址下载到最新的emacs安装文件。 http://www.gnu.org/software/emacs/ 安装步骤 wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,98 @@ $(document).bind('DOMNodeInserted', function(event) {
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac或者linux上使用emacs24打造web开发环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-28T14:16:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>安装emacs24.3</h3>
+
+<h5>Linux系统上安装</h5>
+
+<p>可以通过如下地址下载到最新的emacs安装文件。</p>
+
+<pre><code>http://www.gnu.org/software/emacs/
+</code></pre>
+
+<p><em>安装步骤</em></p>
+
+<pre><code>wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz
+tar zxvf emacs-24.3.tar.gz
+cd emacs-24.3
+./autogen.sh
+./configure --prefix=/usr/local/emacs24.3 \
+--with-x-toolkit=gtk \
+--enable-gcc-warnings \
+--enable-link-time-optimization \
+--enable-profiling \
+--with-x
+make bootstrap -j4
+make
+sudo make install
+</code></pre>
+
+<h5>Mac系统上安装</h5>
+
+<p>mac系统上，在安装了gcc和autoconf之后，也可以通过下载源代码编译的方式进行安装。不过mac有<code>Homebrew</code>，可以简化这一过程。</p>
+
+<p><em>安装步骤</em></p>
+
+<pre><code>ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+cd /usr/local/Library &amp;&amp; git stash &amp;&amp; git clean -d -f
+brew install emacs --cocoa
+</code></pre>
+
+<p>顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。</p>
+
+<p>有可能下载地址被墙，这时通过通过如下方式解决：</p>
+
+<pre><code>brew edit softname，如 brew edit emacs
+修改其中的url，保存退出
+</code></pre>
+
+<h3>配置emacs</h3>
+
+<p>由于emacs24已经自带了包管理系统。只需几个简单的步骤，即可通过<a href="https://github.com/bbatsov/prelude">Emacs Prelude</a>或者<a href="https://github.com/jqlblue/goblin-emacs">goblin-emacs</a>体验emacs的魅力。步骤如下：</p>
+
+<pre><code>cd /somepath/
+git clone https://github.com/jqlblue/goblin-emacs
+ln -s /somepath/goblin-emacs ~/.emacs.d
+</code></pre>
+
+<p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
+
+<p><img src="/images/emacs/startup.png" title="'emacs start up" ></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -872,96 +964,6 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-26T12:30:00+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
-
-<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
-
-<h3>安装步骤</h3>
-
-<figure class='code'><figcaption><span>fcitx install step </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
-</span><span class='line'>yum install fcitx-configtool.x86_64
-</span><span class='line'>yum install fcitx-gtk3.x86_64
-</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
-</span><span class='line'>yum install fcitx-table-chinese.noarch
-</span><span class='line'>yum intall fcitx-qt4.x86_64
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>配置</h3>
-
-<p>编辑~/.bashrc，添加：</p>
-
-<pre><code>export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-</code></pre>
-
-<p>重启系统或者logout，使之生效。</p>
-
-<pre><code>如果将im_module设置为xim，系统重启时可能会造成应用程序卡死。
-此时可以通过键盘快捷键“CTRL+ALT+F2”，切换成tty2，
-通过console模式登录系统杀死fcitx进程，再切回X window，或者直接重启。
-</code></pre>
-
-<h3>相关设置</h3>
-
-<p>如下图所示：</p>
-
-<pre><code>1. 在“input method”Tab，可以添加或者删除输入法
-2. “Global Config”Tab，主要用于设置相关快捷键
-3. “Appearance”列用于设置输入法弹出框的显示界面
-4. 点击“Addon”Tab，通过Cloud Pinyin可以设置云拼音。即可以将谷歌拼音，搜狗，百度，QQ输入法的内容合并进来。
-   下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
-</code></pre>
-
-<p><img src="/images/fcitx_config.png" title="'fcitx_config images'" >
-<img src="/images/fcitx_config_cloud_pinyin.png" title="'fcitx_config_cloud_pinyin images'" ></p>
-
-<p>reference：</p>
-
-<blockquote><p><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -982,6 +984,7 @@ export XMODIFIERS="@im=fcitx"
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
+<li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
 <li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
 <li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
@@ -993,6 +996,10 @@ export XMODIFIERS="@im=fcitx"
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac或者linux上使用emacs24打造web开发环境</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
@@ -1008,10 +1015,6 @@ export XMODIFIERS="@im=fcitx"
     
       <li class="post">
         <a href="/blog/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a>
       </li>
     
   </ul>
