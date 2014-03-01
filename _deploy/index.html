@@ -9,7 +9,7 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="安装emacs24.3 Linux系统上安装 可以通过如下地址下载到最新的emacs安装文件。 http://www.gnu.org/software/emacs/ 安装步骤 wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz &hellip;">
+  <meta name="description" content="安装Emacs24.3 安装Homebrew Homebrew是mac系统上的包管理软件，是用Ruby语言编写的。我们可以使用它在终端安装系统没有自带的Unix相关工具。 安装步骤 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,7 +92,7 @@ $(document).bind('DOMNodeInserted', function(event) {
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac或者linux上使用emacs24打造web开发环境</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a></h1>
     
     
       <p class="meta">
@@ -115,55 +115,84 @@ $(document).bind('DOMNodeInserted', function(event) {
   </header>
 
 
-  <div class="entry-content"><h3>安装emacs24.3</h3>
+  <div class="entry-content"><h3>安装Emacs24.3</h3>
 
-<h5>Linux系统上安装</h5>
+<h5>安装Homebrew</h5>
 
-<p>可以通过如下地址下载到最新的emacs安装文件。</p>
-
-<pre><code>http://www.gnu.org/software/emacs/
-</code></pre>
-
-<p><em>安装步骤</em></p>
-
-<pre><code>wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz
-tar zxvf emacs-24.3.tar.gz
-cd emacs-24.3
-./autogen.sh
-./configure --prefix=/usr/local/emacs24.3 \
---with-x-toolkit=gtk \
---enable-gcc-warnings \
---enable-link-time-optimization \
---enable-profiling \
---with-x
-make bootstrap -j4
-make
-sudo make install
-</code></pre>
-
-<h5>Mac系统上安装</h5>
-
-<p>mac系统上，在安装了gcc和autoconf之后，也可以通过下载源代码编译的方式进行安装。不过mac有<code>Homebrew</code>，可以简化这一过程。</p>
+<p><code>Homebrew</code>是mac系统上的包管理软件，是用<code>Ruby</code>语言编写的。我们可以使用它在终端安装系统没有自带的<code>Unix</code>相关工具。</p>
 
 <p><em>安装步骤</em></p>
 
 <pre><code>ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 cd /usr/local/Library &amp;&amp; git stash &amp;&amp; git clean -d -f
-brew install emacs --cocoa
+</code></pre>
+
+<h5>通过编译源代码安装Emacs</h5>
+
+<p>在安装<code>Homebrew</code>时，会同时安装<code>gcc</code>和<code>autoconf</code>，所以我们可以直接下载源代码进行编译安装。通过如下地址可以下载到最新的emacs安装文件。</p>
+
+<pre><code>http://www.gnu.org/software/emacs/
+</code></pre>
+
+<p>如果没有<code>wget</code>等工具，可以通过<code>brew</code>进行安装，如：</p>
+
+<pre><code>brew install wget
+</code></pre>
+
+<p><em>安装步骤</em></p>
+
+<pre><code>cd /somepath/
+wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz
+tar zxvf emacs-24.3.tar.gz
+cd emacs-24.3
+./autogen.sh
+./configure --with-ns
+make install
+sudo ln -s /somepath/emacs-24.3/nextstep/Emacs.app /Applications/Emacs24.3.app
+</code></pre>
+
+<h5>通过Homebrew安装Emacs</h5>
+
+<p><code>Homebrew</code>本身也是下载源代码进行编译安装，但是它可以帮我们简化这一过程。这就是技术的魅力 &mdash; make live easier。</p>
+
+<p><em>安装步骤</em></p>
+
+<pre><code>brew install emacs --cocoa
 brew linkapps
 </code></pre>
 
 <p>顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。</p>
 
-<p>有可能下载地址被墙，这时通过通过如下方式解决：</p>
+<p>有可能下载地址被墙，这时通过通过修改源代码的下载地址解决，方法如下：</p>
 
-<pre><code>brew edit softname，如 brew edit emacs
-修改其中的url，保存退出
+<pre><code>1. brew edit softname，如 brew edit emacs
+2. 修改其中的url，保存退出
 </code></pre>
 
-<h3>配置emacs</h3>
+<p>如：</p>
 
-<p>由于emacs24已经自带了包管理系统。只需几个简单的步骤，即可通过<a href="https://github.com/bbatsov/prelude">Emacs Prelude</a>或者<a href="https://github.com/jqlblue/goblin-emacs">goblin-emacs</a>体验emacs的魅力。步骤如下：</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;formula&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Emacs</span> <span class="o">&lt;</span> <span class="no">Formula</span>
+</span><span class='line'>    <span class="n">homepage</span> <span class="s1">&#39;http://www.gnu.org/software/emacs/&#39;</span>
+</span><span class='line'>    <span class="c1">#url &#39;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#39;</span>
+</span><span class='line'>    <span class="n">url</span> <span class="s1">&#39;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
+
+<p><img src="/images/emacs/startup.png" title="'emacs start up" ></p>
+
+<h3>配置Emacs</h3>
+
+<p>由于emacs24已经自带了包管理系统。只需几个简单的步骤，即可通过<a href="https://github.com/bbatsov/prelude">Emacs Prelude</a>或者<a href="https://github.com/jqlblue/goblin-emacs">Goblin Emacs</a>体验emacs的魅力。步骤如下：</p>
 
 <pre><code>cd /somepath/
 git clone https://github.com/jqlblue/goblin-emacs
@@ -172,11 +201,86 @@ ln -s /somepath/goblin-emacs ~/.emacs.d
 
 <p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
 
-<p><img src="/images/emacs/startup.png" title="'emacs start up" ></p>
+<p><img src="/images/emacs/goblin-startup.png" title="'goblin emacs start up" ></p>
 
-<p>因为很多快捷键的起始键都是Ctrl，所以最好交换<code>Ctrl</code>和<code>Caps-Lock</code>，mac上的交换方法如下图</p>
+<p>完成<code>jedi</code>，python自动完成的配置</p>
 
-<p><img src="/images/emacs/caps-lock-swap.png" title="'caps-lock swap" ></p>
+<pre><code>cd ~/.emacs.d/elpa/jedi*
+sudo pip install -r requirements.txt
+</code></pre>
+
+<p>或者指定pypi源</p>
+
+<pre><code>sudo pip install -i http://pypi.douban.com/simple -r requirements.txt
+</code></pre>
+
+<h3>补充说明</h3>
+
+<ul>
+<li>Goblin-emacs简介</li>
+</ul>
+
+
+<p>goblin-emacs在prelude的基础上，对<code>PHP</code>，<code>Python</code>等<code>mode</code>进行了增强，并尽量保持原生的快捷键。相关功能介绍：</p>
+
+<pre><code>flymake语法检测
+php-mode
+php基于字典的自动完成
+python基于jedi的自动完成
+org-mode
+doxymacs 生成文档注释
+slime－mode
+版本控制工具的集成
+</code></pre>
+
+<p>当使用emacs编辑<code>ruby</code>或者<code>lua</code>源码时，会自动下载并安装相关<code>mode</code>，相关映射在<code>core/goblin-packages.el</code>中进行配置。</p>
+
+<ul>
+<li>交换<code>Control</code>键和<code>Caps-Lock</code>键</li>
+</ul>
+
+
+<p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。
+<img src="/images/emacs/swap-control-capslock.png" title="'swap control caps-lock" ></p>
+
+<ul>
+<li>某些汉字显示为方块</li>
+</ul>
+
+
+<p>由于某些字体不支持斜体的中文汉字等，这是就会在emacs中出现方块。解决方法如下：</p>
+
+<pre><code>M-x customize-face RET font-lock-comment-face
+修改其中的"slant"为"normal"
+</code></pre>
+
+<p>goblin－emace通过添加了如下设置解决：</p>
+
+<pre><code>(set-fontset-font "fontset-default"
+    'gb18030 '("Microsoft YaHei" . "unicode-bmp"))
+)
+</code></pre>
+
+<ul>
+<li>其他技巧</li>
+</ul>
+
+
+<p>一些常用的技巧记录如下</p>
+
+<pre><code>通过`C-h t`可以查看emacs自带的教程
+通过M-x describe-mode可以查看当前支持的mode和相关快捷键
+</code></pre>
+
+<p>reference：</p>
+
+<p>[^1] <a href="http://earthwithsun.com/questions/631306/emacs-24-loading-a-package-installed-via-elpa">http://earthwithsun.com/questions/631306/emacs-24-loading-a-package-installed-via-elpa</a></p>
+
+<p>[^2] <a href="http://toumorokoshi.github.io/emacs-from-scratch-part-2-package-management.html">http://toumorokoshi.github.io/emacs-from-scratch-part-2-package-management.html</a></p>
+
+<p>[^3] <a href="http://blog.yam.com/hn12303158/article/35207136">http://blog.yam.com/hn12303158/article/35207136</a></p>
+
+<p>[^4] <a href="http://blog.chinaunix.net/uid-26354188-id-3195392.html">http://blog.chinaunix.net/uid-26354188-id-3195392.html</a></p>
 </div>
   
   
@@ -1003,7 +1107,7 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac或者linux上使用emacs24打造web开发环境</a>
+        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
       </li>
     
       <li class="post">
