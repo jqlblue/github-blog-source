@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "an introduction to systemtap"
-description: "sysytemtap introduction "
+keywords: systemtap, introduction
+description: "sysytemtap介绍"
 date: 2013-08-18 10:07
 comments: true
 categories: [devops]

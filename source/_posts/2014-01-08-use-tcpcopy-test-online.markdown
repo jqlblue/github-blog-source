@@ -1,10 +1,12 @@
 ---
 layout: post
 title: "使用tcpcopy导入线上流量进行功能和压力测试"
-description: "tcpcopy install configure test online feature"
+keywords: "tcpcopy, online test"
+description: "tcpcopy安装与配置，使用tcpcopy进行压力和功能测试，tcpcopy介绍"
 date: 2014-01-08 17:29
 comments: true
 categories: [devops]
+tags: [devops, tcpcopy]
 ---
 假设我们要上线一个两年内不会宕机的先进架构。在上线前，免不了单元测试，功能测试，还有使用ab，webbench等等进行压力测试。
 
@@ -94,9 +96,9 @@ tcpcopy有两种工作模式：
     cd /usr/local/tcpcopy/bin
     sudo ./intercept
     sudo ./tcpcopy -i /path/online.pcap -x 80-10.16.12.11:80
-    
+
     tcpcopy -i <抓包文件地址> -x <port>-<本地ip>:<port>
-    
+
 ##### 在线实时复制 online #####
 
 1） 在测试服务器上启动`intercept`拦截进程
@@ -108,7 +110,7 @@ tcpcopy有两种工作模式：
 
     cd /usr/local/tcpcopy/bin
     sudo ./tcpcopy -x 80-10.16.12.11:80 -c 10.16.12.12
-    
+
     tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应用端口 -c 本地服务器ip
 
 

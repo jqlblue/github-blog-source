@@ -1,10 +1,12 @@
 ---
 layout: post
 title: "在mac系统上使用emacs24打造web开发环境"
-description: "emacs24 emacs24.3 mac web develop environment"
+keywords: "emacs24.3, mac, web, develop environment"
+description: "在mac系统上使用emacs24配置php，python开发环境"
 date: 2014-02-28 14:16
 comments: true
 categories: [emacs]
+tags: [linux, mac, emacs]
 ---
 
 ### 安装Emacs24.3 ###

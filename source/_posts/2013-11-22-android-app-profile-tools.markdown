@@ -1,10 +1,12 @@
 ---
 layout: post
 title: "初探android应用性能分析"
-description: "android app profile tools performance 安卓 应用 渲染 性能 分析 工具"
+keywords: android, app, profile, tools, performance
+description: "安卓应用渲染性能分析指南，服务端视角"
 date: 2013-11-22 18:03
 comments: true
 categories: [mobile]
+tags: [mobile, android, profile]
 ---
 如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？
 
@@ -20,7 +22,7 @@ categories: [mobile]
     $ wget http://shouji.360tpcdn.com/131106/0124832c4cf8c35a762cfece3bac52b1/com.sina.weibo_650.apk
 
 然后查看这个文件的类型
-    $ file com.sina.weibo_650.apk 
+    $ file com.sina.weibo_650.apk
     com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
 
 会发现`com.sina.weibo_650.apk`是一个zip压缩文件。解压缩后的文件，主要包括*一些资源文件*，*一些配置文件*，*一些类库*，还有*一个class.dex*。目录结构如下
@@ -104,7 +106,7 @@ android应用中的页面，是由android系统一帧，一帧地绘制的，其
 
 获取包名的方法:
     adb shell pm list packages
-    
+
 ##### 使用systrace进一步分析  #####
 通过收集该apk的启动速度和每帧的渲染时间，并与竟品进行对比发现。该app启动时间的确比较慢，也偶尔有丢帧的现象发生。如何近一步分析呢？这时就需要`systrace`了。
 

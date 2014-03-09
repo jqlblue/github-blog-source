@@ -1,9 +1,12 @@
 ---
 layout: post
 title: "check php5.5 compatibility"
+keywords: php, compatibility, codesniffer
+description: "php兼容性检测, compatibility"
 date: 2013-08-03 18:16
-comments: false
+comments: true
 categories: [php]
+tags: [php5.5, codesniffer]
 ---
 github上有个项目可以检测php5.3，5.4的兼容性，如下：
 [https://github.com/wimg/PHPCompatibility](https://github.com/wimg/PHPCompatibility)

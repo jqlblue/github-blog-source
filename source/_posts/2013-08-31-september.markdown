@@ -1,9 +1,12 @@
 ---
 layout: post
 title: "九月[september]"
+keywords: september
+description: "九月 感悟 随笔"
 date: 2013-08-31 09:09
 comments: true
 categories: [essay]
+tags: [essay]
 ---
 
 ### 出生 ###

@@ -1,9 +1,12 @@
 ---
 layout: post
 title: "broken pipe in php cli"
+keywords: php, cli, broken pipe
+description: "php在命令行(cli)运行，出现破管道(broken pipe)的解决方案"
 date: 2013-08-03 20:08
-comments: false
+comments: true
 categories: [php]
+tags: [php5.5, pcntl, broken pipe]
 ---
 下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：
 
@@ -93,4 +96,3 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 reference：
 
 > [https://blogs.oracle.com/opal/entry/using_php_5_5_s](https://blogs.oracle.com/opal/entry/using_php_5_5_s)
-

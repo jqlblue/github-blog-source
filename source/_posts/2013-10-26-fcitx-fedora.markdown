@@ -1,9 +1,12 @@
 ---
 layout: post
 title: "在fedora上安装fcitx输入法和云拼音"
+keywords: fedora, fcitx, input method
+description: "fedora 输入法 fcitx 云拼音 google"
 date: 2013-10-26 12:30
 comments: true
 categories: [linux]
+tags: [linux]
 ---
 从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。
 

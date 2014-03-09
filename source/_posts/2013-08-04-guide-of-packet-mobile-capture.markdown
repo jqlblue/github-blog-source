@@ -1,9 +1,12 @@
 ---
 layout: post
 title: "移动应用无线抓包指南"
+keywords: mobile, wireshark, tcpdump, package capture
+description: "移动应用抓包，手机抓包"
 date: 2013-08-04 11:41
 comments: true
 categories: [mobile, network]
+tags: [mobile, wireshark]
 ---
 
 ### 引子  ###
@@ -74,7 +77,7 @@ fiddle抓包嘛，码农应该都知道*）。
     我们使用360随身wifi在电脑上创建无线网络。要购买的话，现阶段需要时常关注
     [官网](http://wifi.360.cn/),因为不定期会在京东开启抢购。安装非常简
     单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）
-    
+
     {% img /images/360wifi_1.png '360 wifi images' %}
     {% img /images/360wifi_2.png '360 wifi images' %}
     {% img /images/360wifi_3.png '360 wifi images' %}
@@ -87,9 +90,9 @@ fiddle抓包嘛，码农应该都知道*）。
 
     {% img /images/360wifi_proxy_1.png '360 wifi mobile network %}
     {% img /images/360wifi_proxy_2.png '360 wifi mobile network %}
-    {% img /images/360wifi_proxy_3.png '360 wifi mobile network %}    
+    {% img /images/360wifi_proxy_3.png '360 wifi mobile network %}
 
     代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
     fiddle中设置的"listen on port"
 
-    {% img /images/360wifi_proxy_ip.png '360 wifi mobile network %}    
+    {% img /images/360wifi_proxy_ip.png '360 wifi mobile network %}

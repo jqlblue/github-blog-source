@@ -1,10 +1,12 @@
 ---
 layout: post
 title: "php 5.5 upgrade guide"
-description: "php 5.5 upgrade guide php5.5升级指南 jqlblue php-5.5 install"
+keywords: php 5.5, upgrade, guide
+description: " php5.5升级指南 php-5.5 install"
 date: 2013-08-10 09:41
 comments: true
 categories: [php]
+tags: [php5.5, devops]
 ---
 前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
 看不出问题（道行不够）。然后restart之后，一切又都正常。
@@ -143,7 +145,7 @@ webserver日志中记录post请求参数。
     php5.3.10
     Speed=30441 pages/min, 1224275 bytes/sec.
     Requests: 30441 susceed, 0 failed.
-    
+
     php5.5.0
     Speed=42514 pages/min, 1727526 bytes/sec.
     Requests: 42514 susceed, 0 failed.
