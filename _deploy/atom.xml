@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[jqlblue's Blog]]></title>
+  <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-03-02T11:31:22+08:00</updated>
+  <updated>2014-03-09T22:15:09+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -641,7 +641,7 @@ directory=/data/server/python-envs/sentry/
 
 <p>然后查看这个文件的类型</p>
 
-<pre><code>$ file com.sina.weibo_650.apk 
+<pre><code>$ file com.sina.weibo_650.apk
 com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
 </code></pre>
 

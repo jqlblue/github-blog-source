@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: linux | jqlblue's Blog]]></title>
+  <title><![CDATA[Category: linux | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-03-02T11:31:22+08:00</updated>
+  <updated>2014-03-09T22:15:32+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -24,20 +24,14 @@
 
 <h3>安装步骤</h3>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>fcitx install step </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
-</span><span class='line'>yum install fcitx-configtool.x86_64
-</span><span class='line'>yum install fcitx-gtk3.x86_64
-</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
-</span><span class='line'>yum install fcitx-table-chinese.noarch
-</span><span class='line'>yum intall fcitx-qt4.x86_64
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock fcitx install step lang:bash %}
+yum install fcitx.x86_64
+yum install fcitx-configtool.x86_64
+yum install fcitx-gtk3.x86_64
+yum install fcitx-cloudpinyin.x86_64
+yum install fcitx-table-chinese.noarch
+yum intall fcitx-qt4.x86_64
+{% endcodeblock %}</p>
 
 <h3>配置</h3>
 
@@ -66,8 +60,8 @@ export XMODIFIERS="@im=fcitx"
    下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
 </code></pre>
 
-<p><img src="/images/fcitx_config.png" title="&lsquo;fcitx_config images&rsquo;" >
-<img src="/images/fcitx_config_cloud_pinyin.png" title="&lsquo;fcitx_config_cloud_pinyin images&rsquo;" ></p>
+<p>{% img /images/fcitx_config.png &lsquo;fcitx_config images&rsquo; %}
+{% img /images/fcitx_config_cloud_pinyin.png &lsquo;fcitx_config_cloud_pinyin images&rsquo; %}</p>
 
 <p>reference：</p>
 
