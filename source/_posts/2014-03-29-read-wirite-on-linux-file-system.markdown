@@ -123,3 +123,15 @@ Linux开机启动时，会首先载入MBR（主引导记录），MBR会告诉电
 ### 文件存取流程 ###
 
 在进行文件存取时，实际上就是解析文件路径，加载相应分区上的inode table，获取对应的inode number，对inode number对于的数据块进行存取。
+
+对于访问过的文件路径，会被缓存在dentry目录项中。
+
+为了提升磁盘设备的IO性能，操作系统会使用内存作为磁盘设备的cache，并使用memory map方式在访问时建立与文件系统的缓存映射。文件系统的缓存，是以Page Cache为单位，一个Page Cache包含多个Buffer Cache。
+
+* 向文件中写入数据时，数据会先缓存在Page Cache中，内存中的这部分数据被标注为Dirty Page，linux系统上的pdflush守护进程会跟进系统设置将将这部分Dirty Page刷到磁盘上，也可以通过fsync系统调用在数据写入后强制刷到磁盘上。将写入的数据刷入磁盘时，是以Buffer Cache为单位，每次回写若干个Buffer Cache。
+
+* 读取文件内容时，系统会一次性连续读取包括所请求页面在内的多个页面（如预读页面个数为n）。如果请求的页面在page cache中命中的话，会从缓存中返回页面内容，增加读取的页面数量，异步读取2n个页面;如果请求的页面没有在page cache中命中，也会增加读取页面数量，同步读取2n个页面。
+
+预读机制示意图
+
+{% img /images/os/fs-pre-read.gif 'fs preread %}
