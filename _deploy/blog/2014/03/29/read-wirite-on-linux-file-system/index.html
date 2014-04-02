@@ -1,24 +1,118 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: linux | Jqlblue's Blog]]></title>
-  <link href="http://jqlblue.github.io/blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-02T21:47:34+08:00</updated>
-  <id>http://jqlblue.github.io/</id>
-  <author>
-    <name><![CDATA[jqlblue]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>linux文件系统如何进行文件存取 - Jqlblue's Blog</title>
+  <meta name="author" content="jqlblue">
 
   
-  <entry>
-    <title type="html"><![CDATA[linux文件系统如何进行文件存取]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system/"/>
-    <updated>2014-03-29T13:32:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system</id>
-    <content type="html"><![CDATA[<p>乍一看，这个题目好像有点小儿科。</p>
+  <meta name="description" content="深入linux文件系统中文件存取的机制">
+  <meta name="keywords" content="linux fs inode dentry">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jqlblue's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+function addBlankTargetForLinks () {
+
+  $('a[href^="http"]').each(function(){
+
+      $(this).attr('target', '_blank');
+
+  });
+
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+
+  addBlankTargetForLinks();
+
+});
+
+</script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jqlblue's Blog</a></h1>
+  
+    <h2>Make Live Easier.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jqlblue.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Linux文件系统如何进行文件存取</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-29T13:32:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>乍一看，这个题目好像有点小儿科。</p>
 
 <p>写文件嘛</p>
 
@@ -205,69 +299,176 @@ inode等。每个block group不一定都有超级块，其他block group中的�
 <p>[^3] <a href="http://www.penglixun.com/tech/system/linux_cache_discovery.html">http://www.penglixun.com/tech/system/linux_cache_discovery.html</a></p>
 
 <p>[^4] <a href="http://www.porcupine.org/forensics/forensic-discovery/chapter3.html">http://www.porcupine.org/forensics/forensic-discovery/chapter3.html</a></p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[在fedora上安装fcitx输入法和云拼音]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/10/26/fcitx-fedora/"/>
-    <updated>2013-10-26T12:30:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/10/26/fcitx-fedora</id>
-    <content type="html"><![CDATA[<p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
 
-<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
+<span class="byline author vcard">Posted by <span class="fn">jqlblue</span></span>
 
-<h3>安装步骤</h3>
+      
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>fcitx install step </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
-</span><span class='line'>yum install fcitx-configtool.x86_64
-</span><span class='line'>yum install fcitx-gtk3.x86_64
-</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
-</span><span class='line'>yum install fcitx-table-chinese.noarch
-</span><span class='line'>yum intall fcitx-qt4.x86_64
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<h3>配置</h3>
 
-<p>编辑~/.bashrc，添加：</p>
 
-<pre><code>export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-</code></pre>
 
-<p>重启系统或者logout，使之生效。</p>
 
-<pre><code>如果将im_module设置为xim，系统重启时可能会造成应用程序卡死。
-此时可以通过键盘快捷键“CTRL+ALT+F2”，切换成tty2，
-通过console模式登录系统杀死fcitx进程，再切回X window，或者直接重启。
-</code></pre>
 
-<h3>相关设置</h3>
 
-<p>如下图所示：</p>
-
-<pre><code>1. 在“input method”Tab，可以添加或者删除输入法
-2. “Global Config”Tab，主要用于设置相关快捷键
-3. “Appearance”列用于设置输入法弹出框的显示界面
-4. 点击“Addon”Tab，通过Cloud Pinyin可以设置云拼音。即可以将谷歌拼音，搜狗，百度，QQ输入法的内容合并进来。
-   下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
-</code></pre>
-
-<p><img src="/images/fcitx_config.png" title="&lsquo;fcitx_config images&rsquo;" >
-<img src="/images/fcitx_config_cloud_pinyin.png" title="&lsquo;fcitx_config_cloud_pinyin images&rsquo;" ></p>
-
-<p>reference：</p>
-
-<blockquote><p><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></p></blockquote>
-]]></content>
-  </entry>
   
-</feed>
+
+
+<time datetime="2014-03-29T13:32:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <style>
+.flash-video {
+    display:none;
+}
+</style>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a href="http://www.jiathis.com/share?uid=1823276" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1359039158528928" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1823276"></script>
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/28/emacs24-on-mac-and-linux/" title="Previous Post: 在mac系统上使用emacs24打造web开发环境">&laquo; 在mac系统上使用emacs24打造web开发环境</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>版权协议</h1>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh"><img alt="知识共享许可协议" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
+<li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
+<li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
+<li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/blog/categories/php/'>php (4)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 90%" href="/tags/android/">android</a>
+<a style="font-size: 90%" href="/tags/broken-pipe/">broken pipe</a>
+<a style="font-size: 185%" href="/tags/devops/">devops</a>
+<a style="font-size: 90%" href="/tags/essay/">essay</a>
+<a style="font-size: 185%" href="/tags/linux/">linux</a>
+<a style="font-size: 150%" href="/tags/mobile/">mobile</a>
+<a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
+<a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
+<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
+<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
+
+  </ul>
+</section>
+
+<section>
+    <h1>新浪微博</h1>
+    <ul id="weibo">
+    <li>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1282083982&verifier=f2e5e0d3&dpc=1"></iframe>
+      </li>
+    </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - jqlblue -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

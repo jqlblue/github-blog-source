@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: tcpcopy | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/tcpcopy/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-03-09T22:15:32+08:00</updated>
+  <updated>2014-04-02T21:47:34+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -45,7 +45,7 @@
 
 <h3>tcpcopy工作流程</h3>
 
-<p>{% img /images/tcpcopy_flow.png &lsquo;tcpcopy flow&rsquo; %}
+<p><img src="/images/tcpcopy_flow.png" title="&lsquo;tcpcopy flow&rsquo;" >
 如上图，tcpcopy拷贝一次流量访问的步骤如下：</p>
 
 <pre><code>①　一个访问到达线上前端机；

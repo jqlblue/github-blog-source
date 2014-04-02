@@ -9,8 +9,10 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行： 下线一台服务器，另起目录安装php5.5 安装过程与php5.3差不多，要开启zend opcache的话，需要在
-configure时&mdash;enable-opcache。在php.ini中配置时， &hellip;">
+  <meta name="description" content="引子 如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
+包装进一节节车厢，然后组成一列火车在铁道上穿行。手机，笔记本等终端，可
+以理解为车站，每天都有很多人进进出出。 有一天，你突然发现车站少了个东西，或者想了解下都有些什么人出站，什么人
+入站。这时，我们就需要抓包（ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +89,144 @@ $(document).bind('DOMNodeInserted', function(event) {
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/04/guide-of-packet-mobile-capture/">移动应用无线抓包指南</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-04T11:41:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>引子</h3>
+
+<p>如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
+包装进一节节车厢，然后组成一列火车在铁道上穿行。手机，笔记本等终端，可
+以理解为车站，每天都有很多人进进出出。</p>
+
+<p>有一天，你突然发现车站少了个东西，或者想了解下都有些什么人出站，什么人
+入站。这时，我们就需要抓包（Capturing Packages）。</p>
+
+<p>继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
+进行检查就可以了。</p>
+
+<p>但突然有天发现某个车站是德国人给造的，我们要私自设置
+关卡的话，就没有保修了。</p>
+
+<p>实际上，我们私自设置关卡也无防。现在的东西更新换代太快，等坏的时候，直
+接入手一个新的，或许比保修还经济呢。</p>
+
+<p>等要动手的时候，想起这个德国制造，还是有些不忍。</p>
+
+<p>在你正想点燃那支兰州的当儿，想起西边有你表哥建造的一个车站。所以可以代
+理一把，让要进出的火车先去你表哥的车站。</p>
+
+<h3>抓包的三种方式</h3>
+
+<p>至此，我们可以看到抓包的三种方式：</p>
+
+<pre><code>1. 本地抓包
+2. 远程服务器抓包
+3. 代理抓包
+</code></pre>
+
+<h3>本地抓包</h3>
+
+<p>不管使用手机还是平板，进出的数据包，都会经过该设备的网卡。如果你的设备
+已经root，可以使用tcpdump将抓包数据存成xxx.pcap，然后在电脑上就可以使
+用wireshark进行查看。也可以使用webview
+<a href="http://www.cloudshark.org">cloudshark</a>。
+更多信息请上google查询。</p>
+
+<h3>远程服务器抓包</h3>
+
+<p>从设备上发出的请求，在网络通畅的情况下，最终都会达到某个服务器。所以我
+们可以在远程服务器上抓包。可以使用tcpdump，但是我更推荐ngrep(network
+grep)。</p>
+
+<p>在centos上，直接</p>
+
+<pre><code>yum install ngrep
+</code></pre>
+
+<p>下面是一些简单示例</p>
+
+<pre><code>ngrep -t -d any port 25
+ngrep -q -W byline "(GET|POST).*"
+</code></pre>
+
+<p>更多用法请查看</p>
+
+<pre><code>man ngrep
+</code></pre>
+
+<h3>代理抓包</h3>
+
+<p>开始废话说地有点多，这才是本文的重点。</p>
+
+<p>设置代理，就是要在你的移动终端和某台电脑之间网络互通的情况下：</p>
+
+<pre><code>1. 在电脑上设置代理
+2. 移动终端上网的时候连接这个代理
+</code></pre>
+
+<p>就可以在电脑上进行抓包了（<em>把一个陌生的概念转行成一个很熟悉的概念，
+fiddle抓包嘛，码农应该都知道</em>）。</p>
+
+<p>我们以移动终端与要进行代理抓包的电脑之间网络不通的情况为例进行说明（<em>如
+果电脑和移动终端可以连接同一wifi，只要按照设置代理的部分进行操作就好</em>）</p>
+
+<ul>
+<li><p>在电脑上创建无线网络</p>
+
+<p>  我们使用360随身wifi在电脑上创建无线网络。要购买的话，现阶段需要时常关注
+  <a href="http://wifi.360.cn/">官网</a>,因为不定期会在京东开启抢购。安装非常简
+  单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）</p>
+
+<p>  <img src="/images/360wifi_1.png" title="'360 wifi images'" >
+  <img src="/images/360wifi_2.png" title="'360 wifi images'" >
+  <img src="/images/360wifi_3.png" title="'360 wifi images'" ></p></li>
+<li><p>在电脑上用fiddle设置代理</p>
+
+<p>  <img src="/images/360wifi_fiddle.png" title="'360 wifiproxy fidlle images'" ></p></li>
+<li><p>修改手机上的网络设置，并设置代理</p>
+
+<p>  <img src="/images/360wifi_proxy_1.png" title="'360 wifi mobile network" >
+  <img src="/images/360wifi_proxy_2.png" title="'360 wifi mobile network" >
+  <img src="/images/360wifi_proxy_3.png" title="'360 wifi mobile network" ></p>
+
+<p>  代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
+  fiddle中设置的&#8221;listen on port&#8221;</p>
+
+<p>  <img src="/images/360wifi_proxy_ip.png" title="'360 wifi mobile network" ></p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -356,7 +496,7 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
     <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
 <li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
 <li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
-<li class='category'><a href='/blog/categories/linux/'>linux (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
 <li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
 <li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
 <li class='category'><a href='/blog/categories/php/'>php (4)</a></li>
@@ -366,6 +506,10 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
@@ -383,25 +527,21 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
         <a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 90%" href="/tags/broken-pipe/">broken pipe</a>
-<a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
+    <a style="font-size: 90%" href="/tags/android/">android</a>
+<a style="font-size: 90%" href="/tags/broken-pipe/">broken pipe</a>
 <a style="font-size: 185%" href="/tags/devops/">devops</a>
-<a style="font-size: 150%" href="/tags/linux/">linux</a>
+<a style="font-size: 90%" href="/tags/essay/">essay</a>
+<a style="font-size: 185%" href="/tags/linux/">linux</a>
 <a style="font-size: 150%" href="/tags/mobile/">mobile</a>
-<a style="font-size: 90%" href="/tags/monitor/">monitor</a>
 <a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
 <a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
-<a style="font-size: 90%" href="/tags/sentry/">sentry</a>
 <a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
+<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
 
   </ul>
 </section>
