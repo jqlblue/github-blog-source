@@ -9,10 +9,9 @@
   <meta name="author" content="jqlblue">
 
   
-  <meta name="description" content="引子 如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
-包装进一节节车厢，然后组成一列火车在铁道上穿行。手机，笔记本等终端，可
-以理解为车站，每天都有很多人进进出出。 有一天，你突然发现车站少了个东西，或者想了解下都有些什么人出站，什么人
-入站。这时，我们就需要抓包（ &hellip;">
+  <meta name="description" content="前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
+看不出问题（道行不够）。然后restart之后，一切又都正常。 面对打着补丁的5.2，我们决定升级到php5.5 The reason 左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
+的关系 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +88,253 @@ $(document).bind('DOMNodeInserted', function(event) {
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/10/php-5-dot-5-upgrade-guide/">Php 5.5 Upgrade Guide</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-10T09:41:00+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
+看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
+
+<p>面对打着补丁的5.2，我们决定升级到php5.5</p>
+
+<h3>The reason</h3>
+
+<p>左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
+的关系。</p>
+
+<p>作为一个在开发一线的互联网从业人员。优化，重构，这可能是我们要经常提及
+的两个话题。</p>
+
+<p>通过监控，度量，找出系统中那20%的瓶颈问题，一般就能让系统的性能有很大
+的提升。这种优化算作自身能力的提升。</p>
+
+<p>一个在线上运行的系统，实际上还依赖与服务器，带宽等硬件环境；操作系统，
+程序编译器或者解释器等软件环境。这些环境，也在更新优化。</p>
+
+<p>在自身能力不变的情况化，如果这些环境得以更新优化，我们的系统也会跑地更
+快。</p>
+
+<p>就像nike，同样的人，穿着nike会有飞一般的感觉。</p>
+
+<h3>Step</h3>
+
+<p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
+<img src="/images/php-5.5-prefermance.png" title="'php-5.5-prefermance 'images'" ></p>
+
+<p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
+
+<p>当然，升级有风险，操作需谨慎。</p>
+
+<p>下面是升级步骤：</p>
+
+<h5>1. 安装php5.5</h5>
+
+<figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
+</span><span class='line'>wget -c http://www.php.net/get/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz/from/this/mirror
+</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
+</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'>./configure <span class="se">\</span>
+</span><span class='line'>--prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
+</span><span class='line'>--with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
+</span><span class='line'>--disable-debug <span class="se">\</span>
+</span><span class='line'>--enable-inline-optimization <span class="se">\</span>
+</span><span class='line'>--disable-all <span class="se">\</span>
+</span><span class='line'>--enable-fpm <span class="se">\</span>
+</span><span class='line'>--enable-libxml <span class="se">\</span>
+</span><span class='line'>--enable-session <span class="se">\</span>
+</span><span class='line'>--enable-xml <span class="se">\</span>
+</span><span class='line'>--enable-hash <span class="se">\</span>
+</span><span class='line'>--enable-mbstring <span class="se">\</span>
+</span><span class='line'>--with-layout<span class="o">=</span>GNU <span class="se">\</span>
+</span><span class='line'>--enable-filter <span class="se">\</span>
+</span><span class='line'>--with-pcre-regex <span class="se">\</span>
+</span><span class='line'>--with-zlib <span class="se">\</span>
+</span><span class='line'>--enable-json <span class="se">\</span>
+</span><span class='line'>--enable-mysqlnd <span class="se">\</span>
+</span><span class='line'>--enable-pdo <span class="se">\</span>
+</span><span class='line'>--with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>--with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>--with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>--enable-simplexml <span class="se">\</span>
+</span><span class='line'>--enable-dom <span class="se">\</span>
+</span><span class='line'>--enable-phar <span class="se">\</span>
+</span><span class='line'>--enable-tokenizer <span class="se">\</span>
+</span><span class='line'>--enable-posix <span class="se">\</span>
+</span><span class='line'>--enable-xmlwriter <span class="se">\</span>
+</span><span class='line'>--enable-xmlreader <span class="se">\</span>
+</span><span class='line'>--with-curl <span class="se">\</span>
+</span><span class='line'>--with-iconv <span class="se">\</span>
+</span><span class='line'>--with-mcrypt <span class="se">\</span>
+</span><span class='line'>--enable-ctype <span class="se">\</span>
+</span><span class='line'>--enable-opcache
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完整脚本可参见：
+<a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
+
+<p>备注：</p>
+
+<pre><code>1. 安装php时，要指定安装目录(prefix)，以备出现问题时可以及时回滚
+2. 安装扩展时同样需要注意，不要覆盖其他版本的扩展
+   1) 使用绝对路径执行phpize
+   2) 在configure时指定php5.5目录下的php-config，--with-php-config
+   3) 编译扩展需要的lib库时，也要指定版本和安装目录
+</code></pre>
+
+<h5>2. php代码语法兼容性检测</h5>
+
+<p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
+就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。</p>
+
+<figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="c">#use sh ./check-php-compatibility.sh /path/code</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">]]</span>;<span class="k">then</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="s1">&#39;/path/code/src&#39;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span><span class="s1">&#39;/usr/local/php-5.5.0/bin/php&#39;</span>
+</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname <span class="s1">&#39;*.php&#39;</span><span class="k">)</span>; <span class="k">do</span>
+</span><span class='line'>    <span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
+
+<h5>3. 从服务器上收集请求情况</h5>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F <span class="s2">&quot;[ ?]&quot;</span> <span class="s1">&#39;{urls[$7]++} END {for(key in urls)print urls[key],&quot;\t&quot;,key}&#39;</span> | sort -nr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>4. 通过收集的请求url进行测试</h5>
+
+<p>对于get方式的url请求，直接wget或者curl就好。</p>
+
+<p>对于post方式的curl请求，需要用curl模拟post请求进行提交。同时需要在
+webserver日志中记录post请求参数。</p>
+
+<h5>5. 查看webserver的错误日志，进行改进</h5>
+
+<h3>Improve</h3>
+
+<p>上线后通过在nginx的access log中开启记录upstream_time和request_time进行
+统计，php-5.5.0环境下接口的响应速度较5.2.5环境提升了(0.00487559-0.00366027)/0.00487559=24.9%</p>
+
+<pre><code>php-5.5.0
+total_request_time:196416 total_upstream_time:1122.52 total_request:306678 avg_requst_time:0.640464 avg_upstream_time:0.00366027
+
+php-5.2.5
+total_request_time:200400 total_upstream_time:1498.65 total_request:307378 avg_requst_time:0.651966 avg_upstream_time:0.00487559
+</code></pre>
+
+<p>统计脚本</p>
+
+<pre><code>cat access.log | grep '/api/getInfo' | awk -F ')"' '{print $2}' | grep -v ' -' | awk 'BEGIN{_request=0;_upstream=0;_i=0}{_request+=$2;_upstream+=$3;_i+=1}END{print "total_request_time:"_request" total_upstream_time:"_upstream" total_request:"_i" avg_requst_time:"_request/_i" avg_upstream_time:"_upstream/_i}'
+</code></pre>
+
+<p>另外，做了php5.3.10和php.5.5.0的压测比较</p>
+
+<pre><code>php5.3.10
+Speed=30441 pages/min, 1224275 bytes/sec.
+Requests: 30441 susceed, 0 failed.
+
+php5.5.0
+Speed=42514 pages/min, 1727526 bytes/sec.
+Requests: 42514 susceed, 0 failed.
+PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -499,13 +745,17 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
 <li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
 <li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
-<li class='category'><a href='/blog/categories/php/'>php (4)</a></li>
+<li class='category'><a href='/blog/categories/php/'>php (5)</a></li>
 
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/09/statically-compile-php/">如何静态编译php</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
@@ -523,24 +773,20 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
         <a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 90%" href="/tags/android/">android</a>
-<a style="font-size: 90%" href="/tags/broken-pipe/">broken pipe</a>
-<a style="font-size: 185%" href="/tags/devops/">devops</a>
-<a style="font-size: 90%" href="/tags/essay/">essay</a>
-<a style="font-size: 185%" href="/tags/linux/">linux</a>
+    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
+<a style="font-size: 210%" href="/tags/devops/">devops</a>
+<a style="font-size: 210%" href="/tags/linux/">linux</a>
 <a style="font-size: 150%" href="/tags/mobile/">mobile</a>
+<a style="font-size: 90%" href="/tags/monitor/">monitor</a>
 <a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
 <a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
-<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
+<a style="font-size: 90%" href="/tags/sentry/">sentry</a>
+<a style="font-size: 90%" href="/tags/tcpcopy/">tcpcopy</a>
 <a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
 
   </ul>
