@@ -114,6 +114,6 @@ reference：
 
 [^2] http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454
 
-[^3] http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html#Link-mode
+[^3] http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html
 
-[^4] http://markmail.org/message/cpoenglavs4vwv32#query:+page:1+mid:cpoenglavs4vwv32+state:results
+[^4] http://markmail.org/message/cpoenglavs4vwv32
