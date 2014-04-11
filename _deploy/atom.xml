@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-09T19:06:05+08:00</updated>
+  <updated>2014-04-11T17:23:46+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -29,18 +29,16 @@
 </ul>
 
 
-<figure class='code'><figcaption><span>install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
 </span><span class='line'>tar zxvf php-5.5.11.tar.gz
 </span><span class='line'>wget http://pecl.php.net/get/redis-2.2.5.tgz
 </span><span class='line'>tar xvf redis-2.2.5.tgz
-</span><span class='line'>mv redis-2.2.5 php-5.5.11/ext/redis
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>mv redis-2.2.5 php-5.5.11/ext/redis</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -48,14 +46,12 @@
 </ul>
 
 
-<figure class='code'><figcaption><span>install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>php-5.5.11
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd php-5.5.11
 </span><span class='line'>rm -f ./configure
-</span><span class='line'>./buildconf --force
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>./buildconf --force</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -63,8 +59,7 @@
 </ul>
 
 
-<figure class='code'><figcaption><span>install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -80,23 +75,22 @@
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>./configure <span class="nv">LDFLAGS</span><span class="o">=</span>-static <span class="se">\</span>
-</span><span class='line'>--prefix<span class="o">=</span>/usr/local/php5-static <span class="se">\</span>
-</span><span class='line'>--disable-all <span class="se">\</span>
-</span><span class='line'>--enable-shared<span class="o">=</span>no <span class="se">\</span>
-</span><span class='line'>--enable-static<span class="o">=</span>yes <span class="se">\</span>
-</span><span class='line'>--enable-inline-optimization <span class="se">\</span>
-</span><span class='line'>--enable-hash <span class="se">\</span>
-</span><span class='line'>--enable-mbstring <span class="se">\</span>
-</span><span class='line'>--with-layout<span class="o">=</span>GNU <span class="se">\</span>
-</span><span class='line'>--enable-filter <span class="se">\</span>
-</span><span class='line'>--with-pcre-regex <span class="se">\</span>
-</span><span class='line'>--with-zlib <span class="se">\</span>
-</span><span class='line'>--enable-json <span class="se">\</span>
-</span><span class='line'>--enable-ctype <span class="se">\</span>
-</span><span class='line'>--disable-redis-session <span class="se">\</span>
-</span><span class='line'>--enable-redis
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./configure LDFLAGS=-static \
+</span><span class='line'>--prefix=/usr/local/php5-static \
+</span><span class='line'>--disable-all \
+</span><span class='line'>--enable-shared=no \
+</span><span class='line'>--enable-static=yes \
+</span><span class='line'>--enable-inline-optimization \
+</span><span class='line'>--enable-hash \
+</span><span class='line'>--enable-mbstring \
+</span><span class='line'>--with-layout=GNU \
+</span><span class='line'>--enable-filter \
+</span><span class='line'>--with-pcre-regex \
+</span><span class='line'>--with-zlib \
+</span><span class='line'>--enable-json \
+</span><span class='line'>--enable-ctype \
+</span><span class='line'>--disable-redis-session \
+</span><span class='line'>--enable-redis</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -106,15 +100,19 @@
 
 <p>将</p>
 
-<pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)
-</code></pre>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
+</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
+
 
 <p>替换成</p>
 
-<pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
-BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)
-</code></pre>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
+</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
+
 
 <p>即：</p>
 
@@ -125,12 +123,10 @@ BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA
 </ul>
 
 
-<figure class='code'><figcaption><span>install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>make <span class="nv">LDFLAGS</span><span class="o">=</span>-ldl
-</span><span class='line'>sudo make install
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>make LDFLAGS=-ldl
+</span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>

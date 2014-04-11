@@ -54,15 +54,15 @@
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/2014/04/09/statically-compile-php/</loc>
-        <lastmod>2014-04-09T19:04:33+08:00</lastmod>
+        <lastmod>2014-04-11T16:52:39+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/blog/archives/</loc>
-        <lastmod>2014-04-09T19:04:33+08:00</lastmod>
+        <lastmod>2014-04-11T16:52:39+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/</loc>
-        <lastmod>2014-04-09T19:04:33+08:00</lastmod>
+        <lastmod>2014-04-11T16:52:39+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/robots.txt</loc>
@@ -71,5 +71,9 @@
     <url>
         <loc>http://jqlblue.github.io/about/</loc>
         <lastmod>2014-04-01T11:27:14+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/404.html</loc>
+        <lastmod>2014-04-11T16:30:21+08:00</lastmod>
     </url>
 </urlset>
