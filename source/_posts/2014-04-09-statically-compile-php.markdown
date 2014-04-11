@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "如何静态编译php"
-description: "在linux系统上静态statically编译php"
-keywords: linux php complie statically
+description: "在linix操作系统上，通过静态编译 statically complie 的方式，编译一个可以在无动态依赖的php可执行文件。"
+keywords: "linux php complie statically"
 date: 2014-04-09 18:13
 comments: true
 categories: [php]
-tags: [php,linux,devops]
+tags: [php, linux, devops]
 ---
 有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。
 
@@ -15,23 +15,23 @@ tags: [php,linux,devops]
 安装步骤如下：
 
 * 准备源文件
-{% codeblock install.sh lang:bash %}
+```
 wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
 tar zxvf php-5.5.11.tar.gz
 wget http://pecl.php.net/get/redis-2.2.5.tgz
 tar xvf redis-2.2.5.tgz
 mv redis-2.2.5 php-5.5.11/ext/redis
-{% endcodeblock %}
+```
 
 * 重新生成configure
-{% codeblock install.sh lang:bash %}
+```
 cd php-5.5.11
 rm -f ./configure
 ./buildconf --force
-{% endcodeblock %}
+```
 
 * configure
-{% codeblock install.sh lang:bash %}
+```
 ./configure LDFLAGS=-static \
 --prefix=/usr/local/php5-static \
 --disable-all \
@@ -48,28 +48,29 @@ rm -f ./configure
 --enable-ctype \
 --disable-redis-session \
 --enable-redis
-{% endcodeblock %}
+```
 
 * 修改Makefile
 
 将
-    BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-    BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)
+```
+BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
+BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)
+```
 替换成
-
-    BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
-    BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)
-
+```
+BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
+BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)
+```
 即：
 
 在`BUILD_CLI`和`BUILD_CGI`对应的行中移除`-export-dynamic`，在`-o $(SAPI_CGI_PATH)`和`-o $(SAPI_CLI_PATH)`之前，添加`-all-static`
 
 * 继续安装
-
-{% codeblock install.sh lang:bash %}
+```
 make LDFLAGS=-ldl
 sudo make install
-{% endcodeblock %}
+```
 
 * 检查
 

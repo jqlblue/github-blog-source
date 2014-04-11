@@ -7,7 +7,8 @@ title: Jqlblue's Blog
 subtitle: Make Live Easier.
 author: jqlblue
 simple_search: http://google.com/search
-description:
+description: code php python lua with emacs on linux
+keywords: php python lua emacs linux web development
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -101,7 +102,7 @@ disqus_short_name:
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-49934763-1
 
 # Facebook Like
 facebook_like: false
