@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: codesniffer | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/codesniffer/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -14,18 +14,22 @@
 
   
   <entry>
-    <title type="html"><![CDATA[check php5.5 compatibility]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility/"/>
+    <title type="html"><![CDATA[check php 5.5 compatibility]]></title>
+    <link href="http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility/"/>
     <updated>2013-08-03T18:16:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility</id>
+    <id>http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility</id>
     <content type="html"><![CDATA[<p>github上有个项目可以检测php5.3，5.4的兼容性，如下：
 <a href="https://github.com/wimg/PHPCompatibility">https://github.com/wimg/PHPCompatibility</a></p>
 
 <p>如果最近你想把php升级到5.5，尝试下generators和coroutines，这个应该对你
 有帮助。也可以参见博文：</p>
 
-<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a>
-第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
+<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a></p>
+
+<!-- more -->
+
+
+<p>第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
 何东西。</p>
 
 <p>在php.ini中设置了</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: broken pipe | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/broken-pipe/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[broken pipe in php cli]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli/"/>
+    <link href="http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli/"/>
     <updated>2013-08-03T20:08:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli</id>
+    <id>http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli</id>
     <content type="html"><![CDATA[<p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
 
 <hr />
@@ -30,6 +30,9 @@
 <p>安装过程与php5.3差不多，要开启zend opcache的话，需要在
 configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_extension的
 形式加载。</p>
+
+<!-- more -->
+
 
 <ul>
 <li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序

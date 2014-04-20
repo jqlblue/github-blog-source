@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: wireshark | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/wireshark/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[移动应用无线抓包指南]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture/"/>
+    <link href="http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture/"/>
     <updated>2013-08-04T11:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture</id>
+    <id>http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture</id>
     <content type="html"><![CDATA[<h3>引子</h3>
 
 <p>如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
@@ -29,6 +29,9 @@
 
 <p>继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
 进行检查就可以了。</p>
+
+<!-- more -->
+
 
 <p>但突然有天发现某个车站是德国人给造的，我们要私自设置
 关卡的话，就没有保修了。</p>

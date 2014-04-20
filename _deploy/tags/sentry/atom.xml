@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: sentry | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/sentry/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,10 +15,13 @@
   
   <entry>
     <title type="html"><![CDATA[在生产环境部署sentry进行错误收集和提醒]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product/"/>
+    <link href="http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product/"/>
     <updated>2013-12-18T11:10:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product</id>
+    <id>http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product</id>
     <content type="html"><![CDATA[<p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
+
+<!-- more -->
+
 
 <p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
 

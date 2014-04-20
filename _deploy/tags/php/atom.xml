@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: php | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/php/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,12 +15,15 @@
   
   <entry>
     <title type="html"><![CDATA[如何静态编译php]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/04/09/statically-compile-php/"/>
+    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
     <updated>2014-04-09T18:13:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/04/09/statically-compile-php</id>
+    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
     <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
 
 <p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
+
+<!-- more -->
+
 
 <p>安装步骤如下：</p>
 

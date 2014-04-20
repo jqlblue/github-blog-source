@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: profile | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/profile/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,12 +15,15 @@
   
   <entry>
     <title type="html"><![CDATA[初探android应用性能分析]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools/"/>
+    <link href="http://jqlblue.github.io/2013/11/22/android-app-profile-tools/"/>
     <updated>2013-11-22T18:03:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools</id>
+    <id>http://jqlblue.github.io/2013/11/22/android-app-profile-tools</id>
     <content type="html"><![CDATA[<p>如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？</p>
 
 <p>本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。</p>
+
+<!-- more -->
+
 
 <p>在分析之前，我们先补充点android基础知识。</p>
 

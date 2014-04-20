@@ -114,7 +114,7 @@ var _hmt = _hmt || [];
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a></h1>
+      <h1 class="entry-title"><a href="/2013/11/22/android-app-profile-tools/">初探android应用性能分析</a></h1>
     
     
       <p class="meta">
@@ -141,186 +141,12 @@ var _hmt = _hmt || [];
 
 <p>本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。</p>
 
-<p>在分析之前，我们先补充点android基础知识。</p>
-
-<h3>android基础知识</h3>
-
-<p>我们所说的android应用，一般都是通过将一个以apk结尾的文件安装在手机等移动设备上才能运行起来的。所以我们先从apk说起。</p>
-
-<h5>什么是apk</h5>
-
-<p>我们先从网上下载一个apk</p>
-
-<pre><code>$ wget http://shouji.360tpcdn.com/131106/0124832c4cf8c35a762cfece3bac52b1/com.sina.weibo_650.apk
-</code></pre>
-
-<p>然后查看这个文件的类型</p>
-
-<pre><code>$ file com.sina.weibo_650.apk
-com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
-</code></pre>
-
-<p>会发现<code>com.sina.weibo_650.apk</code>是一个zip压缩文件。解压缩后的文件，主要包括<em>一些资源文件</em>，<em>一些配置文件</em>，<em>一些类库</em>，还有<em>一个class.dex</em>。目录结构如下</p>
-
-<pre><code>AndroidManifest.xml
-assets
-classes.dex
-lib
-META-INF
-org
-res
-resources.arsc
-</code></pre>
-
-<p>粗略一看，发现 <code>class.dex</code> 这个文件有5.9M，这应该就是主角。继续执行如下命令</p>
-
-<pre><code>$ file classes.dex
-classes.dex: Dalvik dex file version 035
-</code></pre>
-
-<p>因为没有开发过android应用，不明白用java开发的app和这个Dalvik dex file之间有什么关系？所以我们先跳出apk的视角。</p>
-
-<h5>android平台架构</h5>
-
-<p><img src="/images/mobile/android_architecture.png" title="'android architecture images'" ></p>
-
-<p>如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。</p>
-
-<p>因为<code>dex</code>是<code>Dalvik VM</code> Executes的全称，即android <code>Dalvik</code>虚拟机执行程序。</p>
-
-<p>那一个apk的生产和执行过程将是：
-<code>*.java -&gt; *.class -&gt; classes.dex（classes.dex将由Dalvik VM转换成机器码，由linux内核交给cpu去执行）</code></p>
-
-<p>这样的话，在linux系统上使用profile软件的经验，也将派上用场。</p>
-
-<p>android相关基础知识先介绍到此，感兴趣的请进一步查阅本文后面的参看资料。</p>
-
-<h3>android应用性能分析</h3>
-
-<h5>apk启动速度</h5>
-
-<p>在分析之前，我们先看看android程序的执行流程
-<img src="/images/mobile/android_application_execute_flow.png" title="'android application execute flow images'" ></p>
-
-<p>如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。</p>
-
-<pre><code>adb logcat | grep ActivityManager
-</code></pre>
-
-<p>其中&#8221;Displayed&#8221;对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：</p>
-
-<pre><code>adb logcat -c &amp;&amp; adb logcat -s ActivityManager | grep  "Displayed"
-</code></pre>
-
-<ul>
-<li>要使用 <code>adb</code>，需要先用usb线连接电脑和手机，并在手机的<code>设置</code>&ndash;><code>开发者选项</code>中开启<code>USB调试</code></li>
-<li><code>adb</code>这个工具，可以通过在android sdk的platform-tools目录中找到。后面介绍的<code>systrace</code>也在这个目录。</li>
-</ul>
-
-
-<h5>页面渲染性能</h5>
-
-<p>android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
-<img src="/images/mobile/android_view_execute_flow.png" title="'android view execute flow images'" ></p>
-
-<p>即：
-<code>计算视图大小（measure） -&gt; 安置视图的位置（layout） -&gt; 绘制（draw）视图</code></p>
-
-<p>通过收集每帧的处理时间，即可以了解页面的渲染性能。</p>
-
-<blockquote><p>当fps（每秒处理帧数，页面刷新率）为60时，页面的渲染看起来会比较平滑，这就需要每帧的处理时间不能大于16ms（1000/60）</p></blockquote>
-
-<p>要检测一个应用在渲染页面时的每帧处理时间，通过如下命令，即可获得每帧的处理时间</p>
-
-<pre><code>adb shell dumpsys gfxinfo com.sina.weibo
-</code></pre>
-
-<p>在输出日志的<code>Profile</code>数据段，包含了三列<code>Draw</code>，<code>Process</code>，<code>Execute</code>分别对应的处理时间，单位是ms。这三列的总和，就是渲染每帧时的处理时间。如</p>
-
-<pre><code>Draw    Process Execute
-0.95    0.93    0.72
-0.84    1.16    0.56
-0.83    0.89    0.69
-1.32    2.15    1.14
-1.29    1.37    1.01
-</code></pre>
-
-<blockquote><p>在进行分析之前，需要在<code>设置</code>&ndash;><code>开发者选项</code>中点击<code>GPU呈现模式分析</code>，选择<code>在adb shell dumpsys gfxinfo中</code>。</p></blockquote>
-
-<p>收集步骤：</p>
-
-<pre><code>1.重新启动app
-2.在界面完全加载完之后，在界面上慢慢上下滑动几个像素
-3.在终端执行adb shell dumpsys gfxinfo com.sina.weibo
-</code></pre>
-
-<p>这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的<code>insert</code>&ndash;><code>chart</code>，即可生成相关图表
-<img src="/images/mobile/frame_render_time.png" title="'frame render time images'" ></p>
-
-<blockquote><p>其中<code>com.sina.weibo</code>就是app的包名</p></blockquote>
-
-<p>获取包名的方法:</p>
-
-<pre><code>adb shell pm list packages
-</code></pre>
-
-<h5>使用systrace进一步分析</h5>
-
-<p>通过收集该apk的启动速度和每帧的渲染时间，并与竟品进行对比发现。该app启动时间的确比较慢，也偶尔有丢帧的现象发生。如何近一步分析呢？这时就需要<code>systrace</code>了。</p>
-
-<p>示例使用方法如下：</p>
-
-<pre><code>cd android-sdk-linux/platform-tools/systrace
-python systrace.py --app=com.qihoo.appstore gfx view
-</code></pre>
-
-<p>上面这条命令将会在<code>android-sdk-linux/platform-tools/systrace</code>目录下生成<code>trace.html</code>。其中收集了包名为<code>com.qihoo.appstore</code>的应用在android系统上针对<code>gfx</code>和<code>view</code> category的执行数据。</p>
-
-<p><code>trace.html</code>在浏览器中打开如下图：
-<img src="/images/mobile/android_systrace_output.png" title="'android systrace output images'" ></p>
-
-<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
-* 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
-* 通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动
-* 通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小
-* 使用鼠标点击内容页面的某一个块，在下方会显示详情
-* 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
-
-<p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
-<img src="/images/mobile/android_systrace_output_zoom.png" title="'android systrace output detail images'" ></p>
-
-<p>发现对于那些<code>performTraversals</code>处理超过16ms的帧，其中<code>eglSwapBuffers</code>处理的时间都比较长，这应该就是问题所在。</p>
-
-<p>使用usb线连接上手机，在命令行下运行：</p>
-
-<pre><code>python systrace.py -h
-</code></pre>
-
-<p>可以查看相关使用方法。</p>
-
-<blockquote><p>systrace是在在android4.1上新增的工具，在4.1,4.2和4.3上使用的方法不同</p></blockquote>
-
-<p>reference：</p>
-
-<p>[^1] <a href="http://www.curious-creature.org/docs/android-performance-case-study-1.html">http://www.curious-creature.org/docs/android-performance-case-study-1.html</a></p>
-
-<p>[^2] <a href="http://www.curious-creature.org/docs/android-performance-case-study-1.html">http://www.curious-creature.org/docs/android-performance-case-study-1.html</a></p>
-
-<p>[^3] <a href="http://www.vogella.com/articles/AndroidTools/article.html">http://www.vogella.com/articles/AndroidTools/article.html</a></p>
-
-<p>[^4] <a href="http://blog.csdn.net/aaa2832/article/details/7849400">http://blog.csdn.net/aaa2832/article/details/7849400</a></p>
-
-<p>[^5] <a href="http://www.cnblogs.com/taobox/articles/3405931.html">http://www.cnblogs.com/taobox/articles/3405931.html</a></p>
-
-<p>[^6] <a href="http://bigflake.com/systrace/">http://bigflake.com/systrace/</a></p>
-
-<p>[^7] <a href="http://developer.android.com/tools/debugging/systrace.html">http://developer.android.com/tools/debugging/systrace.html</a></p>
-
-<p>[^8] <a href="http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html">http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html</a></p>
-
-<p>[^9] <a href="http://udinic.wordpress.com/tag/rendering/">http://udinic.wordpress.com/tag/rendering/</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/11/22/android-app-profile-tools/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -331,7 +157,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a></h1>
+      <h1 class="entry-title"><a href="/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a></h1>
     
     
       <p class="meta">
@@ -356,55 +182,12 @@ python systrace.py --app=com.qihoo.appstore gfx view
 
   <div class="entry-content"><p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
 
-<h3>升级步骤</h3>
-
-<ul>
-<li>安装php5.5.0</li>
-<li>检测代码兼容性</li>
-<li>从线上服务器日志中收集最热的一百条访问日志</li>
-<li>下线一台服务器，启动php5.5环境，根据日志中最热的请求进行重放</li>
-<li>检测服务器日志进行改进</li>
-</ul>
-
-
-<p>升级过程很顺利，但是上线后在日志中发现如下信息：</p>
-
-<pre><code>mysql_escape_string(): This function is deprecated; use mysql_real_escape_string() instead
-</code></pre>
-
-<p>于是顺手修复上线。鉴于最近没怎么写代码，手有点生，先发布到了测试环境测试没问题才上线。</p>
-
-<p>就在去茶水间接了一杯水的当儿，运营反馈说线上页面显示异常。于是马上回滚代码。</p>
-
-<p>问题代码如下：</p>
-
-<pre><code>$db = getDb();
-$a = mysql_real_escape_string($keyword);
-$sql = 'select info from table where keyword = ' . $a;
-$res = $db-&gt;getRow($sql);
-</code></pre>
-
-<p>通过调试，发现：</p>
-
-<pre><code>$keyword在mysql_real_escape_string处理之后，变成了false，所以在进行后面的查询时获取不到相应结果，页面就异常了。
-</code></pre>
-
-<p>再进一步调试发现：</p>
-
-<pre><code>getDb使用的是pdo。
-$dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
-</code></pre>
-
-<p>于是原因浮出水面</p>
-
-<pre><code>1 在使用string mysql_real_escape_string时没有指定link_identifier
-2 所以会去找使用mysql_connect()打开的最后一个连接
-3 使用的是pdo，没有找到相关连接。于是尝试使用不带任何参数的mysql_connect()去建立一个连接来使用
-4 本机没有mysql server，自然建立连接失败。于是发生错误，并产生警告信息（E_WARNING）
-5 服务器上设置的错误报告等级已经屏蔽了E_WARNING，所以也没有监控到相关错误
-</code></pre>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/11/16/pdo-mysql-escape-string/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -415,7 +198,7 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a></h1>
+      <h1 class="entry-title"><a href="/2013/10/26/fcitx-fedora/">在fedora上安装fcitx输入法和云拼音</a></h1>
     
     
       <p class="meta">
@@ -440,61 +223,15 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
 
   <div class="entry-content"><p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
 
-<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
+<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的
+fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
 
-<h3>安装步骤</h3>
-
-<figure class='code'><figcaption><span>fcitx install step </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
-</span><span class='line'>yum install fcitx-configtool.x86_64
-</span><span class='line'>yum install fcitx-gtk3.x86_64
-</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
-</span><span class='line'>yum install fcitx-table-chinese.noarch
-</span><span class='line'>yum intall fcitx-qt4.x86_64
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>配置</h3>
-
-<p>编辑~/.bashrc，添加：</p>
-
-<pre><code>export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-</code></pre>
-
-<p>重启系统或者logout，使之生效。</p>
-
-<pre><code>如果将im_module设置为xim，系统重启时可能会造成应用程序卡死。
-此时可以通过键盘快捷键“CTRL+ALT+F2”，切换成tty2，
-通过console模式登录系统杀死fcitx进程，再切回X window，或者直接重启。
-</code></pre>
-
-<h3>相关设置</h3>
-
-<p>如下图所示：</p>
-
-<pre><code>1. 在“input method”Tab，可以添加或者删除输入法
-2. “Global Config”Tab，主要用于设置相关快捷键
-3. “Appearance”列用于设置输入法弹出框的显示界面
-4. 点击“Addon”Tab，通过Cloud Pinyin可以设置云拼音。即可以将谷歌拼音，搜狗，百度，QQ输入法的内容合并进来。
-   下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
-</code></pre>
-
-<p><img src="/images/fcitx_config.png" title="'fcitx_config images'" >
-<img src="/images/fcitx_config_cloud_pinyin.png" title="'fcitx_config_cloud_pinyin images'" ></p>
-
-<p>reference：</p>
-
-<blockquote><p><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></p></blockquote>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/10/26/fcitx-fedora/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -505,7 +242,7 @@ export XMODIFIERS="@im=fcitx"
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/08/31/september/">九月[september]</a></h1>
+      <h1 class="entry-title"><a href="/2013/08/31/september/">九月[september]</a></h1>
     
     
       <p class="meta">
@@ -537,61 +274,12 @@ export XMODIFIERS="@im=fcitx"
 <p>我遇到了很多人很多事；有好心的老师和同学，当然也有不好的人和事，但是一
 切终究过去。</p>
 
-<h3>北上</h3>
-
-<p>九月份，我选择北上帝度。</p>
-
-<p>拎着老爸买的行李箱，和老爸张罗给找的同伴一起出发。
-至今，即将十年。</p>
-
-<p>当时应该是满怀着梦想。在近20个小时的路途中，年轻的身板没有露出一点疲倦
-的姿态。就这么一路坐着过去，貌似一眼就没合。结果在老爸同学的小车上睡着
-了，第一次路过天安门时，我都没瞟一眼。</p>
-
-<h3>漂</h3>
-
-<p>梦想很丰满，现实很骨感。</p>
-
-<p>四年的光阴，在弹指一挥之间，就如白驹过隙，叟地就结束了。然后就成为了码
-农。</p>
-
-<p>有时候想想，感觉还是子承父业。</p>
-
-<p>老爸用转盖楼，我用代码搭建起来的互联网服务。</p>
-
-<p>从领到第一份工资，到从这个公司离职，又那个公司继续上班。感觉自己渐渐
-地迷失了。唯一留下的，是对coding的热爱，抑或是对社会的逃避。</p>
-
-<p>相对于人而言，计算机是简单而且忠诚的。</p>
-
-<p>只要你足够了解它，你想让它做的事情，它就一定能为你做到。而人不一样，就
-算把和心和肝都掏出来给他/她。他/她也不一定会领你的情。</p>
-
-<p>人有自主的思维，你无法完全控制他/她的那块cpu（写到这里，突然发现我可能
-真的有些大男子主义）。</p>
-
-<p>internet的出现，本来是要加强人与人之间的联系。但是随着网络基础建设的升
-级以及智能设备的普及。每个人的确都成了网民（互联网这张大网上的一个独立
-个体），每天趴在这张大网上。</p>
-
-<p>有些时候，我蛮怀念大学的日子。很穷，很多东西都买不起。但是毕竟还有梦想。
-还有燃烧的青春。那年轻的冲满荷尔蒙的身体，可以在网吧通宵后接着去教室上
-课（课上是否呼呼大睡被老师批评另说），可以在傍晚的操场上轻松地跑完800
-米，还可以很多。。。。</p>
-
-<p>而现在，依然很多东西都买不起。而且，光鲜的外表下，好多器官或许都开始老化或者已经不能正常工作。哪天
-的一个突发事件，就会让小心脏嘎嘣停止。</p>
-
-<h3>厦门</h3>
-
-<p>还是九月，我去了厦门。那是一个很干净的城市。</p>
-
-<hr />
-
-<p>又要到九月了。
-突然发现九月对于我，是一个值得回忆和期待的数字。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/08/31/september/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -602,7 +290,7 @@ export XMODIFIERS="@im=fcitx"
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/08/18/an-introduction-to-systemtap/">An Introduction to Systemtap</a></h1>
+      <h1 class="entry-title"><a href="/2013/08/18/an-introduction-to-systemtap/">An Introduction to Systemtap</a></h1>
     
     
       <p class="meta">
@@ -625,88 +313,14 @@ export XMODIFIERS="@im=fcitx"
   </header>
 
 
-  <div class="entry-content"><pre><code>SystemTap is a tool for the Linux Operating System
-that allows developers and system administrators to deeply investigate
-the behavior of the kernel and even user space applications
-in order to discover error conditions, performance issues,
-or just to understand how the system works, similarly to DTrace.
-</code></pre>
+  <div class="entry-content"><p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
 
-<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简
-化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的
-信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
-
-<pre><code>systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
-</code></pre>
-
-<p>以往在收集这些信息时，我们需要添加检测点，重新编译，安装，重启使之生效。
-挺没意思的。。。</p>
-
-<p>使用systemtap就不需要了，我们只要编写相关脚本，并让systemtap的命令
-行接口stap（systemtap script translator/driver）进行调用就可以收集到用
-户空间和内核空间的相关信息。</p>
-
-<p>通过编写SystemTap脚本，我们就可以很容易地收集甚至篡改系统数据，这是普
-通的linux系统工具所做不到的。</p>
-
-<h3>相关背景知识</h3>
-
-<p>在Solaris系统上，有一个大名鼎鼎的动态跟踪工具
-<a href="http://en.wikipedia.org/wiki/DTrace">Dtrace</a>，这一个相当棒的工具（从
-2001年10月开始开发，在2005年1月首次发布），曾
-荣获《华尔街杂志》
-<a href="https://blogs.oracle.com/swan/date/20070307">2006技术创新大奖中的金奖</a>
-，和ZFS文件系统一样，DTrace一直都因版权问题而无法移植到Linux上，但
-Oracle（SUN公司被Oracle收购）在2012年2月宣布发布DTrace for Linux beta
-版，即将Solaris操作系统的动态跟踪工具移植到他们的Unbreakable
-Enterprise Kernel(2.6.39)内，也就是说Linux人员终于也可以使用DTrace了。</p>
-
-<p>在2005年1月开始，开源社区为linux操作系统开发了基于GPL许可的systemtap。</p>
-
-<p>目前一般的Linux发行版，比如Fedora、OpenSuse、CentOS等，已经包含有systemtap的完整支持了。</p>
-
-<h3>与其他trace工具比较</h3>
-
-<ul>
-<li>Dtrace：
-dtrace不用多说了，systemtap的开发，就是用来替代dtrace的，但是他们还
-是有以下几个明确的差异：
-
-<ol>
-<li>Dtrace不允许你任意地注入c代码，即在运行时修改系统数据，通过-g选项</li>
-<li>Dtrace脚本是以虚拟机字节码的形式在内核中进行解释，而systemtap脚本
-则是以本地二进制代码的形式被进行加载</li>
-</ol>
-</li>
-<li>strace：
-strace工作于用户态，只能用于处理系统调用</li>
-<li>ltrace：
-ltrace工作于用户态，只能用于处理用户态的函数</li>
-<li>gdb：
-gdb也工作于用户态，它的目标是进行交互式的调试</li>
-</ul>
-
-
-<p>更多信息请参见：<a href="http://sourceware.org/systemtap/wiki/SystemtapDtraceComparison">SystemtapDtraceComparison</a></p>
-
-<p>而systemtap作为一个通用工具，通过追踪（tracing），可以了解：</p>
-
-<pre><code>在一段时间内，某进程执行了哪些系统调用以及次数
-一个函数执行了多长时间
-进程函数调用栈并使用相关工具生成火焰图 (Flame Graph)
-甚至可以使用systemtap脚本进行任意发挥
-</code></pre>
-
-<p>reference:
-<a href="http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000">http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000</a>
-<a href="http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf">http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf</a>
-<a href="http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf">http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf</a>
-<a href="http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf">http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf</a>
-<a href="http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf">http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf</a>
-<a href="http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/">http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/</a>
-<a href="http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/">http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/08/18/an-introduction-to-systemtap/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -733,13 +347,13 @@ gdb也工作于用户态，它的目标是进行交互式的调试</li>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
-<li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
-<li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
-<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
-<li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
-<li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
-<li class='category'><a href='/blog/categories/php/'>php (5)</a></li>
+    <li class='category'><a href='/categories/devops/'>devops (3)</a></li>
+<li class='category'><a href='/categories/emacs/'>emacs (1)</a></li>
+<li class='category'><a href='/categories/essay/'>essay (1)</a></li>
+<li class='category'><a href='/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/categories/mobile/'>mobile (2)</a></li>
+<li class='category'><a href='/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/categories/php/'>php (5)</a></li>
 
   </ul>
 </section>
@@ -748,23 +362,23 @@ gdb也工作于用户态，它的目标是进行交互式的调试</li>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/09/statically-compile-php/">如何静态编译php</a>
+        <a href="/2014/04/09/statically-compile-php/">如何静态编译php</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
+        <a href="/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
+        <a href="/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
+        <a href="/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
+        <a href="/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
       </li>
     
   </ul>
@@ -772,16 +386,16 @@ gdb也工作于用户态，它的目标是进行交互式的调试</li>
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
-<a style="font-size: 210%" href="/tags/devops/">devops</a>
+    <a style="font-size: 210%" href="/tags/devops/">devops</a>
+<a style="font-size: 90%" href="/tags/fs/">fs</a>
 <a style="font-size: 210%" href="/tags/linux/">linux</a>
 <a style="font-size: 150%" href="/tags/mobile/">mobile</a>
 <a style="font-size: 90%" href="/tags/monitor/">monitor</a>
 <a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
+<a style="font-size: 90%" href="/tags/php/">php</a>
 <a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
 <a style="font-size: 90%" href="/tags/sentry/">sentry</a>
-<a style="font-size: 90%" href="/tags/tcpcopy/">tcpcopy</a>
-<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
+<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
 
   </ul>
 </section>

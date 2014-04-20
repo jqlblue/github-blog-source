@@ -114,7 +114,7 @@ var _hmt = _hmt || [];
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/04/09/statically-compile-php/">如何静态编译php</a></h1>
+      <h1 class="entry-title"><a href="/2014/04/09/statically-compile-php/">如何静态编译php</a></h1>
     
     
       <p class="meta">
@@ -141,167 +141,12 @@ var _hmt = _hmt || [];
 
 <p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
 
-<p>安装步骤如下：</p>
-
-<ul>
-<li>准备源文件</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
-</span><span class='line'>tar zxvf php-5.5.11.tar.gz
-</span><span class='line'>wget http://pecl.php.net/get/redis-2.2.5.tgz
-</span><span class='line'>tar xvf redis-2.2.5.tgz
-</span><span class='line'>mv redis-2.2.5 php-5.5.11/ext/redis</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>重新生成configure</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd php-5.5.11
-</span><span class='line'>rm -f ./configure
-</span><span class='line'>./buildconf --force</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>configure</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>./configure LDFLAGS=-static \
-</span><span class='line'>--prefix=/usr/local/php5-static \
-</span><span class='line'>--disable-all \
-</span><span class='line'>--enable-shared=no \
-</span><span class='line'>--enable-static=yes \
-</span><span class='line'>--enable-inline-optimization \
-</span><span class='line'>--enable-hash \
-</span><span class='line'>--enable-mbstring \
-</span><span class='line'>--with-layout=GNU \
-</span><span class='line'>--enable-filter \
-</span><span class='line'>--with-pcre-regex \
-</span><span class='line'>--with-zlib \
-</span><span class='line'>--enable-json \
-</span><span class='line'>--enable-ctype \
-</span><span class='line'>--disable-redis-session \
-</span><span class='line'>--enable-redis</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>修改Makefile</li>
-</ul>
-
-
-<p>将</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>替换成</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
-</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>即：</p>
-
-<p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
-
-<ul>
-<li>继续安装</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>make LDFLAGS=-ldl
-</span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>检查</li>
-</ul>
-
-
-<p>在命令行执行</p>
-
-<pre><code>$ file /usr/local/php5-static/bin/php
-/usr/local/php5-static/bin/php: ELF 64-bit LSB executable, AMD x86-64, version 1 (SYSV), for GNU/Linux 2.6.9, statically linked, for GNU/Linux 2.6.9, not stripped
-
-$ /usr/local/php5-static/bin/php -m
-[PHP Modules]
-Core
-ctype
-date
-ereg
-filter
-hash
-json
-mbstring
-pcre
-redis
-Reflection
-SPL
-standard
-zlib
-
-[Zend Modules]
-</code></pre>
-
-<p>因为可执行文件中包含了调试信息，所以体积较大</p>
-
-<pre><code>$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 18M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<p>可以通过<code>strip</code>命令移除调试信息</p>
-
-<pre><code>$ sudo strip /usr/local/php5-static/bin/php
-$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<p>reference：</p>
-
-<p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
-
-<p>[^2] <a href="http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454">http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454</a></p>
-
-<p>[^3] <a href="http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html">http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html</a></p>
-
-<p>[^4] <a href="http://markmail.org/message/cpoenglavs4vwv32">http://markmail.org/message/cpoenglavs4vwv32</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2014/04/09/statically-compile-php/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -312,7 +157,7 @@ $ ll -h /usr/local/php5-static/bin/php
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a></h1>
+      <h1 class="entry-title"><a href="/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a></h1>
     
     
       <p class="meta">
@@ -352,154 +197,12 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。</p>
 
-<p>我们要存取的文件，一般都是保存在普通的磁盘上，通过电磁变换来实现文件的读取和写入。所以我们先从磁盘说起。</p>
-
-<h3>磁盘物理结构</h3>
-
-<p><em>磁盘的机械结构如下图</em>：</p>
-
-<p><img src="/images/os/disk-structure.png" title="'disk strucrure" ></p>
-
-<p>如上图，一块磁盘中有好几块<code>盘片</code>（platter），一个盘片上的盘面被划分成若干个同心圆（即<code>磁道</code>（track））。
-将磁盘上<code>机械臂</code>的<code>磁头</code>径向移动到盘面的相关位置（磁道）后，通过盘片在磁头下方的高速旋转，就可以读取并写入所在<code>柱面</code>（cylinder）上的数据。</p>
-
-<p><em>盘面的示意图如下</em>：</p>
-
-<p><img src="/images/os/disk-structure-2.gif" title="'disk strucrure" ></p>
-
-<p>磁盘是个块设备，它的最小存储单位是<code>扇区</code>（sector），每个扇区存取512字节。</p>
-
-<p>为了提升文件的读取效率，文件系统会以<code>块</code>（block）为单位进行文件读取。块是linux系统上文件存取的最小单位，一个块一般为连续的8个扇区，即4K。</p>
-
-<p>直接对磁盘等硬件进行操作，是很困难的。不过操作系统的主要任务就是隐藏硬件，呈现良好，清晰，优雅，一致的抽象。linux文件系统对文件的处理进行了良好的抽象。</p>
-
-<h3>VFS虚拟文件系统</h3>
-
-<p>linux文件系统的体系结构图如下：</p>
-
-<p><img src="/images/os/fs-structure.gif" title="'linux file system strucrure" ></p>
-
-<p>用户态的程序要进行文件读写时，只要通过系统调用，调用VFS提供的接口就好。</p>
-
-<p>虽然VFS需要调用ext2，ext3，NFS等具体的文件系统实现进行磁盘上文件的操作。但是它屏蔽了下层的各种异构文件系统的特点，为上层提供了统一的接口。</p>
-
-<p>以ext2文件系统为例，其文件系统结构图示意如下：</p>
-
-<p><img src="/images/os/ext2-fs-structure.gif" title="'ext2 file system strucrure" ></p>
-
-<ul>
-<li>一块硬盘会被划分成多个分区</li>
-<li>每个分区挂载着相应的文件系统具体实现，如ext2</li>
-<li>为了减少需要管理的block的数量，在ext2文件系统产生了块组的概念。每个块组包含多个block，并且有独立的superblock和inode。</li>
-</ul>
-
-
-<p><em>相关名词说明</em></p>
-
-<p><code>Boot Sector</code></p>
-
-<pre><code>即引导扇区。包括：本分区的操作系统类型，数据区大小，根目录区允许的最大目录项
-</code></pre>
-
-<p><code>Super Block</code></p>
-
-<pre><code>超级块。定义了文件系统的静态结构，包括：分区中每个block的大小，分区中block group的数目，以及每个block group中有inode等。每个block group不一定都有超级块，其他block group中的超级块仅仅是block group 0中超级块的一个拷贝，以备当block group 0中的超级块损坏时可以对其进行恢复。Linux启动时，block group 0中的超级块的内容会被读入到内存中。
-</code></pre>
-
-<p><code>GDT</code></p>
-
-<pre><code>组描述符表。记录了块位图（Block Bitmap）所在块的块号，inode位图（inode Bitmap）所在块的块号，inode表（inode Table）所在块的起始块号，本组空闲块的个数等组内信息。文件系统根据这些信息来查找数据块位图，索引结点位图，索引结点表的位置
-</code></pre>
-
-<p><code>Block Bitmap</code></p>
-
-<pre><code>Ext2文件系统的数据块位图。其中每一位对应了一个数据块，某一位上位0时表示该位所对应的数据块空闲，反之表示该位所对应的数据块已经被分配。Data Block Bitmap占了1个块的空间，因此，一个组中的数据块的个数就已经决定了。如果每个块为b-byte，那么该Group Block就有8*b个块，可以存放（8*b）*b字节的数据
-</code></pre>
-
-<p><code>Inode Bitamp</code></p>
-
-<pre><code>inode节点位图。其工作方式跟Block Bitmap相同，只不过代表的是Inode的使用情况，每个位代表一个inode，如果是1则表示被使用，为1表示空闲
-</code></pre>
-
-<p><code>Inode Table</code></p>
-
-<pre><code>存储inode number对应文件的元信息，包括：文件类型，权限位，链接数（有多少文件名指向这个inode），文件数据块的位置。
-</code></pre>
-
-<p><code>Data Blocks</code></p>
-
-<pre><code>数据块存放文件的实际内容。需要特别指出的是，在Linux下目录也是一种文件。目录中的文件及子目录都以目录项（directory entry）的形式存放在该目录的数据块中。目录项中主要记录了文件的inode号，文件名以及文件类型等内容
-</code></pre>
-
-<p>Linux开机启动时，会首先载入MBR（主引导记录），MBR会告诉电脑从该设备的某一个分区来装载boot loader（boot loader储存有操作系统的相关信息，比如操作系统名称，操作系统内核 (kernel)所在位置等），通过boot loader会加载kernel，kernel通过initrd加载硬件驱动，在主分区表中搜索活动分区，加载引导分区，挂载文件系统，进行操作系统的启动。</p>
-
-<h3>文件查找示例</h3>
-
-<p>以查找文件/home/alex/foobar为例进行说明。</p>
-
-<p>假设根目录（ROOT directory），在磁盘空间上的inode number是2，其对应数据块的结构如下</p>
-
-<pre><code>    +----+-----+-----------------------------------------+
-#2  |. 2 |.. 2 | home 5 | usr 9 | tmp 11 | etc 23 | ...  |
-    +----+-----+-----------------------------------------+
-</code></pre>
-
-<p>通过跟目录下home目录的名字home，可以获取其inode number是5，其对应数据块的结构如下</p>
-
-<pre><code>    +----+-----+---------------------------------------------------+
-#5  |. 5 |.. 2 | alex 31 | leslie 36 | pat 39 | abcd0001 21 | ...  |
-    +----+-----+---------------------------------------------------+
-</code></pre>
-
-<p>通过home目录下alex目录的名字alex，可以获取其inode number是31，其数据块的结构如下</p>
-
-<pre><code>    +----+-----+---------------------------------------------------+
-#31 |. 31|.. 5 | foobar 12 | temp 15 | literature 7 | demo 6 | ... |
-    +----+-----+---------------------------------------------------+
-</code></pre>
-
-<p>继续查看inode number是12（foobar文件）的inode所对应的数据块结构，就可以获取路径为/home/alex/foobar的文件的数据内容。</p>
-
-<pre><code>    *-----------*
-#12 | file data |
-    *-----------*
-</code></pre>
-
-<p>从上面也可以看出</p>
-
-<ul>
-<li>目录也是一种文件，其中包含了该目录下子目录的名字和文件名，以及其对应的inode number。</li>
-<li>文件名和inode number，是多对一的关系。多个文件名可以对应同一个inode number（硬链接）</li>
-</ul>
-
-
-<p>为了访问路径为/home/alex/foobar的文件的数据，需要有合适的权限在根目录的inode，home目录的inode，alex目录的inode，foobar数据文件的inode。</p>
-
-<ul>
-<li>目录的inode权限，决定了是否有权限修改，移动，删除该目录，以及目录下的文件。</li>
-<li>文件的inode权限，决定了是否有权限读取或者修改该文件的内容。</li>
-</ul>
-
-
-<h3>文件存取流程</h3>
-
-<p>在进行文件存取时，实际上就是解析文件路径，加载相应分区上的inode table，获取对应的inode number，对inode number对于的数据块进行存取。</p>
-
-<p>对于访问过的文件路径，会被缓存在dentry目录项中。</p>
-
-<p>为了提升磁盘设备的IO性能，操作系统会使用内存作为磁盘设备的cache，并使用memory map方式在访问时建立与文件系统的缓存映射。文件系统的缓存，是以Page Cache为单位，一个Page Cache包含多个Buffer Cache。</p>
-
-<ul>
-<li><p>向文件中写入数据时，数据会先缓存在Page Cache中，内存中的这部分数据被标注为Dirty Page，linux系统上的pdflush守护进程会跟进系统设置将将这部分Dirty Page刷到磁盘上，也可以通过fsync系统调用在数据写入后强制刷到磁盘上。将写入的数据刷入磁盘时，是以Buffer Cache为单位，每次回写若干个Buffer Cache。</p></li>
-<li><p>读取文件内容时，系统会一次性连续读取包括所请求页面在内的多个页面（如预读页面个数为n）。如果请求的页面在page cache中命中的话，会从缓存中返回页面内容，增加读取的页面数量，异步读取2n个页面;如果请求的页面没有在page cache中命中，也会增加读取页面数量，同步读取2n个页面。</p></li>
-</ul>
-
-
-<p>预读机制示意图</p>
-
-<p><img src="/images/os/fs-pre-read.gif" title="'fs preread" ></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2014/03/29/read-wirite-on-linux-file-system/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -510,7 +213,7 @@ $ ll -h /usr/local/php5-static/bin/php
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a></h1>
+      <h1 class="entry-title"><a href="/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a></h1>
     
     
       <p class="meta">
@@ -533,174 +236,14 @@ $ ll -h /usr/local/php5-static/bin/php
   </header>
 
 
-  <div class="entry-content"><h3>安装Emacs24.3</h3>
+  <div class="entry-content"><p>Emacs 是一个强大的、可扩展的文本编辑器。不同于vim，它是一个流行的无模式文本编辑器。尤其是当emacs24内置包管理elpa后，使用通过<code>prelude</code>，<code>goblin</code>等，轻松使用emacs打造一个顺手的diy的web开发环境。</p>
 
-<h5>安装Homebrew</h5>
-
-<p><code>Homebrew</code>是mac系统上的包管理软件，是用<code>Ruby</code>语言编写的。我们可以使用它在终端安装系统没有自带的<code>Unix</code>相关工具。</p>
-
-<p><em>安装步骤</em></p>
-
-<pre><code>ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-cd /usr/local/Library &amp;&amp; git stash &amp;&amp; git clean -d -f
-</code></pre>
-
-<h5>通过编译源代码安装Emacs</h5>
-
-<p>在安装<code>Homebrew</code>时，会同时安装<code>gcc</code>和<code>autoconf</code>，所以我们可以直接下载源代码进行编译安装。通过如下地址可以下载到最新的emacs安装文件。</p>
-
-<pre><code>http://www.gnu.org/software/emacs/
-</code></pre>
-
-<p>如果没有<code>wget</code>等工具，可以通过<code>brew</code>进行安装，如：</p>
-
-<pre><code>brew install wget
-</code></pre>
-
-<p><em>安装步骤</em></p>
-
-<pre><code>cd /somepath/
-wget http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz
-tar zxvf emacs-24.3.tar.gz
-cd emacs-24.3
-./autogen.sh
-./configure --with-ns
-make install
-sudo ln -s /somepath/emacs-24.3/nextstep/Emacs.app /Applications/Emacs24.3.app
-</code></pre>
-
-<h5>通过Homebrew安装Emacs</h5>
-
-<p><code>Homebrew</code>本身也是下载源代码进行编译安装，但是它可以帮我们简化这一过程。这就是技术的魅力 &mdash; make live easier。</p>
-
-<p><em>安装步骤</em></p>
-
-<pre><code>brew install emacs --cocoa
-brew linkapps
-</code></pre>
-
-<p>顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。</p>
-
-<p>有可能下载地址被墙，这时通过通过修改源代码的下载地址解决，方法如下：</p>
-
-<pre><code>1. brew edit softname，如 brew edit emacs
-2. 修改其中的url，保存退出
-</code></pre>
-
-<p>如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;formula&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Emacs</span> <span class="o">&lt;</span> <span class="no">Formula</span>
-</span><span class='line'>    <span class="n">homepage</span> <span class="s1">&#39;http://www.gnu.org/software/emacs/&#39;</span>
-</span><span class='line'>    <span class="c1">#url &#39;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#39;</span>
-</span><span class='line'>    <span class="n">url</span> <span class="s1">&#39;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
-
-<p><img src="/images/emacs/startup.png" title="'emacs start up" ></p>
-
-<h3>配置Emacs</h3>
-
-<p>由于emacs24已经自带了包管理系统。只需几个简单的步骤，即可通过<a href="https://github.com/bbatsov/prelude">Emacs Prelude</a>或者<a href="https://github.com/jqlblue/goblin-emacs">Goblin Emacs</a>体验emacs的魅力。步骤如下：</p>
-
-<pre><code>cd /somepath/
-git clone https://github.com/jqlblue/goblin-emacs
-ln -s /somepath/goblin-emacs ~/.emacs.d
-</code></pre>
-
-<p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
-
-<p><img src="/images/emacs/goblin-startup.png" title="'goblin emacs start up" ></p>
-
-<p>完成<code>jedi</code>，python自动完成的配置</p>
-
-<pre><code>cd ~/.emacs.d/elpa/jedi*
-sudo pip install -r requirements.txt
-</code></pre>
-
-<p>或者指定pypi源</p>
-
-<pre><code>sudo pip install -i http://pypi.douban.com/simple -r requirements.txt
-</code></pre>
-
-<h3>补充说明</h3>
-
-<ul>
-<li>Goblin-emacs简介</li>
-</ul>
-
-
-<p>goblin-emacs在prelude的基础上，对<code>PHP</code>，<code>Python</code>等<code>mode</code>进行了增强，并尽量保持原生的快捷键。相关功能介绍：</p>
-
-<pre><code>flymake语法检测
-php-mode
-php基于字典的自动完成
-python基于jedi的自动完成
-org-mode
-doxymacs 生成文档注释
-slime－mode
-版本控制工具的集成
-</code></pre>
-
-<p>当使用emacs编辑<code>ruby</code>或者<code>lua</code>源码时，会自动下载并安装相关<code>mode</code>，相关映射在<code>core/goblin-packages.el</code>中进行配置。</p>
-
-<ul>
-<li>交换<code>Control</code>键和<code>Caps-Lock</code>键</li>
-</ul>
-
-
-<p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。
-<img src="/images/emacs/swap-control-capslock.png" title="'swap control caps-lock" ></p>
-
-<ul>
-<li>某些汉字显示为方块</li>
-</ul>
-
-
-<p>由于某些字体不支持斜体的中文汉字等，这是就会在emacs中出现方块。解决方法如下：</p>
-
-<pre><code>M-x customize-face RET font-lock-comment-face
-修改其中的"slant"为"normal"
-</code></pre>
-
-<p>goblin－emace通过添加了如下设置解决：</p>
-
-<pre><code>(set-fontset-font "fontset-default"
-    'gb18030 '("Microsoft YaHei" . "unicode-bmp"))
-)
-</code></pre>
-
-<ul>
-<li>其他技巧</li>
-</ul>
-
-
-<p>一些常用的技巧记录如下</p>
-
-<pre><code>通过`C-h t`可以查看emacs自带的教程
-通过M-x describe-mode可以查看当前支持的mode和相关快捷键
-</code></pre>
-
-<p>reference：</p>
-
-<p>[^1] <a href="http://earthwithsun.com/questions/631306/emacs-24-loading-a-package-installed-via-elpa">http://earthwithsun.com/questions/631306/emacs-24-loading-a-package-installed-via-elpa</a></p>
-
-<p>[^2] <a href="http://toumorokoshi.github.io/emacs-from-scratch-part-2-package-management.html">http://toumorokoshi.github.io/emacs-from-scratch-part-2-package-management.html</a></p>
-
-<p>[^3] <a href="http://blog.yam.com/hn12303158/article/35207136">http://blog.yam.com/hn12303158/article/35207136</a></p>
-
-<p>[^4] <a href="http://blog.chinaunix.net/uid-26354188-id-3195392.html">http://blog.chinaunix.net/uid-26354188-id-3195392.html</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2014/02/28/emacs24-on-mac-and-linux/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -711,7 +254,7 @@ slime－mode
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a></h1>
+      <h1 class="entry-title"><a href="/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a></h1>
     
     
       <p class="meta">
@@ -740,135 +283,12 @@ slime－mode
 
 <p>好在网易的 <a href="http://weibo.com/tcpcopy">王斌</a> 开发了<a href="https://github.com/wangbin579/tcpcopy">tcpcopy</a>， 可以导入线上流量进行功能和压力测试。</p>
 
-<h3>tcpcopy介绍</h3>
-
-<p><code>tcpcopy</code>是一种请求复制工具。可以将线上流量拷贝到测试机器，实时的模拟线上环境。在不影响线上用户的情况下，使用线上流量进行测试，以尽早发现bug。也可以通过放大流量，进行压力测试，评估系统承载能力。</p>
-
-<p><code>tcpcopy</code>可以从线上服务器的<code>IP</code>层抓取在线请求的数据包，修改相关属性，利用<code>raw socket output</code>技术（<code>packet injection</code> 技术之一）将其发送给测试服务器进行测试。</p>
-
-<p>发送到测试服务器的数据包会在<code>TCP/IP</code>协议栈被识别，其中带有<code>payload</code>（tcp data）的数据包最终进入到测试服务器的上层应用（如nginx），上层应用在处理完请求之后，将响应传递给测试服务器的<code>TCP/IP</code>协议栈。</p>
-
-<p>在测试服务器上启用<code>ip_queue</code>模块，并使用<code>iptables</code>在<code>IP</code>层将响应结果数据包发往QUEUE（<code>ip_queue</code>）。</p>
-
-<p>测试服务器上运行在<code>用户空间</code>的拦截程序（intercept进程），通过打开<code>netlink</code>的socket接受内核通过<code>ip_queue</code>所传递来的网络数据包（即上层应用的响应内容）进行裁定，将结果返回内核，进行出队列的操作。intercept进程默认会丢弃上层应用的响应内容，返回ip header，以释放tcp连接。</p>
-
-<p>intercept进程也可以通过<code>-x</code>（passlist）参数，不drop指定ip lists发出请求的响应内容。默认drop是为了：</p>
-
-<pre><code>1 减少出口带宽占用，节约成本
-2 不影响客户端（线上服务）的`TCP/IP`协议栈
-3 不会在互联网上产生ghost数据包
-</code></pre>
-
-<h3>tcpcopy工作流程</h3>
-
-<p><img src="/images/tcpcopy_flow.png" title="'tcpcopy flow'" >
-如上图，tcpcopy拷贝一次流量访问的步骤如下：</p>
-
-<pre><code>①　一个访问到达线上前端机；
-②　socket数据包在ip层被拷贝了一份传给tcpcopy进程；
-③　tcpcopy修改包的目的及源地址，发给目标测试机；
-④　拷贝的包到达目标测试机；
-⑤　目标测试机的nginx处理访问，并返回结果；
-⑥　返回结果在ip层被截获、丢弃，由intercpet进程拷贝返回结果的ip header并返回；
-⑦　ip header被发送给线上前端机的tcpcopy进程。
-</code></pre>
-
-<h3>安装和配置</h3>
-
-<p>tcpcopy有两种工作模式：</p>
-
-<pre><code>1 实时拷贝数据包
-2 通过使用tcpdump等抓包生成的文件进行离线（offline）请求重放
-</code></pre>
-
-<p>如果采用实时拷贝线上流程进行导入的方式，需要分别在线上服务器和测试服务器安装<code>tcpcopy</code>，对于离线模式，只需要在测试服务器上安装<code>tcpcopy</code>，编译时指定 <code>--enable-offline</code>。</p>
-
-<h5>安装步骤如下：</h5>
-
-<pre><code>wget https://github.com/wangbin579/tcpcopy/archive/0.9.0.tar.gz -O tcpcopy-0.9.0.tar.gz --no-check-certificate
-tar zxvf tcpcopy-0.9.0.tar.gz
-cd tcpcopy-0.9.0
-./autogen.sh
-./configure --prefix=/usr/local/tcpcopy
-make
-sudo make install
-</code></pre>
-
-<h5>目标测试机配置</h5>
-
-<p>线上服务器拷贝的数据包发送至测试服务器进行处理之后，测试服务器需要通过<code>iptables</code>将响应结果发送至QUEUE（<code>ip_queue</code>），这样测试服务器上运行的<code>intercept</code>拦截进程才能通过打开的<code>netlink</code>socket获取传递过来的数据包并进行裁定。所以测试服务器上需要开启<code>iptables</code>防火墙，并启用内核模块<code>ip_queue</code></p>
-
-<pre><code>modprobe ip_queue
-/etc/init.d/iptables start
-</code></pre>
-
-<p>因为线上服务器需要和目标测试服务器通信，传递请求数据包和控制信息（封装的ip packet header），所以需要在测试服务器上添加相关<code>iptables</code>防火墙规则。编辑<code>/etc/sysconfig/iptables</code>，添加：</p>
-
-<pre><code>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 36524 -j ACCEPT
-</code></pre>
-
-<p>然后重启<code>iptables</code></p>
-
-<pre><code>/etc/init.d/iptables restart
-</code></pre>
-
-<p>接着执行：</p>
-
-<pre><code>iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
-</code></pre>
-
-<p>将响应结果发送至QUEUE（<code>ip_queue</code>），从而实现运行在用户态的进程对相关数据包进行裁定。</p>
-
-<h3>相关使用</h3>
-
-<p>本文以线上和测试机的web服务都使用80端口，传递控制信息使用默认的36524端口为例。如果使用别的端口，记得修改相关<code>iptables</code>防火墙规则。</p>
-
-<h5>离线 offline</h5>
-
-<p>1） 在线上服务器抓包</p>
-
-<pre><code>tcpdump -i eth0 tcp and port 80 -s 0 -w online.pcap
-</code></pre>
-
-<p>2） 将抓包生成的文件拷贝到测试服务器</p>
-
-<p>3） 在测试服务器上进行执行如下命令进行重放</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./intercept
-sudo ./tcpcopy -i /path/online.pcap -x 80-10.16.12.11:80
-
-tcpcopy -i &lt;抓包文件地址&gt; -x &lt;port&gt;-&lt;本地ip&gt;:&lt;port&gt;
-</code></pre>
-
-<h5>在线实时复制 online</h5>
-
-<p>1） 在测试服务器上启动<code>intercept</code>拦截进程</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./intercept
-</code></pre>
-
-<p>2） 在线上服务器复制流量到测试服务器</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./tcpcopy -x 80-10.16.12.11:80 -c 10.16.12.12
-
-tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应用端口 -c 本地服务器ip
-</code></pre>
-
-<p>reference：</p>
-
-<p>[^1] <a href="https://github.com/wangbin579/tcpcopy">https://github.com/wangbin579/tcpcopy</a></p>
-
-<p>[^2] <a href="http://www.searchtb.com/2012/05/using-tcpcopy-to-simulate-traffic.html">http://www.searchtb.com/2012/05/using-tcpcopy-to-simulate-traffic.html</a></p>
-
-<p>[^3] <a href="http://hi.baidu.com/yacker/item/e6bd5b287fe5a3f150fd8731">http://hi.baidu.com/yacker/item/e6bd5b287fe5a3f150fd8731</a></p>
-
-<p>[^4] <a href="http://blog.yam.com/hn12303158/article/35207136">http://blog.yam.com/hn12303158/article/35207136</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2014/01/08/use-tcpcopy-test-online/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -879,7 +299,7 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a></h1>
+      <h1 class="entry-title"><a href="/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a></h1>
     
     
       <p class="meta">
@@ -904,287 +324,12 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
 
   <div class="entry-content"><p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
 
-<p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
-
-<p><code>Python</code>，<code>PHP</code>，<code>Ruby</code>，<code>Javascript</code>，<code>Java</code>，<code>Nodejs</code>，<code>IOS</code></p>
-
-<p>项目地址：<a href="https://github.com/getsentry/sentry">https://github.com/getsentry/sentry</a></p>
-
-<p>本文以收集<code>PHP</code>错误为例。</p>
-
-<h3>安装步骤</h3>
-
-<p>Sentry的文档清晰且完善，包括<code>安装</code>，<code>配置</code>，<code>调优</code>以及<code>客户端调用</code>，正式使用之前，建议看看，以加深理解。地址：<a href="http://sentry.readthedocs.org/en/latest/">http://sentry.readthedocs.org/en/latest/</a></p>
-
-<h4>python环境安装</h4>
-
-<p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包</p>
-
-<figure class='code'><figcaption><span>python2.7.3-install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
-</span><span class='line'>yum install -y bzip2-devel.x86_64
-</span><span class='line'>yum install -y sqlite-devel.x86_64
-</span><span class='line'>yum install -y readline-devel.x86_64
-</span><span class='line'>wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2
-</span><span class='line'>tar jxvf Python-2.7.3.tar.bz2
-</span><span class='line'><span class="nb">cd </span>Python-2.7.3
-</span><span class='line'>./configure --prefix<span class="o">=</span>/usr/local/python2.7.3
-</span><span class='line'>make
-</span><span class='line'>sudo make install
-</span><span class='line'>
-</span><span class='line'>wget https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz --no-check-certificate
-</span><span class='line'>tar zxvf distribute-0.6.49.tar.gz
-</span><span class='line'><span class="nb">cd </span>distribute-0.6.49
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenv
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install -i http://e.pypi.python.org/simple virtualenvwrapper
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
-
-<pre><code>/usr/local/python2.7.3/bin/python
-</code></pre>
-
-<h4>安装Sentry server</h4>
-
-<p>初始化安装目录</p>
-
-<pre><code>mkdir -p /data/server/python-envs
-</code></pre>
-
-<p>添加相关环境变量</p>
-
-<pre><code>vim ~/.bashrc
-</code></pre>
-
-<p>添加：</p>
-
-<pre><code>export WORKON_HOME=/data/server/python-envs
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/python2.7.3/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/python2.7.3/bin/virtualenv
-source /usr/local/python2.7.3/bin/virtualenvwrapper.sh
-</code></pre>
-
-<p>使环境变量生效</p>
-
-<pre><code>source ~/.bashrc
-</code></pre>
-
-<p>安装Sentry server</p>
-
-<pre><code>mkvirtualenv sentry
-pip install sentry
-pip install sentry[mysql]
-pip install sentry[mysql] --upgrade
-</code></pre>
-
-<p>修改<code>~/.bashrc</code>，添加如下代码，以便登录后自动切换到相关python环境</p>
-
-<pre><code>source /data/server/python-envs/sentry/bin/activate
-</code></pre>
-
-<h3>快速配置</h3>
-
-<p>或许你还没有做好决定，只是想尽快体验下Sentry，在完成上面的安装之后，通过下面三个步骤即可满足你的愿望：</p>
-
-<p>1 初始化配置</p>
-
-<pre><code>sentry init ~/sentry.conf.py
-</code></pre>
-
-<p>2 修改配置</p>
-
-<p>修改初始配置中的如下两项就行</p>
-
-<p><code>SENTRY_WEB_HOST</code>，<code>SENTRY_URL_PREFIX</code>，如：</p>
-
-<pre><code>SENTRY_URL_PREFIX = 'http://10.16.15.1:9000'
-SENTRY_WEB_HOST = '10.16.15.1'
-</code></pre>
-
-<p>3 创建超级管理员帐号，启动server</p>
-
-<pre><code>sentry --config=~/sentry.conf.py upgrade
-sentry --config=~/sentry.conf.py createsuperuser
-sentry --config=~/sentry.conf.py start
-</code></pre>
-
-<p>然后就可以通过url <a href="http://server_host:port">http://server_host:port</a> ，使用创建的帐号登录系统后台，进行项目，帐号等管理，和已收集日志的查看等等</p>
-
-<h3>配置在生产环境中使用</h3>
-
-<h4>Sentry server</h4>
-
-<p><em>我们在生产环境下的使用状况：</em></p>
-
-<ul>
-<li><p>使用<code>mysql</code>作为后端数据存储</p></li>
-<li><p>使用<code>celery</code>任务队列（<code>broker</code>使用<code>redis</code>），处理数据入库，发送邮件提醒等工作</p></li>
-<li><p>同时，使用<code>redis</code>作为<code>Update Buffers</code>，用于将频繁出现的相同事件合并，这在高并发时会相当有用</p></li>
-<li><p>使用<code>memcache</code>作为前端<code>Cache</code>，管理后台通过轮询的访问获取是否有新的事件提醒，使用<code>memcache</code>，可以减轻直接查询数据库的压力</p></li>
-<li><p>使用<code>Udp</code>协议发送并接收相关事件</p></li>
-<li><p>使用<code>Nginx</code>反向代理前端http请求，并使用<code>HttpLimitReqModule</code>限制请求的发送速率</p></li>
-<li><p>使用<code>supervisor</code>管理<code>celery</code>和<code>sentry</code>server</p></li>
-</ul>
-
-
-<p><em>相关安装步骤：</em></p>
-
-<pre><code>pip install redis hiredis nydus
-pip install redis hiredis nydus --upgrade
-pip install python-memcached
-pip install gevent
-pip install eventlet
-pip install supervisor
-</code></pre>
-
-<p><em>初始化配置</em></p>
-
-<pre><code>mkdir -p /data/server/sentry/etc
-sentry init /data/server/sentry/etc/sentry.conf.py
-</code></pre>
-
-<p><em>创建超级管理员帐号</em></p>
-
-<pre><code>sentry --config=/data/server/sentry/etc/sentry.conf.py upgrade
-sentry --config=/data/server/sentry/etc/sentry.conf.py createsuperuser
-</code></pre>
-
-<p><em>初始化supervisor配置</em></p>
-
-<pre><code>echo_supervisord_conf &gt; /data/server/sentry/etc/supervisord.conf
-</code></pre>
-
-<p><em>配置Sentry</em></p>
-
-<p>示例配置请参见 <a href="https://gist.github.com/jqlblue/8018185">https://gist.github.com/jqlblue/8018185</a></p>
-
-<p>修改<code>/data/server/sentry/etc/supervisord.conf</code>，添加：</p>
-
-<pre><code>[program:web]
-command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start
-process_name=%(program_name)s_%(process_num)02d
-numprocs=3
-numprocs_start=0
-startsecs=5
-startretries=3
-stopsignal=QUIT
-stopwaitsecs=10
-stopasgroup=true
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-
-[program:sentry_udp]
-command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start udp
-process_name=sentry_udp_server
-numprocs=1
-numprocs_start=0
-startsecs=5
-startretries=3
-stopsignal=QUIT
-stopwaitsecs=10
-stopasgroup=true
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-
-[program:celeryd]
-command=/data/server/python-envs/sentry/bin/sentry celery worker -c 6 -P processes -l WARNING -n worker-%(process_num)02d.worker
-process_name=%(program_name)s_%(process_num)02d
-numprocs=1
-numprocs_start=0
-startsecs=1
-startretries=3
-stopsignal=TERM
-stopwaitsecs=10
-stopasgroup=false
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-</code></pre>
-
-<p><em>管理Sentry server</em></p>
-
-<ul>
-<li>启动superviord</li>
-</ul>
-
-
-<p>执行如下命令，同时，<code>celery</code>，<code>sentry web</code>，<code>sentry udp server</code>也将随之启动</p>
-
-<pre><code>supervisord -c /data/server/sentry/etc/supervisord.conf
-</code></pre>
-
-<ul>
-<li>停止sentry相关server</li>
-</ul>
-
-
-<p>执行如下命令</p>
-
-<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
-</code></pre>
-
-<ul>
-<li>停止superviord</li>
-</ul>
-
-
-<p>执行如下命令，同时，已启动的<code>centry</code>相关server也将停止</p>
-
-<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
-</code></pre>
-
-<p><code>supervisor</code>更多使用方法请参见 <a href="http://supervisord.org/">http://supervisord.org/</a></p>
-
-<p><code>nginx</code>配置请参见 <a href="https://gist.github.com/jqlblue/8019629">https://gist.github.com/jqlblue/8019629</a></p>
-
-<h4>Sentry client</h4>
-
-<p>可以通过在程序中<code>registerExceptionHandler</code>和<code>registerErrorHandler</code>将相关信息即时发送至server端。</p>
-
-<p>相关sdk项目地址 <a href="https://github.com/getsentry/raven-php">https://github.com/getsentry/raven-php</a></p>
-
-<p>实例化<code>Raven_Client</code>时使用的<code>DSN</code>中的<code>public:secret</code>可以在使用管理员登录后台后，在<code>项目</code>&ndash;<code>设置</code>下面查看到。示例地址：<a href="http://sentry_host/team_name/project_name/docs/php/">http://sentry_host/team_name/project_name/docs/php/</a></p>
-
-<p>我们采用通过增量读取php error log，使用crontab将错误信息上报。</p>
-
-<p>基于sentry php sdk修改之后的代码地址：<a href="https://gist.github.com/jqlblue/8019312">https://gist.github.com/jqlblue/8019312</a></p>
-
-<p>安装依赖</p>
-
-<pre><code>yum install -y logcheck.noarch
-</code></pre>
-
-<p><code>logcheck</code>中的<code>logtail2</code>用于增量读取日志，<code>flock</code>用于防止定时任务堆积。</p>
-
-<blockquote><p>另外，需要安装php的sockets扩展</p></blockquote>
-
-<p>添加定时任务</p>
-
-<pre><code>* * * * * /usr/bin/flock -xn /tmp/sentry_client.lock /opt/php-5.5.4/bin/php /path/client.php --project=project_name 2&gt;&amp;1 &gt; /dev/null
-</code></pre>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2013/12/18/deploy-sentry-in-product/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -1209,13 +354,13 @@ directory=/data/server/python-envs/sentry/
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/devops/'>devops (3)</a></li>
-<li class='category'><a href='/blog/categories/emacs/'>emacs (1)</a></li>
-<li class='category'><a href='/blog/categories/essay/'>essay (1)</a></li>
-<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
-<li class='category'><a href='/blog/categories/mobile/'>mobile (2)</a></li>
-<li class='category'><a href='/blog/categories/network/'>network (1)</a></li>
-<li class='category'><a href='/blog/categories/php/'>php (5)</a></li>
+    <li class='category'><a href='/categories/devops/'>devops (3)</a></li>
+<li class='category'><a href='/categories/emacs/'>emacs (1)</a></li>
+<li class='category'><a href='/categories/essay/'>essay (1)</a></li>
+<li class='category'><a href='/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/categories/mobile/'>mobile (2)</a></li>
+<li class='category'><a href='/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/categories/php/'>php (5)</a></li>
 
   </ul>
 </section>
@@ -1224,23 +369,23 @@ directory=/data/server/python-envs/sentry/
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/09/statically-compile-php/">如何静态编译php</a>
+        <a href="/2014/04/09/statically-compile-php/">如何静态编译php</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
+        <a href="/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
+        <a href="/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
+        <a href="/2014/01/08/use-tcpcopy-test-online/">使用tcpcopy导入线上流量进行功能和压力测试</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
+        <a href="/2013/12/18/deploy-sentry-in-product/">在生产环境部署sentry进行错误收集和提醒</a>
       </li>
     
   </ul>
@@ -1248,16 +393,16 @@ directory=/data/server/python-envs/sentry/
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
-<a style="font-size: 210%" href="/tags/devops/">devops</a>
+    <a style="font-size: 210%" href="/tags/devops/">devops</a>
+<a style="font-size: 90%" href="/tags/fs/">fs</a>
 <a style="font-size: 210%" href="/tags/linux/">linux</a>
 <a style="font-size: 150%" href="/tags/mobile/">mobile</a>
 <a style="font-size: 90%" href="/tags/monitor/">monitor</a>
 <a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
+<a style="font-size: 90%" href="/tags/php/">php</a>
 <a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
 <a style="font-size: 90%" href="/tags/sentry/">sentry</a>
-<a style="font-size: 90%" href="/tags/tcpcopy/">tcpcopy</a>
-<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
+<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
 
   </ul>
 </section>

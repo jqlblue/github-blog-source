@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: php | Jqlblue's Blog]]></title>
+  <link href="http://jqlblue.github.io/categories/php/atom.xml" rel="self"/>
+  <link href="http://jqlblue.github.io/"/>
+  <updated>2014-04-20T21:14:47+08:00</updated>
+  <id>http://jqlblue.github.io/</id>
+  <author>
+    <name><![CDATA[jqlblue]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[如何静态编译php]]></title>
+    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
+    <updated>2014-04-09T18:13:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
+    <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
+
+<p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
+
+<!-- more -->
+
+
+<p>安装步骤如下：</p>
+
+<ul>
+<li><p>准备源文件
+<code>
+wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
+tar zxvf php-5.5.11.tar.gz
+wget http://pecl.php.net/get/redis-2.2.5.tgz
+tar xvf redis-2.2.5.tgz
+mv redis-2.2.5 php-5.5.11/ext/redis
+</code></p></li>
+<li><p>重新生成configure
+<code>
+cd php-5.5.11
+rm -f ./configure
+./buildconf --force
+</code></p></li>
+<li><p>configure
+<code>
+./configure LDFLAGS=-static \
+--prefix=/usr/local/php5-static \
+--disable-all \
+--enable-shared=no \
+--enable-static=yes \
+--enable-inline-optimization \
+--enable-hash \
+--enable-mbstring \
+--with-layout=GNU \
+--enable-filter \
+--with-pcre-regex \
+--with-zlib \
+--enable-json \
+--enable-ctype \
+--disable-redis-session \
+--enable-redis
+</code></p></li>
+<li><p>修改Makefile</p></li>
+</ul>
+
+
+<p>将
+<code>
+BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
+BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)
+</code>
+替换成
+<code>
+BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
+BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)
+</code>
+即：</p>
+
+<p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
+
+<ul>
+<li><p>继续安装
+<code>
+make LDFLAGS=-ldl
+sudo make install
+</code></p></li>
+<li><p>检查</p></li>
+</ul>
+
+
+<p>在命令行执行</p>
+
+<pre><code>$ file /usr/local/php5-static/bin/php
+/usr/local/php5-static/bin/php: ELF 64-bit LSB executable, AMD x86-64, version 1 (SYSV), for GNU/Linux 2.6.9, statically linked, for GNU/Linux 2.6.9, not stripped
+
+$ /usr/local/php5-static/bin/php -m
+[PHP Modules]
+Core
+ctype
+date
+ereg
+filter
+hash
+json
+mbstring
+pcre
+redis
+Reflection
+SPL
+standard
+zlib
+
+[Zend Modules]
+</code></pre>
+
+<p>因为可执行文件中包含了调试信息，所以体积较大</p>
+
+<pre><code>$ ll -h /usr/local/php5-static/bin/php
+-rwxr-xr-x 1 root root 18M 04-09 18:11 /usr/local/php5-static/bin/php
+</code></pre>
+
+<p>可以通过<code>strip</code>命令移除调试信息</p>
+
+<pre><code>$ sudo strip /usr/local/php5-static/bin/php
+$ ll -h /usr/local/php5-static/bin/php
+-rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
+</code></pre>
+
+<p>reference：</p>
+
+<p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
+
+<p>[^2] <a href="http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454">http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454</a></p>
+
+<p>[^3] <a href="http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html">http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html</a></p>
+
+<p>[^4] <a href="http://markmail.org/message/cpoenglavs4vwv32">http://markmail.org/message/cpoenglavs4vwv32</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在php5.5中使用pdo和mysql_escape_string的一个坑]]></title>
+    <link href="http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string/"/>
+    <updated>2013-11-16T18:04:00+08:00</updated>
+    <id>http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string</id>
+    <content type="html"><![CDATA[<p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
+
+<!-- more -->
+
+
+<h3>升级步骤</h3>
+
+<ul>
+<li>安装php5.5.0</li>
+<li>检测代码兼容性</li>
+<li>从线上服务器日志中收集最热的一百条访问日志</li>
+<li>下线一台服务器，启动php5.5环境，根据日志中最热的请求进行重放</li>
+<li>检测服务器日志进行改进</li>
+</ul>
+
+
+<p>升级过程很顺利，但是上线后在日志中发现如下信息：</p>
+
+<pre><code>mysql_escape_string(): This function is deprecated; use mysql_real_escape_string() instead
+</code></pre>
+
+<p>于是顺手修复上线。鉴于最近没怎么写代码，手有点生，先发布到了测试环境测试没问题才上线。</p>
+
+<p>就在去茶水间接了一杯水的当儿，运营反馈说线上页面显示异常。于是马上回滚代码。</p>
+
+<p>问题代码如下：</p>
+
+<pre><code>$db = getDb();
+$a = mysql_real_escape_string($keyword);
+$sql = 'select info from table where keyword = ' . $a;
+$res = $db-&gt;getRow($sql);
+</code></pre>
+
+<p>通过调试，发现：</p>
+
+<pre><code>$keyword在mysql_real_escape_string处理之后，变成了false，所以在进行后面的查询时获取不到相应结果，页面就异常了。
+</code></pre>
+
+<p>再进一步调试发现：</p>
+
+<pre><code>getDb使用的是pdo。
+$dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
+</code></pre>
+
+<p>于是原因浮出水面</p>
+
+<pre><code>1 在使用string mysql_real_escape_string时没有指定link_identifier
+2 所以会去找使用mysql_connect()打开的最后一个连接
+3 使用的是pdo，没有找到相关连接。于是尝试使用不带任何参数的mysql_connect()去建立一个连接来使用
+4 本机没有mysql server，自然建立连接失败。于是发生错误，并产生警告信息（E_WARNING）
+5 服务器上设置的错误报告等级已经屏蔽了E_WARNING，所以也没有监控到相关错误
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
+    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
+    <updated>2013-08-10T09:41:00+08:00</updated>
+    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
+    <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
+看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
+
+<p>面对打着补丁的5.2，我们决定升级到php5.5</p>
+
+<!-- more -->
+
+
+<h3>The reason</h3>
+
+<p>左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
+的关系。</p>
+
+<p>作为一个在开发一线的互联网从业人员。优化，重构，这可能是我们要经常提及
+的两个话题。</p>
+
+<p>通过监控，度量，找出系统中那20%的瓶颈问题，一般就能让系统的性能有很大
+的提升。这种优化算作自身能力的提升。</p>
+
+<p>一个在线上运行的系统，实际上还依赖与服务器，带宽等硬件环境；操作系统，
+程序编译器或者解释器等软件环境。这些环境，也在更新优化。</p>
+
+<p>在自身能力不变的情况化，如果这些环境得以更新优化，我们的系统也会跑地更
+快。</p>
+
+<p>就像nike，同样的人，穿着nike会有飞一般的感觉。</p>
+
+<h3>Step</h3>
+
+<p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
+<img src="/images/php-5.5-prefermance.png" title="&lsquo;php-5.5-prefermance 'images&rsquo;" ></p>
+
+<p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
+
+<p>当然，升级有风险，操作需谨慎。</p>
+
+<p>下面是升级步骤：</p>
+
+<h5>1. 安装php5.5</h5>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
+</span><span class='line'>wget -c &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.php.net/get/php-$&quot;</span>&gt;http://www.php.net/get/php-<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>PHP_VERSION<span class="o">}</span>.tar.gz/from/this/mirror
+</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
+</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'>./configure <span class="se">\</span>
+</span><span class='line'>&amp;mdash;prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-debug <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-inline-optimization <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-all <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-fpm <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-libxml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-session <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-hash <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mbstring <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-layout<span class="o">=</span>GNU <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-filter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pcre-regex <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-zlib <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-json <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-pdo <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-simplexml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-dom <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-phar <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-tokenizer <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-posix <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlwriter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlreader <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-curl <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-iconv <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mcrypt <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-ctype <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-opcache
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>完整脚本可参见：
+<a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
+
+<p>备注：</p>
+
+<pre><code>1. 安装php时，要指定安装目录(prefix)，以备出现问题时可以及时回滚
+2. 安装扩展时同样需要注意，不要覆盖其他版本的扩展
+   1) 使用绝对路径执行phpize
+   2) 在configure时指定php5.5目录下的php-config，--with-php-config
+   3) 编译扩展需要的lib库时，也要指定版本和安装目录
+</code></pre>
+
+<h5>2. php代码语法兼容性检测</h5>
+
+<p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
+就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;use sh ./check-php-compatibility.sh /path/code&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> &amp;lsquo;&amp;rsquo; <span class="o">]]</span>;<span class="k">then</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span>&amp;lsquo;/path/code/src&amp;rsquo;
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5.0/bin/php&amp;rsquo;
+</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;<span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;done
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
+
+<h5>3. 从服务器上收集请求情况</h5>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F &amp;ldquo;<span class="o">[</span> ?<span class="o">]</span>&amp;rdquo; &amp;lsquo;<span class="o">{</span>urls<span class="o">[</span><span class="nv">$7</span><span class="o">]</span>++<span class="o">}</span> END <span class="o">{</span><span class="k">for</span><span class="o">(</span>key in urls<span class="o">)</span>print urls<span class="o">[</span>key<span class="o">]</span>,&amp;ldquo;<span class="se">\t</span>&amp;rdquo;,key<span class="o">}</span>&amp;rsquo; | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h5>4. 通过收集的请求url进行测试</h5>
+
+<p>对于get方式的url请求，直接wget或者curl就好。</p>
+
+<p>对于post方式的curl请求，需要用curl模拟post请求进行提交。同时需要在
+webserver日志中记录post请求参数。</p>
+
+<h5>5. 查看webserver的错误日志，进行改进</h5>
+
+<h3>Improve</h3>
+
+<p>上线后通过在nginx的access log中开启记录upstream_time和request_time进行
+统计，php-5.5.0环境下接口的响应速度较5.2.5环境提升了(0.00487559-0.00366027)/0.00487559=24.9%</p>
+
+<pre><code>php-5.5.0
+total_request_time:196416 total_upstream_time:1122.52 total_request:306678 avg_requst_time:0.640464 avg_upstream_time:0.00366027
+
+php-5.2.5
+total_request_time:200400 total_upstream_time:1498.65 total_request:307378 avg_requst_time:0.651966 avg_upstream_time:0.00487559
+</code></pre>
+
+<p>统计脚本</p>
+
+<pre><code>cat access.log | grep '/api/getInfo' | awk -F ')"' '{print $2}' | grep -v ' -' | awk 'BEGIN{_request=0;_upstream=0;_i=0}{_request+=$2;_upstream+=$3;_i+=1}END{print "total_request_time:"_request" total_upstream_time:"_upstream" total_request:"_i" avg_requst_time:"_request/_i" avg_upstream_time:"_upstream/_i}'
+</code></pre>
+
+<p>另外，做了php5.3.10和php.5.5.0的压测比较</p>
+
+<pre><code>php5.3.10
+Speed=30441 pages/min, 1224275 bytes/sec.
+Requests: 30441 susceed, 0 failed.
+
+php5.5.0
+Speed=42514 pages/min, 1727526 bytes/sec.
+Requests: 42514 susceed, 0 failed.
+PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[broken pipe in php cli]]></title>
+    <link href="http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli/"/>
+    <updated>2013-08-03T20:08:00+08:00</updated>
+    <id>http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli</id>
+    <content type="html"><![CDATA[<p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
+
+<hr />
+
+<ul>
+<li>下线一台服务器，另起目录安装php5.5</li>
+</ul>
+
+
+<p>安装过程与php5.3差不多，要开启zend opcache的话，需要在
+configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_extension的
+形式加载。</p>
+
+<!-- more -->
+
+
+<ul>
+<li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access_log | awk &amp;lsquo;<span class="o">{</span>print <span class="nv">$7</span><span class="o">}</span>&amp;rsquo; | awk -F &amp;ldquo;?&amp;rdquo; &amp;lsquo;<span class="o">{</span>print <span class="nv">$1</span><span class="o">}</span>&amp;rsquo; | sort | uniq -c | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+<li><p>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地
+ 址（包括相关参数）
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>access_log | grep  &amp;lsquo;/api/test&amp;rsquo; | head -n 1
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</p></li>
+</ul>
+
+
+<hr />
+
+<p>进行到第三步，就卡住了。：（</p>
+
+<p>“cat access_log | grep  &lsquo;/api/test&rsquo; | head -n 1”这条命令在shell下执行
+没有问题，但是如果用php的shell_exec运行，就会出现 “grep: writing
+output: Broken pipe”。</p>
+
+<p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做
+了下加工后，发现一切正常了，修改后的python代码如下
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">subprocess</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">signal</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">reset_sigpipe</span><span class="p">():</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cat</span> <span class="n">access_log</span> <span class="o">|</span> <span class="n">grep</span>  <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">test</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">reset_sigpipe</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>但是我是要用php来做这件事，下面是php相关代码
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$source</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">source_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$dest</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">dest_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$res</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
+</span><span class='line'><span class="nb">pcntl_signal</span><span class="p">(</span><span class="nx">SIGPIPE</span><span class="p">,</span> <span class="nx">SIG_DFL</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$command</span> <span class="o">=</span> <span class="s2">&quot;cat access_log | grep  &#39;</span><span class="si">{</span><span class="nv">$row</span><span class="si">}</span><span class="s2">&#39; | head -n 1 | awk &#39;{print </span><span class="se">\$</span><span class="s2">6</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;\$</span><span class="s2">7}&#39; | awk -F &#39;</span><span class="se">\&quot;</span><span class="s2">&#39; &#39;{print $2}&#39; | awk &#39;{print $1</span><span class="se">\&quot;</span><span class="s2"> http://test.api.com</span><span class="se">\&quot;</span><span class="s2">$2}&#39;&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$check</span> <span class="o">=</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="nv">$check</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">,</span> <span class="nx">FILE_APPEND</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是
+这句:</p>
+
+<pre><code>pcntl_signal(SIGPIPE, SIG_DFL)
+</code></pre>
+
+<p>当php进程接收到SIGPIPE信号时，重置
+为系统默认处理方式，即接收子进程的返回值。</p>
+
+<p><strong>问题解决了，但是原因呢？</strong></p>
+
+<p>我们再看看这行命令</p>
+
+<pre><code>cat access_log | grep  '/api/test' | head -n 1
+</code></pre>
+
+<p>head命令在取得一行后立即退出（exit），此时pipe的读端就没了，但grep还会
+继续往pipe写，此时pipe就会发送SIGPIPE信号，默认动作是终止程序。在shell
+下执行时，grep收到SIGPIPE信号就退出了，所以运行没有问题。</p>
+
+<p>但在通过php的shell_exec或者system运行为何就有问题。应该是php忽略了
+SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于是就出现了</p>
+
+<pre><code>grep: writing output: Broken pipe
+</code></pre>
+
+<p>在天朝，有图也不一定是真相。所以应该是，也不一定是。废话少说，我们直接
+上代码：</p>
+
+<pre><code>$grep -r 'SIGPIPE' ./
+./sapi/cli/php_cli.c:   signal(SIGPIPE, SIG_IGN); /* ignore SIGPIPE in standalone mode so
+</code></pre>
+
+<p>所以php以cli的形式运行时，会忽略SIGPIPE信号。</p>
+
+<p>reference：</p>
+
+<blockquote><p><a href="https://blogs.oracle.com/opal/entry/using_php_5_5_s">https://blogs.oracle.com/opal/entry/using_php_5_5_s</a></p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[check php 5.5 compatibility]]></title>
+    <link href="http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility/"/>
+    <updated>2013-08-03T18:16:00+08:00</updated>
+    <id>http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility</id>
+    <content type="html"><![CDATA[<p>github上有个项目可以检测php5.3，5.4的兼容性，如下：
+<a href="https://github.com/wimg/PHPCompatibility">https://github.com/wimg/PHPCompatibility</a></p>
+
+<p>如果最近你想把php升级到5.5，尝试下generators和coroutines，这个应该对你
+有帮助。也可以参见博文：</p>
+
+<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a></p>
+
+<!-- more -->
+
+
+<p>第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
+何东西。</p>
+
+<p>在php.ini中设置了</p>
+
+<blockquote><p>date.timezone = Asia/Shanghai</p></blockquote>
+
+<p>之后，发现效果不错，只是显示的行号有问题，而且检测的速度不尽人意。</p>
+
+<p>所以我在安装完php5.5后，写了个shell脚本，用php -l来检测。内容如下：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;SOURCE_ROOT<span class="o">=</span>&amp;lsquo;/path/php-code&amp;rsquo;
+</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5/bin/php&amp;rsquo;
+</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;check_syntax<span class="o">=</span><span class="k">$(${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span><span class="k">)</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;done
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>使用方法：</p>
+
+<blockquote><p>sh /path/check-php-compatibility.sh > check-result.txt</p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>

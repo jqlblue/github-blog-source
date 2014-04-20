@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,12 +15,15 @@
   
   <entry>
     <title type="html"><![CDATA[如何静态编译php]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/04/09/statically-compile-php/"/>
+    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
     <updated>2014-04-09T18:13:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/04/09/statically-compile-php</id>
+    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
     <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
 
 <p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
+
+<!-- more -->
+
 
 <p>安装步骤如下：</p>
 
@@ -186,9 +189,9 @@ $ ll -h /usr/local/php5-static/bin/php
   
   <entry>
     <title type="html"><![CDATA[linux文件系统如何进行文件存取]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system/"/>
+    <link href="http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system/"/>
     <updated>2014-03-29T13:32:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system</id>
+    <id>http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system</id>
     <content type="html"><![CDATA[<p>乍一看，这个题目好像有点小儿科。</p>
 
 <p>写文件嘛</p>
@@ -205,6 +208,9 @@ $ ll -h /usr/local/php5-static/bin/php
 切都是文件。除了<code>普通文件</code>，还包括：<code>目录</code>，<code>符号链接</code>，<code>IPC Endpoints</code>（如pipe，unix socket）和<code>设备文件</code>(块设备，字符设备)。</p>
 
 <p>当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。</p>
+
+<!-- more -->
+
 
 <p>我们要存取的文件，一般都是保存在普通的磁盘上，通过电磁变换来实现文件的读取和写入。所以我们先从磁盘说起。</p>
 
@@ -357,10 +363,15 @@ $ ll -h /usr/local/php5-static/bin/php
   
   <entry>
     <title type="html"><![CDATA[在mac系统上使用emacs24打造web开发环境]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/02/28/emacs24-on-mac-and-linux/"/>
+    <link href="http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux/"/>
     <updated>2014-02-28T14:16:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/02/28/emacs24-on-mac-and-linux</id>
-    <content type="html"><![CDATA[<h3>安装Emacs24.3</h3>
+    <id>http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux</id>
+    <content type="html"><![CDATA[<p>Emacs 是一个强大的、可扩展的文本编辑器。不同于vim，它是一个流行的无模式文本编辑器。尤其是当emacs24内置包管理elpa后，使用通过<code>prelude</code>，<code>goblin</code>等，轻松使用emacs打造一个顺手的diy的web开发环境。</p>
+
+<!-- more -->
+
+
+<h3>安装Emacs24.3</h3>
 
 <h5>安装Homebrew</h5>
 
@@ -531,14 +542,17 @@ slime－mode
   
   <entry>
     <title type="html"><![CDATA[使用tcpcopy导入线上流量进行功能和压力测试]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/01/08/use-tcpcopy-test-online/"/>
+    <link href="http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online/"/>
     <updated>2014-01-08T17:29:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/01/08/use-tcpcopy-test-online</id>
+    <id>http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online</id>
     <content type="html"><![CDATA[<p>假设我们要上线一个两年内不会宕机的先进架构。在上线前，免不了单元测试，功能测试，还有使用ab，webbench等等进行压力测试。</p>
 
 <p>但这些步骤非生产环境下正式用户的行为。或许你会想到灰度上线，但毕竟可能会影响到部分用户，这怎么对得起我们两年内不宕机的承诺呢？</p>
 
 <p>好在网易的 <a href="http://weibo.com/tcpcopy">王斌</a> 开发了<a href="https://github.com/wangbin579/tcpcopy">tcpcopy</a>， 可以导入线上流量进行功能和压力测试。</p>
+
+<!-- more -->
+
 
 <h3>tcpcopy介绍</h3>
 
@@ -672,10 +686,13 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
   
   <entry>
     <title type="html"><![CDATA[在生产环境部署sentry进行错误收集和提醒]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product/"/>
+    <link href="http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product/"/>
     <updated>2013-12-18T11:10:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product</id>
+    <id>http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product</id>
     <content type="html"><![CDATA[<p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
+
+<!-- more -->
+
 
 <p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
 
@@ -961,12 +978,15 @@ directory=/data/server/python-envs/sentry/
   
   <entry>
     <title type="html"><![CDATA[初探android应用性能分析]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools/"/>
+    <link href="http://jqlblue.github.io/2013/11/22/android-app-profile-tools/"/>
     <updated>2013-11-22T18:03:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/11/22/android-app-profile-tools</id>
+    <id>http://jqlblue.github.io/2013/11/22/android-app-profile-tools</id>
     <content type="html"><![CDATA[<p>如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？</p>
 
 <p>本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。</p>
+
+<!-- more -->
+
 
 <p>在分析之前，我们先补充点android基础知识。</p>
 
@@ -1151,10 +1171,13 @@ python systrace.py --app=com.qihoo.appstore gfx view
   
   <entry>
     <title type="html"><![CDATA[在php5.5中使用pdo和mysql_escape_string的一个坑]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/11/16/pdo-mysql-escape-string/"/>
+    <link href="http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string/"/>
     <updated>2013-11-16T18:04:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/11/16/pdo-mysql-escape-string</id>
+    <id>http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string</id>
     <content type="html"><![CDATA[<p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
+
+<!-- more -->
+
 
 <h3>升级步骤</h3>
 
@@ -1208,12 +1231,16 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
   
   <entry>
     <title type="html"><![CDATA[在fedora上安装fcitx输入法和云拼音]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/10/26/fcitx-fedora/"/>
+    <link href="http://jqlblue.github.io/2013/10/26/fcitx-fedora/"/>
     <updated>2013-10-26T12:30:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/10/26/fcitx-fedora</id>
+    <id>http://jqlblue.github.io/2013/10/26/fcitx-fedora</id>
     <content type="html"><![CDATA[<p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
 
-<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
+<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的
+fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
+
+<!-- more -->
+
 
 <h3>安装步骤</h3>
 
@@ -1271,9 +1298,9 @@ export XMODIFIERS="@im=fcitx"
   
   <entry>
     <title type="html"><![CDATA[九月[september]]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/31/september/"/>
+    <link href="http://jqlblue.github.io/2013/08/31/september/"/>
     <updated>2013-08-31T09:09:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/31/september</id>
+    <id>http://jqlblue.github.io/2013/08/31/september</id>
     <content type="html"><![CDATA[<h3>出生</h3>
 
 <p>九月份，我出生来到了这个世界。</p>
@@ -1282,6 +1309,9 @@ export XMODIFIERS="@im=fcitx"
 
 <p>我遇到了很多人很多事；有好心的老师和同学，当然也有不好的人和事，但是一
 切终究过去。</p>
+
+<!-- more -->
+
 
 <h3>北上</h3>
 
@@ -1341,21 +1371,21 @@ export XMODIFIERS="@im=fcitx"
   
   <entry>
     <title type="html"><![CDATA[an introduction to systemtap]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/18/an-introduction-to-systemtap/"/>
+    <link href="http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap/"/>
     <updated>2013-08-18T10:07:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/18/an-introduction-to-systemtap</id>
-    <content type="html"><![CDATA[<pre><code>SystemTap is a tool for the Linux Operating System
+    <id>http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap</id>
+    <content type="html"><![CDATA[<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
+
+<!-- more -->
+
+
+<pre><code>SystemTap is a tool for the Linux Operating System
 that allows developers and system administrators to deeply investigate
 the behavior of the kernel and even user space applications
 in order to discover error conditions, performance issues,
 or just to understand how the system works, similarly to DTrace.
-</code></pre>
 
-<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简
-化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的
-信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
-
-<pre><code>systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
+systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
 </code></pre>
 
 <p>以往在收集这些信息时，我们需要添加检测点，重新编译，安装，重启使之生效。
@@ -1429,13 +1459,16 @@ gdb也工作于用户态，它的目标是进行交互式的调试</li>
   
   <entry>
     <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/10/php-5-dot-5-upgrade-guide/"/>
+    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
     <updated>2013-08-10T09:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/10/php-5-dot-5-upgrade-guide</id>
+    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
     <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
 看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
 
 <p>面对打着补丁的5.2，我们决定升级到php5.5</p>
+
+<!-- more -->
+
 
 <h3>The reason</h3>
 
@@ -1649,9 +1682,9 @@ PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
   
   <entry>
     <title type="html"><![CDATA[移动应用无线抓包指南]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture/"/>
+    <link href="http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture/"/>
     <updated>2013-08-04T11:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/04/guide-of-packet-mobile-capture</id>
+    <id>http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture</id>
     <content type="html"><![CDATA[<h3>引子</h3>
 
 <p>如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
@@ -1663,6 +1696,9 @@ PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
 
 <p>继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
 进行检查就可以了。</p>
+
+<!-- more -->
+
 
 <p>但突然有天发现某个车站是德国人给造的，我们要私自设置
 关卡的话，就没有保修了。</p>
@@ -1760,9 +1796,9 @@ fiddle抓包嘛，码农应该都知道</em>）。</p>
   
   <entry>
     <title type="html"><![CDATA[broken pipe in php cli]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli/"/>
+    <link href="http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli/"/>
     <updated>2013-08-03T20:08:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/03/broken-pipe-in-php-cli</id>
+    <id>http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli</id>
     <content type="html"><![CDATA[<p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
 
 <hr />
@@ -1775,6 +1811,9 @@ fiddle抓包嘛，码农应该都知道</em>）。</p>
 <p>安装过程与php5.3差不多，要开启zend opcache的话，需要在
 configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_extension的
 形式加载。</p>
+
+<!-- more -->
+
 
 <ul>
 <li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序</li>
@@ -1907,18 +1946,22 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[check php5.5 compatibility]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility/"/>
+    <title type="html"><![CDATA[check php 5.5 compatibility]]></title>
+    <link href="http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility/"/>
     <updated>2013-08-03T18:16:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/03/check-php5-dot-5-compatibility</id>
+    <id>http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility</id>
     <content type="html"><![CDATA[<p>github上有个项目可以检测php5.3，5.4的兼容性，如下：
 <a href="https://github.com/wimg/PHPCompatibility">https://github.com/wimg/PHPCompatibility</a></p>
 
 <p>如果最近你想把php升级到5.5，尝试下generators和coroutines，这个应该对你
 有帮助。也可以参见博文：</p>
 
-<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a>
-第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
+<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a></p>
+
+<!-- more -->
+
+
+<p>第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
 何东西。</p>
 
 <p>在php.ini中设置了</p>

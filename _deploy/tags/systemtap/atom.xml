@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: systemtap | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/systemtap/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,21 +15,21 @@
   
   <entry>
     <title type="html"><![CDATA[an introduction to systemtap]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/18/an-introduction-to-systemtap/"/>
+    <link href="http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap/"/>
     <updated>2013-08-18T10:07:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/18/an-introduction-to-systemtap</id>
-    <content type="html"><![CDATA[<pre><code>SystemTap is a tool for the Linux Operating System
+    <id>http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap</id>
+    <content type="html"><![CDATA[<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
+
+<!-- more -->
+
+
+<pre><code>SystemTap is a tool for the Linux Operating System
 that allows developers and system administrators to deeply investigate
 the behavior of the kernel and even user space applications
 in order to discover error conditions, performance issues,
 or just to understand how the system works, similarly to DTrace.
-</code></pre>
 
-<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简
-化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的
-信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
-
-<pre><code>systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
+systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
 </code></pre>
 
 <p>以往在收集这些信息时，我们需要添加检测点，重新编译，安装，重启使之生效。

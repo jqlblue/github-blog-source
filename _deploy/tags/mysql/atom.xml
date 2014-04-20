@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: mysql | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/mysql/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,10 +15,13 @@
   
   <entry>
     <title type="html"><![CDATA[在php5.5中使用pdo和mysql_escape_string的一个坑]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/11/16/pdo-mysql-escape-string/"/>
+    <link href="http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string/"/>
     <updated>2013-11-16T18:04:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/11/16/pdo-mysql-escape-string</id>
+    <id>http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string</id>
     <content type="html"><![CDATA[<p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
+
+<!-- more -->
+
 
 <h3>升级步骤</h3>
 

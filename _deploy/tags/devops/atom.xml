@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,12 +15,15 @@
   
   <entry>
     <title type="html"><![CDATA[如何静态编译php]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/04/09/statically-compile-php/"/>
+    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
     <updated>2014-04-09T18:13:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/04/09/statically-compile-php</id>
+    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
     <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
 
 <p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
+
+<!-- more -->
+
 
 <p>安装步骤如下：</p>
 
@@ -138,14 +141,17 @@ $ ll -h /usr/local/php5-static/bin/php
   
   <entry>
     <title type="html"><![CDATA[使用tcpcopy导入线上流量进行功能和压力测试]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/01/08/use-tcpcopy-test-online/"/>
+    <link href="http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online/"/>
     <updated>2014-01-08T17:29:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/01/08/use-tcpcopy-test-online</id>
+    <id>http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online</id>
     <content type="html"><![CDATA[<p>假设我们要上线一个两年内不会宕机的先进架构。在上线前，免不了单元测试，功能测试，还有使用ab，webbench等等进行压力测试。</p>
 
 <p>但这些步骤非生产环境下正式用户的行为。或许你会想到灰度上线，但毕竟可能会影响到部分用户，这怎么对得起我们两年内不宕机的承诺呢？</p>
 
 <p>好在网易的 <a href="http://weibo.com/tcpcopy">王斌</a> 开发了<a href="https://github.com/wangbin579/tcpcopy">tcpcopy</a>， 可以导入线上流量进行功能和压力测试。</p>
+
+<!-- more -->
+
 
 <h3>tcpcopy介绍</h3>
 
@@ -279,10 +285,13 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
   
   <entry>
     <title type="html"><![CDATA[在生产环境部署sentry进行错误收集和提醒]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product/"/>
+    <link href="http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product/"/>
     <updated>2013-12-18T11:10:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/12/18/deploy-sentry-in-product</id>
+    <id>http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product</id>
     <content type="html"><![CDATA[<p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
+
+<!-- more -->
+
 
 <p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
 
@@ -565,13 +574,16 @@ directory=/data/server/python-envs/sentry/
   
   <entry>
     <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/blog/2013/08/10/php-5-dot-5-upgrade-guide/"/>
+    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
     <updated>2013-08-10T09:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2013/08/10/php-5-dot-5-upgrade-guide</id>
+    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
     <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
 看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
 
 <p>面对打着补丁的5.2，我们决定升级到php5.5</p>
+
+<!-- more -->
+
 
 <h3>The reason</h3>
 

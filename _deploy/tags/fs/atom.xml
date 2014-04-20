@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: fs | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/fs/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[linux文件系统如何进行文件存取]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system/"/>
+    <link href="http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system/"/>
     <updated>2014-03-29T13:32:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/03/29/read-wirite-on-linux-file-system</id>
+    <id>http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system</id>
     <content type="html"><![CDATA[<p>乍一看，这个题目好像有点小儿科。</p>
 
 <p>写文件嘛</p>
@@ -34,6 +34,9 @@
 切都是文件。除了<code>普通文件</code>，还包括：<code>目录</code>，<code>符号链接</code>，<code>IPC Endpoints</code>（如pipe，unix socket）和<code>设备文件</code>(块设备，字符设备)。</p>
 
 <p>当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。</p>
+
+<!-- more -->
+
 
 <p>我们要存取的文件，一般都是保存在普通的磁盘上，通过电磁变换来实现文件的读取和写入。所以我们先从磁盘说起。</p>
 

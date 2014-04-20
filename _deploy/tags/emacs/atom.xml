@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: emacs | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/emacs/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-11T19:01:38+08:00</updated>
+  <updated>2014-04-20T21:14:47+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -15,10 +15,15 @@
   
   <entry>
     <title type="html"><![CDATA[在mac系统上使用emacs24打造web开发环境]]></title>
-    <link href="http://jqlblue.github.io/blog/2014/02/28/emacs24-on-mac-and-linux/"/>
+    <link href="http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux/"/>
     <updated>2014-02-28T14:16:00+08:00</updated>
-    <id>http://jqlblue.github.io/blog/2014/02/28/emacs24-on-mac-and-linux</id>
-    <content type="html"><![CDATA[<h3>安装Emacs24.3</h3>
+    <id>http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux</id>
+    <content type="html"><![CDATA[<p>Emacs 是一个强大的、可扩展的文本编辑器。不同于vim，它是一个流行的无模式文本编辑器。尤其是当emacs24内置包管理elpa后，使用通过<code>prelude</code>，<code>goblin</code>等，轻松使用emacs打造一个顺手的diy的web开发环境。</p>
+
+<!-- more -->
+
+
+<h3>安装Emacs24.3</h3>
 
 <h5>安装Homebrew</h5>
 
