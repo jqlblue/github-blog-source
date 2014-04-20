@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "check php5.5 compatibility"
-keywords: php, compatibility, codesniffer
-description: "php兼容性检测, compatibility"
+title: "check php 5.5 compatibility"
+keywords: "php compatibility codesniffer"
+description: "how to check php syntactic compatibility"
 date: 2013-08-03 18:16
 comments: true
 categories: [php]
@@ -15,6 +15,7 @@ github上有个项目可以检测php5.3，5.4的兼容性，如下：
 有帮助。也可以参见博文：
 
 [http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/](http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/)
+<!-- more -->
 第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
 何东西。
 

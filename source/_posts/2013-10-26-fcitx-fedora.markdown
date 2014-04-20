@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "在fedora上安装fcitx输入法和云拼音"
-keywords: fedora, fcitx, input method
-description: "fedora 输入法 fcitx 云拼音 google"
+keywords: "fedora, fcitx, input method"
+description: "如何在fedora操作系统上安装fcitx输入法并使用google云拼音"
 date: 2013-10-26 12:30
 comments: true
 categories: [linux]
@@ -10,7 +10,9 @@ tags: [linux]
 ---
 从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。
 
-一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。
+一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的
+fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。
+<!-- more -->
 ### 安装步骤 ###
 {% codeblock fcitx install step lang:bash %}
 yum install fcitx.x86_64

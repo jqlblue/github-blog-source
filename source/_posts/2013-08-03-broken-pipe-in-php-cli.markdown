@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "broken pipe in php cli"
-keywords: php, cli, broken pipe
-description: "php在命令行(cli)运行，出现破管道(broken pipe)的解决方案"
+keywords: "php cli broken pipe"
+description: "how to fix broken pipe error when run php in cli"
 date: 2013-08-03 20:08
 comments: true
 categories: [php]
@@ -17,7 +17,7 @@ tags: [php5.5, pcntl, broken pipe]
 安装过程与php5.3差不多，要开启zend opcache的话，需要在
 configure时--enable-opcache。在php.ini中配置时，需要以zend_extension的
 形式加载。
-
+<!-- more -->
 * 从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序
 {% codeblock lang:bash %}
 cat access_log | awk '{print $7}' | awk -F "?" '{print $1}' | sort | uniq -c | sort -nr

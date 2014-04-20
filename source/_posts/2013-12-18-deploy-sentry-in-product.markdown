@@ -2,14 +2,14 @@
 layout: post
 title: "在生产环境部署sentry进行错误收集和提醒"
 keywords: "deploy sentry in product with event logging and aggregation php"
-description: "在生产环境部署sentry进行错误收集和提醒"
+description: "如何在线上生产环境部署sentry哨兵，对运行时错误进行收集，并通过邮件提醒等方式，及时帮助我们发现线上问题。改善服务质量"
 date: 2013-12-18 11:10
 comments: true
 categories: [devops]
 tags: [devops, sentry, monitor]
 ---
 Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（`Error`，`Exception`），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。
-
+<!-- more -->
 Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：
 
 `Python`，`PHP`，`Ruby`，`Javascript`，`Java`，`Nodejs`，`IOS`

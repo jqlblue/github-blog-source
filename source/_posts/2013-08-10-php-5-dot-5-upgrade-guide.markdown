@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "php 5.5 upgrade guide"
-keywords: php 5.5, upgrade, guide
-description: " php5.5升级指南 php-5.5 install"
+keywords: "php 5.5 upgrade guide"
+description: "how to upgrade or install php to version php 5.5"
 date: 2013-08-10 09:41
 comments: true
 categories: [php]
@@ -12,7 +12,7 @@ tags: [php5.5, devops]
 看不出问题（道行不够）。然后restart之后，一切又都正常。
 
 面对打着补丁的5.2，我们决定升级到php5.5
-
+<!-- more -->
 ### The reason ###
 左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
 的关系。

@@ -1,23 +1,21 @@
 ---
 layout: post
 title: "an introduction to systemtap"
-keywords: systemtap, introduction
-description: "sysytemtap介绍"
+keywords: "systemtap introduction"
+description: "an simple introduction to systemtap"
 date: 2013-08-18 10:07
 comments: true
 categories: [devops]
 tags: [systemtap]
 ---
+就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。
+<!-- more -->
 
     SystemTap is a tool for the Linux Operating System
     that allows developers and system administrators to deeply investigate
     the behavior of the kernel and even user space applications
     in order to discover error conditions, performance issues,
     or just to understand how the system works, similarly to DTrace.
-
-就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简
-化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的
-信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。
 
     systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
 

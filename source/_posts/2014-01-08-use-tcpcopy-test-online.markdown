@@ -2,7 +2,7 @@
 layout: post
 title: "使用tcpcopy导入线上流量进行功能和压力测试"
 keywords: "tcpcopy, online test"
-description: "tcpcopy安装与配置，使用tcpcopy进行压力和功能测试，tcpcopy介绍"
+description: "介绍tcpcopy的相关组件，工作流程，以及安装与配置。如何使tcpcopy的online和离线方式进行测试"
 date: 2014-01-08 17:29
 comments: true
 categories: [devops]
@@ -13,7 +13,7 @@ tags: [devops, tcpcopy]
 但这些步骤非生产环境下正式用户的行为。或许你会想到灰度上线，但毕竟可能会影响到部分用户，这怎么对得起我们两年内不宕机的承诺呢？
 
 好在网易的 [王斌](http://weibo.com/tcpcopy) 开发了[tcpcopy](https://github.com/wangbin579/tcpcopy)， 可以导入线上流量进行功能和压力测试。
-
+<!-- more -->
 ### tcpcopy介绍 ###
 
 `tcpcopy`是一种请求复制工具。可以将线上流量拷贝到测试机器，实时的模拟线上环境。在不影响线上用户的情况下，使用线上流量进行测试，以尽早发现bug。也可以通过放大流量，进行压力测试，评估系统承载能力。

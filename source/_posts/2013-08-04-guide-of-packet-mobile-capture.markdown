@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "移动应用无线抓包指南"
-keywords: mobile, wireshark, tcpdump, package capture
-description: "移动应用抓包，手机抓包"
+keywords: "安卓应用 手机抓包 无线抓包"
+description: "如何通过无线网络在安卓手机上进行抓包"
 date: 2013-08-04 11:41
 comments: true
 categories: [mobile, network]
@@ -19,7 +19,7 @@ tags: [mobile, wireshark]
 
 继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
 进行检查就可以了。
-
+<!-- more -->
 但突然有天发现某个车站是德国人给造的，我们要私自设置
 关卡的话，就没有保修了。
 

@@ -2,12 +2,14 @@
 layout: post
 title: "在mac系统上使用emacs24打造web开发环境"
 keywords: "emacs24.3, mac, web, develop environment"
-description: "在mac系统上使用emacs24配置php，python开发环境"
+description: "如何在mac系统上使用emacs 24 配置php，python的web开发环境"
 date: 2014-02-28 14:16
 comments: true
 categories: [emacs]
 tags: [linux, mac, emacs]
 ---
+Emacs 是一个强大的、可扩展的文本编辑器。不同于vim，它是一个流行的无模式文本编辑器。尤其是当emacs24内置包管理elpa后，使用通过`prelude`，`goblin`等，轻松使用emacs打造一个顺手的diy的web开发环境。
+<!-- more -->
 
 ### 安装Emacs24.3 ###
 

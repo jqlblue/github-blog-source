@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "linux文件系统如何进行文件存取"
-description: "深入linux文件系统中文件存取的机制"
 keywords: "linux fs inode dentry"
+description: "深入linux文件系统中文件存取的机制"
 date: 2014-03-29 13:32
 comments: true
 categories: [linux]
@@ -20,7 +20,7 @@ tags: [linux,fs]
 切都是文件。除了`普通文件`，还包括：`目录`，`符号链接`，`IPC Endpoints`（如pipe，unix socket）和`设备文件`(块设备，字符设备)。
 
 当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。
-
+<!-- more -->
 我们要存取的文件，一般都是保存在普通的磁盘上，通过电磁变换来实现文件的读取和写入。所以我们先从磁盘说起。
 
 ### 磁盘物理结构 ###

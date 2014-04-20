@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "初探android应用性能分析"
-keywords: android, app, profile, tools, performance
-description: "安卓应用渲染性能分析指南，服务端视角"
+keywords: "android, app, profile, tools, performance"
+description: "通过通过服务端开发人员的视角，对安卓(android)手机上应用(app)的渲染性能进行分析，找到性能瓶颈"
 date: 2013-11-22 18:03
 comments: true
 categories: [mobile]
@@ -11,7 +11,7 @@ tags: [mobile, android, profile]
 如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？
 
 本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。
-
+<!-- more -->
 在分析之前，我们先补充点android基础知识。
 ### android基础知识 ###
 我们所说的android应用，一般都是通过将一个以apk结尾的文件安装在手机等移动设备上才能运行起来的。所以我们先从apk说起。

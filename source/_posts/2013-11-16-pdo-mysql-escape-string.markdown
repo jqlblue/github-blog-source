@@ -1,14 +1,15 @@
 ---
 layout: post
 title: "在php5.5中使用pdo和mysql_escape_string的一个坑"
-keywords: php5.5, pdo, mysql_escape_string
-description: "在php5.5中使用pdo和mysql_escape_string的一个坑"
+keywords: "php5.5, pdo, mysql_escape_string"
+description: "php 5.5 环境下，在pdo扩展下使用在mysql_escape_string函数时遇到的一个坑"
 date: 2013-11-16 18:04
 comments: true
 categories: [php]
 tags: [php5.5, mysql]
 ---
 最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。
+<!-- more -->
 ### 升级步骤 ###
 * 安装php5.5.0
 * 检测代码兼容性

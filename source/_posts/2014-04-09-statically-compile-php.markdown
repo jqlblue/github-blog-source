@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "如何静态编译php"
-description: "在linix操作系统上，通过静态编译 statically complie 的方式，编译一个可以在无动态依赖的php可执行文件。"
-keywords: "linux php complie statically"
+description: "php静态编译，如何在linix操作系统上，通过静态编译的方式，编译一个可以随意拷贝的php可执行文件。"
+keywords: "linux php complie statically php 静态编译"
 date: 2014-04-09 18:13
 comments: true
 categories: [php]
@@ -11,7 +11,7 @@ tags: [php, linux, devops]
 有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。
 
 这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。
-
+<!-- more -->
 安装步骤如下：
 
 * 准备源文件
