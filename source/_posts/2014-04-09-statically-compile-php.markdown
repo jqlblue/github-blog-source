@@ -7,14 +7,19 @@ date: 2014-04-09 18:13
 comments: true
 categories: [php]
 tags: [php, linux, devops]
+styles: [data-table]
+toc: true
+
 ---
 有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。
+
 
 这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。
 <!-- more -->
 安装步骤如下：
 
-* 准备源文件
+# 准备源文件 #
+
 ```
 wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
 tar zxvf php-5.5.11.tar.gz
@@ -23,14 +28,18 @@ tar xvf redis-2.2.5.tgz
 mv redis-2.2.5 php-5.5.11/ext/redis
 ```
 
-* 重新生成configure
+# 配置 #
+
+## 重新生成configure ##
+
 ```
 cd php-5.5.11
 rm -f ./configure
 ./buildconf --force
 ```
 
-* configure
+## configure ##
+
 ```
 ./configure LDFLAGS=-static \
 --prefix=/usr/local/php5-static \
@@ -50,7 +59,7 @@ rm -f ./configure
 --enable-redis
 ```
 
-* 修改Makefile
+## 修改Makefile ##
 
 将
 ```
@@ -66,13 +75,14 @@ BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA
 
 在`BUILD_CLI`和`BUILD_CGI`对应的行中移除`-export-dynamic`，在`-o $(SAPI_CGI_PATH)`和`-o $(SAPI_CLI_PATH)`之前，添加`-all-static`
 
-* 继续安装
+# 安装 #
+
 ```
 make LDFLAGS=-ldl
 sudo make install
 ```
 
-* 检查
+# 检查 #
 
 在命令行执行
 
@@ -109,7 +119,11 @@ sudo make install
     $ ll -h /usr/local/php5-static/bin/php
     -rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
 
-reference：
+原始文件大小| 去除符号表后大小
+:--------------:|:---------------:
+`18M`      | **6.1M**
+
+** reference :**
 
 [^1] http://www.php.net/manual/zh/install.pecl.static.php
 
