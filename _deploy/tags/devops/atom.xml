@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-20T21:14:47+08:00</updated>
+  <updated>2014-04-25T17:45:18+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -27,23 +27,29 @@
 
 <p>安装步骤如下：</p>
 
-<ul>
-<li><p>准备源文件
-<code>
+<h1>准备源文件</h1>
+
+<p><code>
 wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
 tar zxvf php-5.5.11.tar.gz
 wget http://pecl.php.net/get/redis-2.2.5.tgz
 tar xvf redis-2.2.5.tgz
 mv redis-2.2.5 php-5.5.11/ext/redis
-</code></p></li>
-<li><p>重新生成configure
-<code>
+</code></p>
+
+<h1>配置</h1>
+
+<h2>重新生成configure</h2>
+
+<p><code>
 cd php-5.5.11
 rm -f ./configure
 ./buildconf --force
-</code></p></li>
-<li><p>configure
-<code>
+</code></p>
+
+<h2>configure</h2>
+
+<p><code>
 ./configure LDFLAGS=-static \
 --prefix=/usr/local/php5-static \
 --disable-all \
@@ -60,10 +66,9 @@ rm -f ./configure
 --enable-ctype \
 --disable-redis-session \
 --enable-redis
-</code></p></li>
-<li><p>修改Makefile</p></li>
-</ul>
+</code></p>
 
+<h2>修改Makefile</h2>
 
 <p>将
 <code>
@@ -79,15 +84,14 @@ BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA
 
 <p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
 
-<ul>
-<li><p>继续安装
-<code>
+<h1>安装</h1>
+
+<p><code>
 make LDFLAGS=-ldl
 sudo make install
-</code></p></li>
-<li><p>检查</p></li>
-</ul>
+</code></p>
 
+<h1>检查</h1>
 
 <p>在命令行执行</p>
 
@@ -127,7 +131,23 @@ $ ll -h /usr/local/php5-static/bin/php
 -rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
 </code></pre>
 
-<p>reference：</p>
+<table>
+<thead>
+<tr>
+<th align="center">原始文件大小</th>
+<th align="center"> 去除符号表后大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>18M</code>      </td>
+<td align="center"> <strong>6.1M</strong></td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong> reference :</strong></p>
 
 <p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
 

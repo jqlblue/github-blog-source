@@ -21,34 +21,29 @@
   <link rel="canonical" href="http://jqlblue.github.io/2014/04/09/statically-compile-php">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
   <link href="/atom.xml" rel="alternate" title="Jqlblue's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<!--<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
-      rel="stylesheet" type="text/css">
--->
+  <script type="text/javascript">
+    jQuery.noConflict();
+  </script>
+  <script src="/javascripts/libs/jquery.1.7.1.min.js" type="text/javascript"></script>
+<script src="/javascripts/libs/jquery.tableofcontents.min.js" type="text/javascript"></script>
+<script src="/javascripts/libs/generate-toc.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 function addBlankTargetForLinks () {
-
   $('a[href^="http"]').each(function(){
-
       $(this).attr('target', '_blank');
-
   });
-
 }
 
 $(document).bind('DOMNodeInserted', function(event) {
-
   addBlankTargetForLinks();
-
 });
-
 </script>
 
   
@@ -143,10 +138,7 @@ var _hmt = _hmt || [];
 
 <p>安装步骤如下：</p>
 
-<ul>
-<li>准备源文件</li>
-</ul>
-
+<h1>准备源文件</h1>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -160,10 +152,9 @@ var _hmt = _hmt || [];
 </span><span class='line'>mv redis-2.2.5 php-5.5.11/ext/redis</span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>重新生成configure</li>
-</ul>
+<h1>配置</h1>
 
+<h2>重新生成configure</h2>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -173,10 +164,7 @@ var _hmt = _hmt || [];
 </span><span class='line'>./buildconf --force</span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>configure</li>
-</ul>
-
+<h2>configure</h2>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -212,10 +200,7 @@ var _hmt = _hmt || [];
 </span><span class='line'>--enable-redis</span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>修改Makefile</li>
-</ul>
-
+<h2>修改Makefile</h2>
 
 <p>将</p>
 
@@ -237,10 +222,7 @@ var _hmt = _hmt || [];
 
 <p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
 
-<ul>
-<li>继续安装</li>
-</ul>
-
+<h1>安装</h1>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -248,10 +230,7 @@ var _hmt = _hmt || [];
 </span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>检查</li>
-</ul>
-
+<h1>检查</h1>
 
 <p>在命令行执行</p>
 
@@ -291,7 +270,23 @@ $ ll -h /usr/local/php5-static/bin/php
 -rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
 </code></pre>
 
-<p>reference：</p>
+<table>
+<thead>
+<tr>
+<th align="center">原始文件大小</th>
+<th align="center"> 去除符号表后大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>18M</code>      </td>
+<td align="center"> <strong>6.1M</strong></td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong> reference :</strong></p>
 
 <p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
 
@@ -424,16 +419,16 @@ var jiathis_config = {data_track_clickback:'true'};
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 210%" href="/tags/devops/">devops</a>
-<a style="font-size: 90%" href="/tags/fs/">fs</a>
+    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
+<a style="font-size: 210%" href="/tags/devops/">devops</a>
 <a style="font-size: 210%" href="/tags/linux/">linux</a>
 <a style="font-size: 150%" href="/tags/mobile/">mobile</a>
 <a style="font-size: 90%" href="/tags/monitor/">monitor</a>
 <a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
-<a style="font-size: 90%" href="/tags/php/">php</a>
 <a style="font-size: 210%" href="/tags/php5-dot-5/">php5.5</a>
 <a style="font-size: 90%" href="/tags/sentry/">sentry</a>
-<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
+<a style="font-size: 90%" href="/tags/tcpcopy/">tcpcopy</a>
+<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
 
   </ul>
 </section>
@@ -468,6 +463,13 @@ var jiathis_config = {data_track_clickback:'true'};
 
 
 
+
+  <script type="text/javascript">
+  jQuery(document).ready(function() {
+    // Put a TOC right before the entry content.
+    generateTOC('.entry-content', 'Table of Contents');
+  });
+  </script>
 
 
 
