@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: codesniffer | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/codesniffer/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-25T17:45:18+08:00</updated>
+  <updated>2014-04-26T15:04:31+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -40,31 +40,19 @@
 
 <p>所以我在安装完php5.5后，写了个shell脚本，用php -l来检测。内容如下：</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;SOURCE_ROOT<span class="o">=</span>&amp;lsquo;/path/php-code&amp;rsquo;
-</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5/bin/php&amp;rsquo;
-</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;check_syntax<span class="o">=</span><span class="k">$(${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span><span class="k">)</span>
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;done
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:bash %}</p>
+
+<h1>!/bin/sh</h1>
+
+<p>SOURCE_ROOT=&lsquo;/path/php-code&rsquo;
+PHP_BIN=&lsquo;/usr/local/php-5.5/bin/php&rsquo;
+for file in $(find ${SOURCE_ROOT} -type f -iname &lsquo;*.php&rsquo;); do</p>
+
+<pre><code>check_syntax=$(${PHP_BIN} -l $file | grep -v 'No syntax errors detected')
+</code></pre>
+
+<p>done
+{% endcodeblock %}</p>
 
 <p>使用方法：</p>
 
