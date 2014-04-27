@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/php/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-26T15:04:31+08:00</updated>
+  <updated>2014-04-27T20:45:54+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,483 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[php中的单例模式面面观]]></title>
+    <link href="http://jqlblue.github.io/2014/04/26/singleton-pattern-in-php/"/>
+    <updated>2014-04-26T20:47:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/04/26/singleton-pattern-in-php</id>
+    <content type="html"><![CDATA[<p>最近在面试时发现好多人都喜欢在简历中添加“熟悉各种设计模式”那一项。但也不乏对于最为简单的单例，也仅限于书本上的一点认知，所以扯一扯php中单例模式的几种使用场景。</p>
+
+<!-- more -->
+
+
+<h1>何为单例模式</h1>
+
+<p>单例模式属于创建型的应用模式，可以确保某一个类只有一个实例。这在获取数据库，缓存服务器的连接句柄，以及获取配置信息方面非常方便。</p>
+
+<p>使用单例模式，可以减少在一次web请求中多次连接数据库或者解析配置文件等操作对系统资源的消耗，也可以避免大量的new操作。</p>
+
+<p>其UML结构图如下：</p>
+
+<p><img src="/images/pattern/singleton-uml.png" title="singleton-uml" ></p>
+
+<p>在php中实现单例模式需要注意：</p>
+
+<ul>
+<li>需要一个静态变量保存实例</li>
+<li>需要提供一个公共的静态方法，用于返回需要获取的实例</li>
+<li>需要防止外部程序通过new和clone等操作产生相关实例，从而失去单例模式的意义</li>
+</ul>
+
+
+<h1>代码实现解析</h1>
+
+<p>一个单例模式的php实现大致如下:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+上述代码通过<code>静态成员变量</code>保存创建的实例，通过将构造函数设置为私有的，并使用魔术方法<code>__clone</code>&ldquo;重载"clone方法以避免通过外部程序获取相关实例。</p>
+
+<p>由于php中的静态变量包括：<code>静态全局变量</code>，<code>静态局部变量</code>，<code>静态成员变量</code>，所以也可以通过<code>静态局部变量</code>来保存创建的实例。但是在子类中获取创建的实例时，会遇到一些问题。示例如下：</p>
+
+<h2>使用静态局部变量</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>singleton-static.php </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span><span class='line'><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
+</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<pre><code>$ php /.singleton-static.php
+object(Singleton)#1 (0) {
+}
+object(Singleton)#2 (0) {
+}
+</code></pre>
+
+<blockquote><p>此例没有获取到唯一实例，因为局部静态变量，也就是在函数中定义的静态变量。其信息是存储在zend vm为每个函数分配的一个私有符号表中。</p></blockquote>
+
+<p>php中当继承发生时，会进行函数的合并。UserModel中调用的，实际上是合并在UserModel中的getInstance，GroupModel中调用的，也是合并在GroupModel中的getInstance方法。</p>
+
+<p>因为是在两个不同方法的私有符号表中获取数据，所以取到的不是同一个实例。</p>
+
+<blockquote><p>可以将self换成parent试试</p></blockquote>
+
+<h2>使用静态成员变量</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>singleton-static-member.php </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span><span class='line'><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
+</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<pre><code>$ php /.singleton-static-member.php
+object(Singleton)#1 (0) {
+}
+object(Singleton)#1 (0) {
+}
+</code></pre>
+
+<blockquote><p>此时获取到了唯一实例，因为静态成员变量的信息是存储在类结构的 default_static_members 字段，为所有实例所共用。</p></blockquote>
+
+<h1>编写一个单例的基类</h1>
+
+<p>有时我们的项目中有个缓存类，还有数据库类，还有个文件操作类。想让这三个类都是单例的话，我们需要实现三个单例，这有点繁琐。于是我们可以创建一个单例的基类，要实现单例的类继承这个基类即可。直接上代码：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instances</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">final</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">final</span> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$c</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$c</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>可以这样进行调用。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Cache</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_getCache</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">_getCache</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Db</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_getDb</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">_getDb</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>reference：</p>
+
+<p>[^1] <a href="http://www.php-internals.com/book/?p=chapt05/05-04-class-inherit-abstract">http://www.php-internals.com/book/?p=chapt05/05-04-class-inherit-abstract</a></p>
+
+<p>[^2] <a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F</a></p>
+
+<p>[^3] <a href="http://www.phptherightway.com/pages/Design-Patterns.html">http://www.phptherightway.com/pages/Design-Patterns.html</a></p>
+
+<p>[^4] <a href="http://rancoud.com/read-phps-opcode/">http://rancoud.com/read-phps-opcode/</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何静态编译php]]></title>
@@ -254,7 +731,7 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
 <h3>Step</h3>
 
 <p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
-{% img /images/php-5.5-prefermance.png &lsquo;php-5.5-prefermance 'images&rsquo; %}</p>
+<img src="/images/php-5.5-prefermance.png" title="&lsquo;php-5.5-prefermance 'images&rsquo;" ></p>
 
 <p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
 
@@ -264,49 +741,90 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
 
 <h5>1. 安装php5.5</h5>
 
-<p>{% codeblock php-5.5.0-install.sh lang:bash %}
-PHP_VERSION=5.5.0
-wget -c <a href="http://www.php.net/get/php-$">http://www.php.net/get/php-$</a>{PHP_VERSION}.tar.gz/from/this/mirror
-tar zxvf php-${PHP_VERSION}.tar.gz
-cd php-${PHP_VERSION}
-PHP_PREFIX=/usr/local/php-${PHP_VERSION}
-./configure \
-&mdash;prefix=${PHP_PREFIX} \
-&mdash;with-config-file-path=${PHP_PREFIX}/etc \
-&mdash;disable-debug \
-&mdash;enable-inline-optimization \
-&mdash;disable-all \
-&mdash;enable-fpm \
-&mdash;enable-libxml \
-&mdash;enable-session \
-&mdash;enable-xml \
-&mdash;enable-hash \
-&mdash;enable-mbstring \
-&mdash;with-layout=GNU \
-&mdash;enable-filter \
-&mdash;with-pcre-regex \
-&mdash;with-zlib \
-&mdash;enable-json \
-&mdash;enable-mysqlnd \
-&mdash;enable-pdo \
-&mdash;with-mysql=mysqlnd \
-&mdash;with-mysqli=mysqlnd \
-&mdash;with-pdo-mysql=mysqlnd \
-&mdash;enable-simplexml \
-&mdash;enable-dom \
-&mdash;enable-phar \
-&mdash;enable-tokenizer \
-&mdash;enable-posix \
-&mdash;enable-xmlwriter \
-&mdash;enable-xmlreader \
-&mdash;with-curl \
-&mdash;with-iconv \
-&mdash;with-mcrypt \
-&mdash;enable-ctype \
-&mdash;enable-opcache
-make
-make install
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
+</span><span class='line'>wget -c &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.php.net/get/php-$&quot;</span>&gt;http://www.php.net/get/php-<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>PHP_VERSION<span class="o">}</span>.tar.gz/from/this/mirror
+</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
+</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'>./configure <span class="se">\</span>
+</span><span class='line'>&amp;mdash;prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-debug <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-inline-optimization <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-all <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-fpm <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-libxml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-session <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-hash <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mbstring <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-layout<span class="o">=</span>GNU <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-filter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pcre-regex <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-zlib <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-json <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-pdo <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-simplexml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-dom <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-phar <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-tokenizer <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-posix <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlwriter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlreader <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-curl <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-iconv <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mcrypt <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-ctype <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-opcache
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>完整脚本可参见：
 <a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
@@ -324,32 +842,51 @@ make install
 
 <p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
 就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。
-{% codeblock check-php5.5-compatibility.sh lang:bash %}</p>
-
-<h1>!/bin/sh</h1>
-
-<h1>use sh ./check-php-compatibility.sh /path/code</h1>
-
-<p>if [[ $1 != &lsquo;&rsquo; ]];then
-   SOURCE_ROOT=$1
-else
-   SOURCE_ROOT=&lsquo;/path/code/src&rsquo;
-fi
-PHP_BIN=&lsquo;/usr/local/php-5.5.0/bin/php&rsquo;
-for file in $(find ${SOURCE_ROOT} -type f -iname &lsquo;*.php&rsquo;); do</p>
-
-<pre><code>${PHP_BIN} -d error_reporting=E_ALL -l $file | grep -v 'No syntax errors detected'
-</code></pre>
-
-<p>done
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;use sh ./check-php-compatibility.sh /path/code&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> &amp;lsquo;&amp;rsquo; <span class="o">]]</span>;<span class="k">then</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span>&amp;lsquo;/path/code/src&amp;rsquo;
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5.0/bin/php&amp;rsquo;
+</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;<span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;done
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
 
 <h5>3. 从服务器上收集请求情况</h5>
 
-<p>{% codeblock lang:bash %}
-cat access.log | awk -F &ldquo;[ ?]&rdquo; &lsquo;{urls[$7]++} END {for(key in urls)print urls[key],&ldquo;\t&rdquo;,key}&rsquo; | sort -nr
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F &amp;ldquo;<span class="o">[</span> ?<span class="o">]</span>&amp;rdquo; &amp;lsquo;<span class="o">{</span>urls<span class="o">[</span><span class="nv">$7</span><span class="o">]</span>++<span class="o">}</span> END <span class="o">{</span><span class="k">for</span><span class="o">(</span>key in urls<span class="o">)</span>print urls<span class="o">[</span>key<span class="o">]</span>,&amp;ldquo;<span class="se">\t</span>&amp;rdquo;,key<span class="o">}</span>&amp;rsquo; | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h5>4. 通过收集的请求url进行测试</h5>
 
@@ -414,14 +951,14 @@ configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_exten
 
 <ul>
 <li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序
-{% codeblock lang:bash %}
-cat access_log | awk &lsquo;{print $7}&rsquo; | awk -F &ldquo;?&rdquo; &lsquo;{print $1}&rsquo; | sort | uniq -c | sort -nr
-{% endcodeblock %}</li>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access_log | awk &amp;lsquo;<span class="o">{</span>print <span class="nv">$7</span><span class="o">}</span>&amp;rsquo; | awk -F &amp;ldquo;?&amp;rdquo; &amp;lsquo;<span class="o">{</span>print <span class="nv">$1</span><span class="o">}</span>&amp;rsquo; | sort | uniq -c | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
 <li><p>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地
  址（包括相关参数）
-{% codeblock lang:bash %}
-access_log | grep  &lsquo;/api/test&rsquo; | head -n 1
-{% endcodeblock %}</p></li>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>access_log | grep  &amp;lsquo;/api/test&amp;rsquo; | head -n 1
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
 <li><p>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</p></li>
 </ul>
 
@@ -436,39 +973,64 @@ output: Broken pipe”。</p>
 
 <p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做
 了下加工后，发现一切正常了，修改后的python代码如下
-{% codeblock lang:python %}
-import subprocess
-import signal
-def reset_sigpipe():</p>
-
-<pre><code>signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-</code></pre>
-
-<p>output = subprocess.Popen(&ldquo;cat access_log | grep  &lsquo;/api/test&rsquo; | head -n 1&rdquo;, shell=True, preexec_fn=reset_sigpipe, stdout=subprocess.PIPE)
-print output.stdout.read()
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">subprocess</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">signal</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">reset_sigpipe</span><span class="p">():</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cat</span> <span class="n">access_log</span> <span class="o">|</span> <span class="n">grep</span>  <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">test</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">reset_sigpipe</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但是我是要用php来做这件事，下面是php相关代码
-{% codeblock lang:php %}
-&lt;?php
-$source = &lsquo;./source_url.txt&rsquo;;
-$dest = &lsquo;./dest_url.txt&rsquo;;
-$res = file($source);
-pcntl_signal(SIGPIPE, SIG_DFL);
-file_put_contents($dest, &lsquo;&rsquo;);
-foreach ($res as $row) {</p>
-
-<pre><code>$row = trim($row);
-if (strpos($row, 'http://') !== false) {
-    continue;
-}
-$command = "cat access_log | grep  '{$row}' | head -n 1 | awk '{print \$6\" \"\$7}' | awk -F '\"' '{print $2}' | awk '{print $1\" http://test.api.com\"$2}'";
-$check = system($command);
-file_put_contents($dest, $check . PHP_EOL, FILE_APPEND);
-</code></pre>
-
-<p>}
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$source</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">source_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$dest</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">dest_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$res</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
+</span><span class='line'><span class="nb">pcntl_signal</span><span class="p">(</span><span class="nx">SIGPIPE</span><span class="p">,</span> <span class="nx">SIG_DFL</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$command</span> <span class="o">=</span> <span class="s2">&quot;cat access_log | grep  &#39;</span><span class="si">{</span><span class="nv">$row</span><span class="si">}</span><span class="s2">&#39; | head -n 1 | awk &#39;{print </span><span class="se">\$</span><span class="s2">6</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;\$</span><span class="s2">7}&#39; | awk -F &#39;</span><span class="se">\&quot;</span><span class="s2">&#39; &#39;{print $2}&#39; | awk &#39;{print $1</span><span class="se">\&quot;</span><span class="s2"> http://test.api.com</span><span class="se">\&quot;</span><span class="s2">$2}&#39;&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$check</span> <span class="o">=</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="nv">$check</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">,</span> <span class="nx">FILE_APPEND</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是
 这句:</p>
@@ -508,53 +1070,6 @@ SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于�
 <p>reference：</p>
 
 <blockquote><p><a href="https://blogs.oracle.com/opal/entry/using_php_5_5_s">https://blogs.oracle.com/opal/entry/using_php_5_5_s</a></p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[check php 5.5 compatibility]]></title>
-    <link href="http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility/"/>
-    <updated>2013-08-03T18:16:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility</id>
-    <content type="html"><![CDATA[<p>github上有个项目可以检测php5.3，5.4的兼容性，如下：
-<a href="https://github.com/wimg/PHPCompatibility">https://github.com/wimg/PHPCompatibility</a></p>
-
-<p>如果最近你想把php升级到5.5，尝试下generators和coroutines，这个应该对你
-有帮助。也可以参见博文：</p>
-
-<p><a href="http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/">http://techblog.wimgodden.be/2012/03/04/php-5-4-compatibility-checks-using-php_codesniffer/</a></p>
-
-<!-- more -->
-
-
-<p>第一次尝试时，可能因为php配置的问题（date.timezone），所以没有检测出任
-何东西。</p>
-
-<p>在php.ini中设置了</p>
-
-<blockquote><p>date.timezone = Asia/Shanghai</p></blockquote>
-
-<p>之后，发现效果不错，只是显示的行号有问题，而且检测的速度不尽人意。</p>
-
-<p>所以我在安装完php5.5后，写了个shell脚本，用php -l来检测。内容如下：</p>
-
-<p>{% codeblock lang:bash %}</p>
-
-<h1>!/bin/sh</h1>
-
-<p>SOURCE_ROOT=&lsquo;/path/php-code&rsquo;
-PHP_BIN=&lsquo;/usr/local/php-5.5/bin/php&rsquo;
-for file in $(find ${SOURCE_ROOT} -type f -iname &lsquo;*.php&rsquo;); do</p>
-
-<pre><code>check_syntax=$(${PHP_BIN} -l $file | grep -v 'No syntax errors detected')
-</code></pre>
-
-<p>done
-{% endcodeblock %}</p>
-
-<p>使用方法：</p>
-
-<blockquote><p>sh /path/check-php-compatibility.sh > check-result.txt</p></blockquote>
 ]]></content>
   </entry>
   
