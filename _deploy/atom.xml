@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-04-27T20:47:01+08:00</updated>
+  <updated>2014-04-29T09:47:17+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -68,13 +68,16 @@
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
@@ -88,6 +91,11 @@
 </span><span class='line'>            <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -143,11 +151,14 @@
 <span class='line-number'>41</span>
 <span class='line-number'>42</span>
 <span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
@@ -163,6 +174,11 @@
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">return</span> <span class="nv">$_instance</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
@@ -170,7 +186,7 @@
 </span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>        <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
 </span><span class='line'>        <span class="c1">//logic no care</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -180,7 +196,7 @@
 </span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>        <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
 </span><span class='line'>        <span class="c1">//logic no care</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -190,9 +206,9 @@
 
 
 <pre><code>$ php /.singleton-static.php
-object(Singleton)#1 (0) {
-}
 object(Singleton)#2 (0) {
+}
+object(Singleton)#3 (0) {
 }
 </code></pre>
 
@@ -252,6 +268,10 @@ object(Singleton)#2 (0) {
 <span class='line-number'>43</span>
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
 </span><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
 </span><span class='line'><span class="p">{</span>
@@ -259,7 +279,6 @@ object(Singleton)#2 (0) {
 </span><span class='line'>
 </span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
@@ -274,6 +293,11 @@ object(Singleton)#2 (0) {
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
@@ -281,7 +305,7 @@ object(Singleton)#2 (0) {
 </span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>        <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
 </span><span class='line'>        <span class="c1">//logic no care</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -291,7 +315,7 @@ object(Singleton)#2 (0) {
 </span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>        <span class="nv">$instance</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$instance</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
 </span><span class='line'>        <span class="c1">//logic no care</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
@@ -301,9 +325,9 @@ object(Singleton)#2 (0) {
 
 
 <pre><code>$ php /.singleton-static-member.php
-object(Singleton)#1 (0) {
+object(Singleton)#2 (0) {
 }
-object(Singleton)#1 (0) {
+object(Singleton)#2 (0) {
 }
 </code></pre>
 
@@ -361,65 +385,6 @@ object(Singleton)#1 (0) {
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>可以这样进行调用。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Cache</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_getCache</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">_getCache</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Db</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_getDb</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">_getDb</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
