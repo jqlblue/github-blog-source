@@ -36,7 +36,6 @@ class Singleton
 
     private function __construct()
     {
-        return new StdClass();
     }
 
     public function __clone()
@@ -51,6 +50,11 @@ class Singleton
         }
         return self::$_instance;
     }
+
+    public function getObj()
+    {
+        return new StdClass();
+    }
 }
 {% endcodeblock %}
 上述代码通过`静态成员变量`保存创建的实例，通过将构造函数设置为私有的，并使用魔术方法`__clone`"重载"clone方法以避免通过外部程序获取相关实例。
@@ -63,7 +67,6 @@ class Singleton
 {
     private function __construct()
     {
-        return new StdClass();
     }
 
     public function __clone()
@@ -79,6 +82,11 @@ class Singleton
         }
         return $_instance;
     }
+
+    public function getObj()
+    {
+        return new StdClass();
+    }
 }
 
 class UserModel extends Singleton
@@ -86,7 +94,7 @@ class UserModel extends Singleton
     public static function getUser()
     {
         $instance = self::getInstance();
-        var_dump($instance);
+        var_dump($instance->getObj());
         //logic no care
     }
 }
@@ -96,7 +104,7 @@ class GroupModel extends Singleton
     public static function getGroup()
     {
         $instance = self::getInstance();
-        var_dump($instance);
+        var_dump($instance->getObj());
         //logic no care
     }
 }
@@ -105,9 +113,9 @@ GroupModel::getGroup();
 {% endcodeblock %}
 
     $ php /.singleton-static.php
-    object(Singleton)#1 (0) {
-    }
     object(Singleton)#2 (0) {
+    }
+    object(Singleton)#3 (0) {
     }
 
 > 此例没有获取到唯一实例，因为局部静态变量，也就是在函数中定义的静态变量。其信息是存储在zend vm为每个函数分配的一个私有符号表中。
@@ -127,7 +135,6 @@ class Singleton
 
     private function __construct()
     {
-        return new StdClass();
     }
 
     public function __clone()
@@ -142,6 +149,11 @@ class Singleton
         }
         return self::$_instance;
     }
+
+    public function getObj()
+    {
+        return new StdClass();
+    }
 }
 
 class UserModel extends Singleton
@@ -149,7 +161,7 @@ class UserModel extends Singleton
     public static function getUser()
     {
         $instance = self::getInstance();
-        var_dump($instance);
+        var_dump($instance->getObj());
         //logic no care
     }
 }
@@ -159,7 +171,7 @@ class GroupModel extends Singleton
     public static function getGroup()
     {
         $instance = self::getInstance();
-        var_dump($instance);
+        var_dump($instance->getObj());
         //logic no care
     }
 }
@@ -168,9 +180,9 @@ GroupModel::getGroup();
 {% endcodeblock %}
 
     $ php /.singleton-static-member.php
-    object(Singleton)#1 (0) {
+    object(Singleton)#2 (0) {
     }
-    object(Singleton)#1 (0) {
+    object(Singleton)#2 (0) {
     }
 
 > 此时获取到了唯一实例，因为静态成员变量的信息是存储在类结构的 default_static_members 字段，为所有实例所共用。
@@ -202,38 +214,6 @@ class Singleton
         }
 
         return self::$_instances[$c];
-    }
-}
-{% endcodeblock %}
-
-可以这样进行调用。
-
-{% codeblock lang:php %}
-class Cache extends Singleton
-{
-    protected function __construct()
-    {
-        return $this->_getCache();
-    }
-
-    private function _getCache()
-    {
-        return new StdClass();
-        //logic no care
-    }
-}
-
-class Db extends Singleton
-{
-    protected function __construct()
-    {
-        return $this->_getDb();
-    }
-
-    private function _getDb()
-    {
-        return new StdClass();
-        //logic no care
     }
 }
 {% endcodeblock %}
