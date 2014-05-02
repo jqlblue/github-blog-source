@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emacs | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/emacs/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-01T14:41:33+08:00</updated>
+  <updated>2014-05-02T10:29:33+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -79,21 +79,31 @@ brew linkapps
 
 <p>如：</p>
 
-<p>{% codeblock lang:ruby %}
-require &lsquo;formula&rsquo;</p>
-
-<p>class Emacs &lt; Formula</p>
-
-<pre><code>homepage 'http://www.gnu.org/software/emacs/'
-#url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
-url 'http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz'
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">formula</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class Emacs &amp;lt; Formula&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">homepage</span> <span class="s1">&#39;http://www.gnu.org/software/emacs/&#39;</span>
+</span><span class='line'><span class="c1">#url &#39;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#39;</span>
+</span><span class='line'><span class="n">url</span> <span class="s1">&#39;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
 
-<p>{% img /images/emacs/startup.png &lsquo;emacs start up %}</p>
+<p><img src="/images/emacs/startup.png" title="&lsquo;emacs start up" ></p>
 
 <h3>配置Emacs</h3>
 
@@ -106,7 +116,7 @@ ln -s /somepath/goblin-emacs ~/.emacs.d
 
 <p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
 
-<p>{% img /images/emacs/goblin-startup.png &lsquo;goblin emacs start up %}</p>
+<p><img src="/images/emacs/goblin-startup.png" title="&lsquo;goblin emacs start up" ></p>
 
 <p>完成<code>jedi</code>，python自动完成的配置</p>
 
@@ -146,7 +156,7 @@ slime－mode
 
 
 <p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。
-{% img /images/emacs/swap-control-capslock.png &lsquo;swap control caps-lock %}</p>
+<img src="/images/emacs/swap-control-capslock.png" title="&lsquo;swap control caps-lock" ></p>
 
 <ul>
 <li>某些汉字显示为方块</li>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-01T14:41:33+08:00</updated>
+  <updated>2014-05-02T10:29:33+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -194,7 +194,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <h3>tcpcopy工作流程</h3>
 
-<p>{% img /images/tcpcopy_flow.png &lsquo;tcpcopy flow&rsquo; %}
+<p><img src="/images/tcpcopy_flow.png" title="&lsquo;tcpcopy flow&rsquo;" >
 如上图，tcpcopy拷贝一次流量访问的步骤如下：</p>
 
 <pre><code>①　一个访问到达线上前端机；
@@ -328,25 +328,42 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
 <h4>python环境安装</h4>
 
 <p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包
-{% codeblock python2.7.3-install.sh lang:bash %}
-cd ~
-yum install -y bzip2-devel.x86_64
-yum install -y sqlite-devel.x86_64
-yum install -y readline-devel.x86_64
-wget <a href="http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2">http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2</a>
-tar jxvf Python-2.7.3.tar.bz2
-cd Python-2.7.3
-./configure &mdash;prefix=/usr/local/python2.7.3
-make
-sudo make install</p>
-
-<p>wget <a href="https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz">https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz</a> &mdash;no-check-certificate
-tar zxvf distribute-0.6.49.tar.gz
-cd distribute-0.6.49
-sudo /usr/local/python2.7.3/bin/python setup.py install
-sudo /usr/local/python2.7.3/bin/easy_install virtualenv
-sudo /usr/local/python2.7.3/bin/easy_install -i <a href="http://e.pypi.python.org/simple">http://e.pypi.python.org/simple</a> virtualenvwrapper
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>python2.7.3-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>yum install -y bzip2-devel.x86_64
+</span><span class='line'>yum install -y sqlite-devel.x86_64
+</span><span class='line'>yum install -y readline-devel.x86_64
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&quot;</span>&gt;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&lt;/a&gt;
+</span><span class='line'>tar jxvf Python-2.7.3.tar.bz2
+</span><span class='line'><span class="nb">cd </span>Python-2.7.3
+</span><span class='line'>./configure &amp;mdash;prefix<span class="o">=</span>/usr/local/python2.7.3
+</span><span class='line'>make
+</span><span class='line'>sudo make install&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&quot;</span>&gt;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&lt;/a&gt; &amp;mdash;no-check-certificate
+</span><span class='line'>tar zxvf distribute-0.6.49.tar.gz
+</span><span class='line'><span class="nb">cd </span>distribute-0.6.49
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenv
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install -i &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://e.pypi.python.org/simple&quot;</span>&gt;http://e.pypi.python.org/simple&lt;/a&gt; virtualenvwrapper
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
 
 <pre><code>/usr/local/python2.7.3/bin/python
@@ -610,7 +627,7 @@ directory=/data/server/python-envs/sentry/
 <h3>Step</h3>
 
 <p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
-{% img /images/php-5.5-prefermance.png &lsquo;php-5.5-prefermance 'images&rsquo; %}</p>
+<img src="/images/php-5.5-prefermance.png" title="&lsquo;php-5.5-prefermance 'images&rsquo;" ></p>
 
 <p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
 
@@ -620,49 +637,90 @@ directory=/data/server/python-envs/sentry/
 
 <h5>1. 安装php5.5</h5>
 
-<p>{% codeblock php-5.5.0-install.sh lang:bash %}
-PHP_VERSION=5.5.0
-wget -c <a href="http://www.php.net/get/php-$">http://www.php.net/get/php-$</a>{PHP_VERSION}.tar.gz/from/this/mirror
-tar zxvf php-${PHP_VERSION}.tar.gz
-cd php-${PHP_VERSION}
-PHP_PREFIX=/usr/local/php-${PHP_VERSION}
-./configure \
-&mdash;prefix=${PHP_PREFIX} \
-&mdash;with-config-file-path=${PHP_PREFIX}/etc \
-&mdash;disable-debug \
-&mdash;enable-inline-optimization \
-&mdash;disable-all \
-&mdash;enable-fpm \
-&mdash;enable-libxml \
-&mdash;enable-session \
-&mdash;enable-xml \
-&mdash;enable-hash \
-&mdash;enable-mbstring \
-&mdash;with-layout=GNU \
-&mdash;enable-filter \
-&mdash;with-pcre-regex \
-&mdash;with-zlib \
-&mdash;enable-json \
-&mdash;enable-mysqlnd \
-&mdash;enable-pdo \
-&mdash;with-mysql=mysqlnd \
-&mdash;with-mysqli=mysqlnd \
-&mdash;with-pdo-mysql=mysqlnd \
-&mdash;enable-simplexml \
-&mdash;enable-dom \
-&mdash;enable-phar \
-&mdash;enable-tokenizer \
-&mdash;enable-posix \
-&mdash;enable-xmlwriter \
-&mdash;enable-xmlreader \
-&mdash;with-curl \
-&mdash;with-iconv \
-&mdash;with-mcrypt \
-&mdash;enable-ctype \
-&mdash;enable-opcache
-make
-make install
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
+</span><span class='line'>wget -c &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.php.net/get/php-$&quot;</span>&gt;http://www.php.net/get/php-<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>PHP_VERSION<span class="o">}</span>.tar.gz/from/this/mirror
+</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
+</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+</span><span class='line'>./configure <span class="se">\</span>
+</span><span class='line'>&amp;mdash;prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-debug <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-inline-optimization <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disable-all <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-fpm <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-libxml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-session <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-hash <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mbstring <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-layout<span class="o">=</span>GNU <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-filter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pcre-regex <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-zlib <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-json <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-pdo <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-simplexml <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-dom <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-phar <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-tokenizer <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-posix <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlwriter <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-xmlreader <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-curl <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-iconv <span class="se">\</span>
+</span><span class='line'>&amp;mdash;with-mcrypt <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-ctype <span class="se">\</span>
+</span><span class='line'>&amp;mdash;enable-opcache
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>完整脚本可参见：
 <a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
@@ -680,32 +738,51 @@ make install
 
 <p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
 就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。
-{% codeblock check-php5.5-compatibility.sh lang:bash %}</p>
-
-<h1>!/bin/sh</h1>
-
-<h1>use sh ./check-php-compatibility.sh /path/code</h1>
-
-<p>if [[ $1 != &lsquo;&rsquo; ]];then
-   SOURCE_ROOT=$1
-else
-   SOURCE_ROOT=&lsquo;/path/code/src&rsquo;
-fi
-PHP_BIN=&lsquo;/usr/local/php-5.5.0/bin/php&rsquo;
-for file in $(find ${SOURCE_ROOT} -type f -iname &lsquo;*.php&rsquo;); do</p>
-
-<pre><code>${PHP_BIN} -d error_reporting=E_ALL -l $file | grep -v 'No syntax errors detected'
-</code></pre>
-
-<p>done
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;use sh ./check-php-compatibility.sh /path/code&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> &amp;lsquo;&amp;rsquo; <span class="o">]]</span>;<span class="k">then</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span>&amp;lsquo;/path/code/src&amp;rsquo;
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5.0/bin/php&amp;rsquo;
+</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;<span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;done
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
 
 <h5>3. 从服务器上收集请求情况</h5>
 
-<p>{% codeblock lang:bash %}
-cat access.log | awk -F &ldquo;[ ?]&rdquo; &lsquo;{urls[$7]++} END {for(key in urls)print urls[key],&ldquo;\t&rdquo;,key}&rsquo; | sort -nr
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F &amp;ldquo;<span class="o">[</span> ?<span class="o">]</span>&amp;rdquo; &amp;lsquo;<span class="o">{</span>urls<span class="o">[</span><span class="nv">$7</span><span class="o">]</span>++<span class="o">}</span> END <span class="o">{</span><span class="k">for</span><span class="o">(</span>key in urls<span class="o">)</span>print urls<span class="o">[</span>key<span class="o">]</span>,&amp;ldquo;<span class="se">\t</span>&amp;rdquo;,key<span class="o">}</span>&amp;rsquo; | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h5>4. 通过收集的请求url进行测试</h5>
 

@@ -2,82 +2,82 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://jqlblue.github.io/2013/08/03/check-php5-dot-5-compatibility/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:32:57+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/08/03/broken-pipe-in-php-cli/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:31:05+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:44:33+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:46:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:49:23+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/08/31/september/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:22:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/10/26/fcitx-fedora/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:50:54+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T21:14:23+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/11/22/android-app-profile-tools/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:54:47+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T20:57:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T21:00:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T21:10:24+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system/</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-04-20T21:10:49+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2014/04/09/statically-compile-php/</loc>
-        <lastmod>2014-04-26T14:57:49+08:00</lastmod>
+        <lastmod>2014-04-26T20:47:01+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/2014/04/26/singleton-pattern-in-php/</loc>
-        <lastmod>2014-05-01T14:38:09+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jqlblue.github.io/404.html</loc>
-        <lastmod>2014-04-26T10:09:30+08:00</lastmod>
+        <lastmod>2014-05-02T10:29:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/about/</loc>
-        <lastmod>2014-03-29T13:32:04+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jqlblue.github.io/blog/archives/</loc>
-        <lastmod>2014-05-01T14:38:09+08:00</lastmod>
+        <lastmod>2014-03-09T21:12:00+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/</loc>
-        <lastmod>2014-05-01T14:38:09+08:00</lastmod>
+        <lastmod>2014-05-02T10:29:32+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/404.html</loc>
+        <lastmod>2014-04-12T12:08:42+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jqlblue.github.io/blog/archives/</loc>
+        <lastmod>2014-05-02T10:29:32+08:00</lastmod>
     </url>
     <url>
         <loc>http://jqlblue.github.io/robots.txt</loc>
-        <lastmod>2014-03-01T10:04:53+08:00</lastmod>
+        <lastmod>2013-11-16T17:57:32+08:00</lastmod>
     </url>
 </urlset>

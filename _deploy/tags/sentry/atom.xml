@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: sentry | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/sentry/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-01T14:41:33+08:00</updated>
+  <updated>2014-05-02T10:29:33+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -38,25 +38,42 @@
 <h4>python环境安装</h4>
 
 <p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包
-{% codeblock python2.7.3-install.sh lang:bash %}
-cd ~
-yum install -y bzip2-devel.x86_64
-yum install -y sqlite-devel.x86_64
-yum install -y readline-devel.x86_64
-wget <a href="http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2">http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2</a>
-tar jxvf Python-2.7.3.tar.bz2
-cd Python-2.7.3
-./configure &mdash;prefix=/usr/local/python2.7.3
-make
-sudo make install</p>
-
-<p>wget <a href="https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz">https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz</a> &mdash;no-check-certificate
-tar zxvf distribute-0.6.49.tar.gz
-cd distribute-0.6.49
-sudo /usr/local/python2.7.3/bin/python setup.py install
-sudo /usr/local/python2.7.3/bin/easy_install virtualenv
-sudo /usr/local/python2.7.3/bin/easy_install -i <a href="http://e.pypi.python.org/simple">http://e.pypi.python.org/simple</a> virtualenvwrapper
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>python2.7.3-install.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>yum install -y bzip2-devel.x86_64
+</span><span class='line'>yum install -y sqlite-devel.x86_64
+</span><span class='line'>yum install -y readline-devel.x86_64
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&quot;</span>&gt;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&lt;/a&gt;
+</span><span class='line'>tar jxvf Python-2.7.3.tar.bz2
+</span><span class='line'><span class="nb">cd </span>Python-2.7.3
+</span><span class='line'>./configure &amp;mdash;prefix<span class="o">=</span>/usr/local/python2.7.3
+</span><span class='line'>make
+</span><span class='line'>sudo make install&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&quot;</span>&gt;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&lt;/a&gt; &amp;mdash;no-check-certificate
+</span><span class='line'>tar zxvf distribute-0.6.49.tar.gz
+</span><span class='line'><span class="nb">cd </span>distribute-0.6.49
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenv
+</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install -i &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://e.pypi.python.org/simple&quot;</span>&gt;http://e.pypi.python.org/simple&lt;/a&gt; virtualenvwrapper
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
 
 <pre><code>/usr/local/python2.7.3/bin/python

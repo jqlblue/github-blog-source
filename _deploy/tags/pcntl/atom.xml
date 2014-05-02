@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: pcntl | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/pcntl/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-01T14:41:33+08:00</updated>
+  <updated>2014-05-02T10:29:33+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -36,14 +36,14 @@ configure时&mdash;enable-opcache。在php.ini中配置时，需要以zend_exten
 
 <ul>
 <li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序
-{% codeblock lang:bash %}
-cat access_log | awk &lsquo;{print $7}&rsquo; | awk -F &ldquo;?&rdquo; &lsquo;{print $1}&rsquo; | sort | uniq -c | sort -nr
-{% endcodeblock %}</li>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access_log | awk &amp;lsquo;<span class="o">{</span>print <span class="nv">$7</span><span class="o">}</span>&amp;rsquo; | awk -F &amp;ldquo;?&amp;rdquo; &amp;lsquo;<span class="o">{</span>print <span class="nv">$1</span><span class="o">}</span>&amp;rsquo; | sort | uniq -c | sort -nr
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
 <li><p>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地
  址（包括相关参数）
-{% codeblock lang:bash %}
-access_log | grep  &lsquo;/api/test&rsquo; | head -n 1
-{% endcodeblock %}</p></li>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>access_log | grep  &amp;lsquo;/api/test&amp;rsquo; | head -n 1
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
 <li><p>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</p></li>
 </ul>
 
@@ -58,39 +58,64 @@ output: Broken pipe”。</p>
 
 <p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做
 了下加工后，发现一切正常了，修改后的python代码如下
-{% codeblock lang:python %}
-import subprocess
-import signal
-def reset_sigpipe():</p>
-
-<pre><code>signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-</code></pre>
-
-<p>output = subprocess.Popen(&ldquo;cat access_log | grep  &lsquo;/api/test&rsquo; | head -n 1&rdquo;, shell=True, preexec_fn=reset_sigpipe, stdout=subprocess.PIPE)
-print output.stdout.read()
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">subprocess</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">signal</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">reset_sigpipe</span><span class="p">():</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cat</span> <span class="n">access_log</span> <span class="o">|</span> <span class="n">grep</span>  <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">test</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">reset_sigpipe</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但是我是要用php来做这件事，下面是php相关代码
-{% codeblock lang:php %}
-&lt;?php
-$source = &lsquo;./source_url.txt&rsquo;;
-$dest = &lsquo;./dest_url.txt&rsquo;;
-$res = file($source);
-pcntl_signal(SIGPIPE, SIG_DFL);
-file_put_contents($dest, &lsquo;&rsquo;);
-foreach ($res as $row) {</p>
-
-<pre><code>$row = trim($row);
-if (strpos($row, 'http://') !== false) {
-    continue;
-}
-$command = "cat access_log | grep  '{$row}' | head -n 1 | awk '{print \$6\" \"\$7}' | awk -F '\"' '{print $2}' | awk '{print $1\" http://test.api.com\"$2}'";
-$check = system($command);
-file_put_contents($dest, $check . PHP_EOL, FILE_APPEND);
-</code></pre>
-
-<p>}
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$source</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">source_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$dest</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">./</span><span class="nx">dest_url</span><span class="o">.</span><span class="nx">txt</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$res</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
+</span><span class='line'><span class="nb">pcntl_signal</span><span class="p">(</span><span class="nx">SIGPIPE</span><span class="p">,</span> <span class="nx">SIG_DFL</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$command</span> <span class="o">=</span> <span class="s2">&quot;cat access_log | grep  &#39;</span><span class="si">{</span><span class="nv">$row</span><span class="si">}</span><span class="s2">&#39; | head -n 1 | awk &#39;{print </span><span class="se">\$</span><span class="s2">6</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;\$</span><span class="s2">7}&#39; | awk -F &#39;</span><span class="se">\&quot;</span><span class="s2">&#39; &#39;{print $2}&#39; | awk &#39;{print $1</span><span class="se">\&quot;</span><span class="s2"> http://test.api.com</span><span class="se">\&quot;</span><span class="s2">$2}&#39;&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$check</span> <span class="o">=</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+</span><span class='line'><span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$dest</span><span class="p">,</span> <span class="nv">$check</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">,</span> <span class="nx">FILE_APPEND</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是
 这句:</p>
