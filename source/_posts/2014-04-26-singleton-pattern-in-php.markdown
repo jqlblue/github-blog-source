@@ -48,12 +48,8 @@ class Singleton
         if (self::$_instance === null) {
             self::$_instance = new self();
         }
-        return self::$_instance;
-    }
 
-    public function getObj()
-    {
-        return new StdClass();
+        return self::$_instance;
     }
 }
 {% endcodeblock %}
@@ -65,8 +61,11 @@ class Singleton
 {% codeblock singleton-static.php lang:php %}
 class Singleton
 {
+    private $_handle = null;
+
     private function __construct()
     {
+        $this->_handle = new StdClass();
     }
 
     public function __clone()
@@ -77,15 +76,17 @@ class Singleton
     public static function getInstance()
     {
         static $_instance = null;
+
         if ($_instance === null) {
             $_instance = new self();
         }
+
         return $_instance;
     }
 
     public function getObj()
     {
-        return new StdClass();
+        return $this->_handle;
     }
 }
 
@@ -93,8 +94,7 @@ class UserModel extends Singleton
 {
     public static function getUser()
     {
-        $instance = self::getInstance();
-        var_dump($instance->getObj());
+        var_dump(self::getInstance()->getObj());
         //logic no care
     }
 }
@@ -103,11 +103,11 @@ class GroupModel extends Singleton
 {
     public static function getGroup()
     {
-        $instance = self::getInstance();
-        var_dump($instance->getObj());
+        var_dump(self::getInstance()->getObj());
         //logic no care
     }
 }
+
 UserModel::getUser();
 GroupModel::getGroup();
 {% endcodeblock %}
@@ -115,7 +115,7 @@ GroupModel::getGroup();
     $ php /.singleton-static.php
     object(Singleton)#2 (0) {
     }
-    object(Singleton)#3 (0) {
+    object(Singleton)#4 (0) {
     }
 
 > 此例没有获取到唯一实例，因为局部静态变量，也就是在函数中定义的静态变量。其信息是存储在zend vm为每个函数分配的一个私有符号表中。
@@ -128,13 +128,15 @@ php中当继承发生时，会进行函数的合并。UserModel中调用的，�
 
 ## 使用静态成员变量 ##
 {% codeblock singleton-static-member.php lang:php %}
-<?php
 class Singleton
 {
+    private $_handle = null;
+
     private static $_instance = null;
 
     private function __construct()
     {
+        $this->_handle = new StdClass();
     }
 
     public function __clone()
@@ -152,7 +154,7 @@ class Singleton
 
     public function getObj()
     {
-        return new StdClass();
+        return $this->_handle;
     }
 }
 
@@ -160,8 +162,7 @@ class UserModel extends Singleton
 {
     public static function getUser()
     {
-        $instance = self::getInstance();
-        var_dump($instance->getObj());
+        var_dump(self::getInstance()->getObj());
         //logic no care
     }
 }
@@ -170,8 +171,7 @@ class GroupModel extends Singleton
 {
     public static function getGroup()
     {
-        $instance = self::getInstance();
-        var_dump($instance->getObj());
+        var_dump(self::getInstance()->getObj());
         //logic no care
     }
 }
@@ -214,6 +214,46 @@ class Singleton
         }
 
         return self::$_instances[$c];
+    }
+}
+
+class Cache Extends Singleton
+{
+    private $_handle = null;
+
+    protected function __construct()
+    {
+        $this->_connect();
+    }
+
+    private function _connect()
+    {
+        $this->_handle = new StdClass();
+    }
+
+    public function getHandle()
+    {
+        return $this->_handle;
+    }
+}
+
+class Db Extends Singleton
+{
+    private $_handle = null;
+
+    protected function __construct()
+    {
+        $this->_connect();
+    }
+
+    private function _connect()
+    {
+        $this->_handle = new StdClass();
+    }
+
+    public function getHandle()
+    {
+        return $this->_handle;
     }
 }
 {% endcodeblock %}
