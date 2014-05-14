@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: mobile | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/mobile/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-02T11:16:55+08:00</updated>
+  <updated>2014-05-14T20:58:12+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -66,7 +66,7 @@ classes.dex: Dalvik dex file version 035
 
 <h5>android平台架构</h5>
 
-<p><img src="/images/mobile/android_architecture.png" title="&lsquo;android architecture images&rsquo;" ></p>
+<p>{% img /images/mobile/android_architecture.png &lsquo;android architecture images&rsquo; %}</p>
 
 <p>如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。</p>
 
@@ -84,7 +84,7 @@ classes.dex: Dalvik dex file version 035
 <h5>apk启动速度</h5>
 
 <p>在分析之前，我们先看看android程序的执行流程
-<img src="/images/mobile/android_application_execute_flow.png" title="&lsquo;android application execute flow images&rsquo;" ></p>
+{% img /images/mobile/android_application_execute_flow.png &lsquo;android application execute flow images&rsquo; %}</p>
 
 <p>如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。</p>
 
@@ -105,7 +105,7 @@ classes.dex: Dalvik dex file version 035
 <h5>页面渲染性能</h5>
 
 <p>android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
-<img src="/images/mobile/android_view_execute_flow.png" title="&lsquo;android view execute flow images&rsquo;" ></p>
+{% img /images/mobile/android_view_execute_flow.png &lsquo;android view execute flow images&rsquo; %}</p>
 
 <p>即：
 <code>计算视图大小（measure） -&gt; 安置视图的位置（layout） -&gt; 绘制（draw）视图</code></p>
@@ -139,7 +139,7 @@ classes.dex: Dalvik dex file version 035
 </code></pre>
 
 <p>这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的<code>insert</code>&ndash;><code>chart</code>，即可生成相关图表
-<img src="/images/mobile/frame_render_time.png" title="&lsquo;frame render time images&rsquo;" ></p>
+{% img /images/mobile/frame_render_time.png &lsquo;frame render time images&rsquo; %}</p>
 
 <blockquote><p>其中<code>com.sina.weibo</code>就是app的包名</p></blockquote>
 
@@ -161,7 +161,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p>上面这条命令将会在<code>android-sdk-linux/platform-tools/systrace</code>目录下生成<code>trace.html</code>。其中收集了包名为<code>com.qihoo.appstore</code>的应用在android系统上针对<code>gfx</code>和<code>view</code> category的执行数据。</p>
 
 <p><code>trace.html</code>在浏览器中打开如下图：
-<img src="/images/mobile/android_systrace_output.png" title="&lsquo;android systrace output images&rsquo;" ></p>
+{% img /images/mobile/android_systrace_output.png &lsquo;android systrace output images&rsquo; %}</p>
 
 <p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
 * 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
@@ -171,7 +171,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 * 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
 
 <p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
-<img src="/images/mobile/android_systrace_output_zoom.png" title="&lsquo;android systrace output detail images&rsquo;" ></p>
+{% img /images/mobile/android_systrace_output_zoom.png &lsquo;android systrace output detail images&rsquo; %}</p>
 
 <p>发现对于那些<code>performTraversals</code>处理超过16ms的帧，其中<code>eglSwapBuffers</code>处理的时间都比较长，这应该就是问题所在。</p>
 
@@ -299,22 +299,22 @@ fiddle抓包嘛，码农应该都知道</em>）。</p>
   <a href="http://wifi.360.cn/">官网</a>,因为不定期会在京东开启抢购。安装非常简
   单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）</p>
 
-<p>  <img src="/images/360wifi_1.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_2.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_3.png" title="&lsquo;360 wifi images&rsquo;" ></p></li>
+<p>  {% img /images/360wifi_1.png &lsquo;360 wifi images&rsquo; %}
+  {% img /images/360wifi_2.png &lsquo;360 wifi images&rsquo; %}
+  {% img /images/360wifi_3.png &lsquo;360 wifi images&rsquo; %}</p></li>
 <li><p>在电脑上用fiddle设置代理</p>
 
-<p>  <img src="/images/360wifi_fiddle.png" title="&lsquo;360 wifiproxy fidlle images&rsquo;" ></p></li>
+<p>  {% img /images/360wifi_fiddle.png &lsquo;360 wifiproxy fidlle images&rsquo; %}</p></li>
 <li><p>修改手机上的网络设置，并设置代理</p>
 
-<p>  <img src="/images/360wifi_proxy_1.png" title="&lsquo;360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_2.png" title="'360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_3.png" title="'360 wifi mobile network" ></p>
+<p>  {% img /images/360wifi_proxy_1.png &lsquo;360 wifi mobile network %}
+  {% img /images/360wifi_proxy_2.png '360 wifi mobile network %}
+  {% img /images/360wifi_proxy_3.png '360 wifi mobile network %}</p>
 
 <p>  代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
   fiddle中设置的"listen on port"</p>
 
-<p>  <img src="/images/360wifi_proxy_ip.png" title="&lsquo;360 wifi mobile network" ></p></li>
+<p>  {% img /images/360wifi_proxy_ip.png &lsquo;360 wifi mobile network %}</p></li>
 </ul>
 
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: linux | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/linux/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-02T11:16:55+08:00</updated>
+  <updated>2014-05-14T20:58:12+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[一个使用curl请求https资源的问题排查]]></title>
+    <link href="http://jqlblue.github.io/2014/05/14/a-trouble-in-request-https-in-curl/"/>
+    <updated>2014-05-14T14:50:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/05/14/a-trouble-in-request-https-in-curl</id>
+    <content type="html"><![CDATA[<p>昨天临下班前，应客户端大牛的要求，开发了一个返回下载服务器ip列表的接口，用于在客户端指定host以解决用户下载时遭遇运营商dns劫持的问题。</p>
+
+<p>开发时略微有少许忐忑，但测试时一切顺利，于是就轻松地回家了。</p>
+
+<!-- more -->
+
+
+<p>早上一上线代码，就收到了通过<code>sentry</code>发出的报警邮件。原以为是缓存没有及时更新的问题，立马手动进行更新。但还是没有通过接口获取到相关ip。随即回滚代码，重新上线。</p>
+
+<h1>排查过程</h1>
+
+<p>后来下线一台服务器进行调试时发现，在调用ops提供的接口获取ip列表时没有获取到返回数据，而相关接口是<code>https</code>的。</p>
+
+<p>再跟踪请求资源的函数发现，相关函数没有对<code>https</code>请求做特殊处理。相关函数实现如下：</p>
+
+<pre><code>public static function get($url, array $headers = array(), $timeout = 5)
+{
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    if ($headers) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    }
+
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $content = curl_exec($ch);
+    $response = curl_getinfo($ch);
+
+    curl_close($ch);
+
+    if ($response['http_code'] == 200) {
+        return $content;
+    }
+
+    return null;
+}
+</code></pre>
+
+<p>这或许就是昨天那少许忐忑的缘由。于是增加如下代码，测试通过后重新上线。</p>
+
+<pre><code>    if (substr($url, 0, 5) == 'https') {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    }
+</code></pre>
+
+<h1>进一步排查</h1>
+
+<p>线上的问题虽然暂时解决了，但是在问题解决之前，测试机上是正常的，这是为什么呢？</p>
+
+<h2>在命令行运行curl排查问题</h2>
+
+<p>在命令行使用curl请求ops的接口，其中线上服务器的运行结果如下：</p>
+
+<pre><code>$ curl 'https://x.x.x.x/get_ips'
+
+curl: (60) SSL certificate problem, verify that the CA cert is OK. Details:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+More details here: http://curl.haxx.se/docs/sslcerts.html
+</code></pre>
+
+<p>测试机上可以正常获取到结果。</p>
+
+<p>然后分别查看curl的版本和curl使用的动态连接库，都没有发现差异</p>
+
+<pre><code>$ /usr/bin/curl -V
+$ type curl
+
+/usr/bin/curl
+$ ldd /usr/bin/curl
+</code></pre>
+
+<p>再查看上面的错误，发现可能是<code>https</code>证书的问题。于是添加<code>--verbose</code>参数，再次使用curl进行请求，以获取更多交互信息。</p>
+
+<p>截取部分输出如下</p>
+
+<pre><code>$ curl 'https://x.x.x.x/get_ips' --verbose
+
+* About to connect() to x.x.x.x port 80
+*   Trying x.x.x.x... connected
+* Connected to x.x.x.x (x.x.x.x) port 80
+* successfully set certificate verify locations:
+*   CAfile: /etc/pki/tls/certs/ca-bundle.crt
+CApath: none
+* SSLv2, Client hello (1):
+SSLv3, TLS handshake, Server hello (2):
+SSLv3, TLS handshake, CERT (11):
+SSLv3, TLS alert, Server hello (2):
+SSL certificate problem, verify that the CA cert is OK. Details:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+* Closing connection #0
+curl: (60) SSL certificate problem, verify that the CA cert is OK. Details:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+More details here: http://curl.haxx.se/docs/sslcerts.html
+</code></pre>
+
+<p>可见使用的证书的是<code>/etc/pki/tls/certs/ca-bundle.crt</code>。</p>
+
+<p>使用测试机上的证书替换线上服务器的证书后，问题解决。</p>
+
+<blockquote><p>如果没有可用的证书，可以使用如下方法：</p></blockquote>
+
+<pre><code>$ curl http://curl.haxx.se/ca/cacert.pem -o /etc/pki/tls/certs/ca-bundle.crt
+</code></pre>
+
+<h1>问题总结</h1>
+
+<p>在请求https的资源时，遇到证书不匹配的问题，一般的工具都有不进行https证书验证的选项，比如：</p>
+
+<pre><code>$ wget 'https://x.x.x.x/get_ips' --no-check-certificate
+$ curl 'https://x.x.x.x/get_ips' -k
+</code></pre>
+
+<p>当然，也可以在请求时指定证书，或者对使用的https ca证书进行更新。</p>
+
+<p>reference:
+[^1] <a href="http://curl.haxx.se/docs/sslcerts.html">http://curl.haxx.se/docs/sslcerts.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何静态编译php]]></title>
@@ -190,14 +319,14 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p><em>磁盘的机械结构如下图</em>：</p>
 
-<p><img src="/images/os/disk-structure.png" title="&lsquo;disk strucrure" ></p>
+<p>{% img /images/os/disk-structure.png &lsquo;disk strucrure %}</p>
 
 <p>如上图，一块磁盘中有好几块<code>盘片</code>（platter），一个盘片上的盘面被划分成若干个同心圆（即<code>磁道</code>（track））。
 将磁盘上<code>机械臂</code>的<code>磁头</code>径向移动到盘面的相关位置（磁道）后，通过盘片在磁头下方的高速旋转，就可以读取并写入所在<code>柱面</code>（cylinder）上的数据。</p>
 
 <p><em>盘面的示意图如下</em>：</p>
 
-<p><img src="/images/os/disk-structure-2.gif" title="&lsquo;disk strucrure" ></p>
+<p>{% img /images/os/disk-structure-2.gif &lsquo;disk strucrure %}</p>
 
 <p>磁盘是个块设备，它的最小存储单位是<code>扇区</code>（sector），每个扇区存取512字节。</p>
 
@@ -209,7 +338,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>linux文件系统的体系结构图如下：</p>
 
-<p><img src="/images/os/fs-structure.gif" title="&lsquo;linux file system strucrure" ></p>
+<p>{% img /images/os/fs-structure.gif &lsquo;linux file system strucrure %}</p>
 
 <p>用户态的程序要进行文件读写时，只要通过系统调用，调用VFS提供的接口就好。</p>
 
@@ -217,7 +346,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>以ext2文件系统为例，其文件系统结构图示意如下：</p>
 
-<p><img src="/images/os/ext2-fs-structure.gif" title="&lsquo;ext2 file system strucrure" ></p>
+<p>{% img /images/os/ext2-fs-structure.gif &lsquo;ext2 file system strucrure %}</p>
 
 <ul>
 <li>一块硬盘会被划分成多个分区</li>
@@ -329,7 +458,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>预读机制示意图</p>
 
-<p><img src="/images/os/fs-pre-read.gif" title="&lsquo;fs preread" ></p>
+<p>{% img /images/os/fs-pre-read.gif &lsquo;fs preread %}</p>
 ]]></content>
   </entry>
   
@@ -399,31 +528,21 @@ brew linkapps
 
 <p>如：</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">formula</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class Emacs &amp;lt; Formula&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">homepage</span> <span class="s1">&#39;http://www.gnu.org/software/emacs/&#39;</span>
-</span><span class='line'><span class="c1">#url &#39;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#39;</span>
-</span><span class='line'><span class="n">url</span> <span class="s1">&#39;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#39;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+require &lsquo;formula&rsquo;</p>
+
+<p>class Emacs &lt; Formula</p>
+
+<pre><code>homepage 'http://www.gnu.org/software/emacs/'
+#url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
+url 'http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz'
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
 
-<p><img src="/images/emacs/startup.png" title="&lsquo;emacs start up" ></p>
+<p>{% img /images/emacs/startup.png &lsquo;emacs start up %}</p>
 
 <h3>配置Emacs</h3>
 
@@ -436,7 +555,7 @@ ln -s /somepath/goblin-emacs ~/.emacs.d
 
 <p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
 
-<p><img src="/images/emacs/goblin-startup.png" title="&lsquo;goblin emacs start up" ></p>
+<p>{% img /images/emacs/goblin-startup.png &lsquo;goblin emacs start up %}</p>
 
 <p>完成<code>jedi</code>，python自动完成的配置</p>
 
@@ -476,7 +595,7 @@ slime－mode
 
 
 <p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。
-<img src="/images/emacs/swap-control-capslock.png" title="&lsquo;swap control caps-lock" ></p>
+{% img /images/emacs/swap-control-capslock.png &lsquo;swap control caps-lock %}</p>
 
 <ul>
 <li>某些汉字显示为方块</li>
@@ -534,20 +653,14 @@ fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录�
 
 <h3>安装步骤</h3>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>fcitx install step </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum install fcitx.x86_64
-</span><span class='line'>yum install fcitx-configtool.x86_64
-</span><span class='line'>yum install fcitx-gtk3.x86_64
-</span><span class='line'>yum install fcitx-cloudpinyin.x86_64
-</span><span class='line'>yum install fcitx-table-chinese.noarch
-</span><span class='line'>yum intall fcitx-qt4.x86_64
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock fcitx install step lang:bash %}
+yum install fcitx.x86_64
+yum install fcitx-configtool.x86_64
+yum install fcitx-gtk3.x86_64
+yum install fcitx-cloudpinyin.x86_64
+yum install fcitx-table-chinese.noarch
+yum intall fcitx-qt4.x86_64
+{% endcodeblock %}</p>
 
 <h3>配置</h3>
 
@@ -576,8 +689,8 @@ export XMODIFIERS="@im=fcitx"
    下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
 </code></pre>
 
-<p><img src="/images/fcitx_config.png" title="&lsquo;fcitx_config images&rsquo;" >
-<img src="/images/fcitx_config_cloud_pinyin.png" title="&lsquo;fcitx_config_cloud_pinyin images&rsquo;" ></p>
+<p>{% img /images/fcitx_config.png &lsquo;fcitx_config images&rsquo; %}
+{% img /images/fcitx_config_cloud_pinyin.png &lsquo;fcitx_config_cloud_pinyin images&rsquo; %}</p>
 
 <p>reference：</p>
 
