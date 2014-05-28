@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-28T22:01:21+08:00</updated>
+  <updated>2014-05-28T22:06:31+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -18,9 +18,7 @@
     <link href="http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/"/>
     <updated>2014-05-28T15:57:00+08:00</updated>
     <id>http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction</id>
-    <content type="html"><![CDATA[<h1>gryphon简介</h1>
-
-<p>gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 <a href="http://weibo.com/tcpcopy">王斌</a>进行维护。更多介绍可参见<a href="https://github.com/wangbin579/gryphon">A powerful tool to simulate millions of concurrent users for loading testing</a></p>
+    <content type="html"><![CDATA[<p>gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 <a href="http://weibo.com/tcpcopy">王斌</a>进行维护。更多介绍可参见<a href="https://github.com/wangbin579/gryphon">A powerful tool to simulate millions of concurrent users for loading testing</a></p>
 
 <!-- more -->
 
