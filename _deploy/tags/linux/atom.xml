@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: linux | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/linux/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-14T20:58:12+08:00</updated>
+  <updated>2014-05-28T22:01:21+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,346 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[再话tcpcopy的胞弟gryphon]]></title>
+    <link href="http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/"/>
+    <updated>2014-05-28T15:57:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction</id>
+    <content type="html"><![CDATA[<h1>gryphon简介</h1>
+
+<p>gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 <a href="http://weibo.com/tcpcopy">王斌</a>进行维护。更多介绍可参见<a href="https://github.com/wangbin579/gryphon">A powerful tool to simulate millions of concurrent users for loading testing</a></p>
+
+<!-- more -->
+
+
+<p>gryphon的安装和使用方法分为<code>传统架构方式</code>和<code>高级架构方式</code>。</p>
+
+<h1>相关角色说明</h1>
+
+<ul>
+<li>gryphon客户端（/usr/local/bin/gryphon）</li>
+<li>intercept拦截进程（/usr/local/bin/intercept）</li>
+</ul>
+
+
+<p>测试时，gryphon客户端读取录制的pcap文件（可以通过tcpdump产生），通过<code>Raw Socket</code>修改请求并发送到测试机。因为这些请求的来源ip可能是模拟的，为了连接的正常关闭，需要拦截测试机的响应包。</p>
+
+<pre><code>在传统架构下：
+1 netfilter-iptables在协议栈将数据包交给内核中的ip_queue模块
+2 intercept在用户态通过netlink socket接收内核传来的数据报文
+3 将处理后的报文以及对报文的处理意见（ACCEPT，DROP等）传递给内核协议栈
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_socket.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_raw_socket_out_init</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * On Linux when setting the protocol as IPPROTO_RAW,</span>
+</span><span class='line'><span class="cm"> * then by default the kernel sets the IP_HDRINCL option and</span>
+</span><span class='line'><span class="cm"> * thus does not prepend its own IP header.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_RAW</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_interception.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_nl_event_process</span><span class="p">(</span><span class="n">tc_event_t</span> <span class="o">*</span><span class="n">rev</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">char</span>            <span class="n">buffer</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
+</span><span class='line'><span class="k">register</span> <span class="kt">int</span>    <span class="n">i</span><span class="p">,</span> <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">packet_id</span><span class="p">;</span>
+</span><span class='line'><span class="n">tc_ip_header_t</span> <span class="o">*</span><span class="n">ip_hdr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">tc_nl_socket_recv</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="mi">65536</span><span class="p">)</span> <span class="o">==</span> <span class="n">TC_ERROR</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">TC_ERROR</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ip_hdr</span> <span class="o">=</span> <span class="n">tc_nl_ip_header</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'><span class="n">packet_id</span> <span class="o">=</span> <span class="n">tc_nl_packet_id</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">ip_hdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="cm">/* check if it is the valid user to pass through firewall */</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">num</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">ips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ip_hdr</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">daddr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tot_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pass_through_flag</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* pass through the firewall */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_ACCEPT</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">tot_copy_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">router_update</span><span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">old</span><span class="p">,</span> <span class="n">ip_hdr</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* drop the packet */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_DROP</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="n">TC_OK</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<pre><code>在高级架构下，是通过在测试机上配置静态路由规则，将响应路由到辅助服务器进行处理。
+</code></pre>
+
+<p><img src="/images/gryphon/raw_socket.jpg" title="raw socket" ></p>
+
+<h1>传统架构下安装并使用</h1>
+
+<p>在传统架构下，<code>intercept拦截进程</code>需要运行在测试机上，用于拦截测试机的响应包。</p>
+
+<h2>安装与使用</h2>
+
+<h3>在测试机安装intercept拦截进程</h3>
+
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/tcocopy --enable-single
+make
+sudo make install
+</code></pre>
+
+<h3>安装gryphon客户端</h3>
+
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/gryphon --enable-single
+make
+sudo make install
+</code></pre>
+
+<h3>使用方法</h3>
+
+<p>以<code>intercept拦截进程</code>安装在测试机<strong>10.16.15.118</strong>，应用端口是<strong>80</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>为例，进行gryphon在传统架构下的基本使用方法。</p>
+
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
+</code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上操作</p>
+
+<pre><code>modprobe ip_queue
+iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
+/usr/local/tcpcopy/bin/intercept
+</code></pre>
+
+<blockquote><p>如果内核版本3.5，可以使用nfqueue</p></blockquote>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.118 -u 1000 -a 2 -c 10.17.15.*
+</code></pre>
+
+<p>上述命令，从xxx.pcap抓包文件中提取出访问80端口的用户会话过程，模拟1000个用户，将请求复制到测试机<strong>10.16.15.118</strong>的<strong>80</strong>端口中去。其中用户ip地址的范围是10.17.15.*。</p>
+
+<blockquote><p>-a参数用于加快数据包的分送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048</p></blockquote>
+
+<p>gryphon拦截进程中各个基本参数的释义如下：</p>
+
+<pre><code>gryphon -x historyServerPort-targetServerIP:targetServerPort -f &lt;pcapfile,&gt; -s &lt;intercept address&gt; -u &lt;user num&gt; -c &lt;ip range,&gt;
+</code></pre>
+
+<h2>调试步骤</h2>
+
+<p><code>gryphon客户端</code>和<code>intercept拦截进程</code>运行时，会在当前工作目录生成<code>error_gryphon.log</code>，<code>error_intercept.log</code>日志文件，里面有相关运行信息。当测试过程不能正常工作时，可优先查看相关日志。</p>
+
+<p>其次就是在测试机或者<code>gryphon客户端</code>所在的服务器上进行抓包。确保<code>gryphon客户端</code>发出请求，并且没有收到测试机的响应包，如：
+<img src="/images/gryphon/gryphon_tcpdump.png" title="gryphon tcpdump" ></p>
+
+<h1>高级架构下安装并使用</h1>
+
+<p>在高级架构下，<code>intercept拦截进程</code>需要运行在辅助服务上，用于拦截测试机的响应包。</p>
+
+<h2>安装与使用</h2>
+
+<h3>在测试机安装intercept拦截进程</h3>
+
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/adv-tcpcopy --enable-single  --enable-pcap --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>安装gryphon客户端</h3>
+
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/adv-gryphon --enable-single --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>使用方法</h3>
+
+<p>以<code>intercept拦截进程</code>安装在辅助服务器<strong>10.16.15.116</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>，测试机<strong>10.16.15.118</strong>的应用端口是<strong>80</strong>为例，进行gryphon在高级架构下的使用方法。</p>
+
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
+</code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上设置静态路由，将响应包路由到辅助服务器<strong>10.16.15.116</strong></p>
+
+<pre><code>route add -net 10.17.15.0 netmask 255.255.255.0 gw 10.16.15.116
+</code></pre>
+
+<p>查看是否设置成功</p>
+
+<pre><code>$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.17.15.0      10.16.15.116    255.255.255.0   UG    0      0        0 eth0
+10.16.14.0      *               255.255.254.0   U     0      0        0 eth0
+169.254.0.0     *               255.255.0.0     U     0      0        0 eth0
+default         10.16.14.1      0.0.0.0         UG    0      0        0 eth0
+</code></pre>
+
+<p>如果设置错了，可以删除并重新添加</p>
+
+<pre><code>route del -net 10.17.15.0 netmask 255.255.255.0
+</code></pre>
+
+<p>在辅助服务器<strong>10.16.15.116</strong>上启动intercept拦截进程</p>
+
+<pre><code>/usr/local/adv-tcpcopy/bin/intercept -F 'tcp and src port 80'
+</code></pre>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/adv-gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.116 -u 1000 -c 10.17.15.*
+</code></pre>
+
+<p><strong> Reference </strong></p>
+
+<p>[^1] <a href="http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html">http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html</a></p>
+
+<p>[^2] <a href="http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html">http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html</a></p>
+
+<p>[^3] <a href="http://www.tenouk.com/Module42a.html">http://www.tenouk.com/Module42a.html</a></p>
+
+<p>[^4] <a href="http://blog.csdn.net/u010807313/article/details/9236581">http://blog.csdn.net/u010807313/article/details/9236581</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一个使用curl请求https资源的问题排查]]></title>
@@ -319,14 +659,14 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p><em>磁盘的机械结构如下图</em>：</p>
 
-<p>{% img /images/os/disk-structure.png &lsquo;disk strucrure %}</p>
+<p><img src="/images/os/disk-structure.png" title="&lsquo;disk strucrure" ></p>
 
 <p>如上图，一块磁盘中有好几块<code>盘片</code>（platter），一个盘片上的盘面被划分成若干个同心圆（即<code>磁道</code>（track））。
 将磁盘上<code>机械臂</code>的<code>磁头</code>径向移动到盘面的相关位置（磁道）后，通过盘片在磁头下方的高速旋转，就可以读取并写入所在<code>柱面</code>（cylinder）上的数据。</p>
 
 <p><em>盘面的示意图如下</em>：</p>
 
-<p>{% img /images/os/disk-structure-2.gif &lsquo;disk strucrure %}</p>
+<p><img src="/images/os/disk-structure-2.gif" title="&lsquo;disk strucrure" ></p>
 
 <p>磁盘是个块设备，它的最小存储单位是<code>扇区</code>（sector），每个扇区存取512字节。</p>
 
@@ -338,7 +678,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>linux文件系统的体系结构图如下：</p>
 
-<p>{% img /images/os/fs-structure.gif &lsquo;linux file system strucrure %}</p>
+<p><img src="/images/os/fs-structure.gif" title="&lsquo;linux file system strucrure" ></p>
 
 <p>用户态的程序要进行文件读写时，只要通过系统调用，调用VFS提供的接口就好。</p>
 
@@ -346,7 +686,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>以ext2文件系统为例，其文件系统结构图示意如下：</p>
 
-<p>{% img /images/os/ext2-fs-structure.gif &lsquo;ext2 file system strucrure %}</p>
+<p><img src="/images/os/ext2-fs-structure.gif" title="&lsquo;ext2 file system strucrure" ></p>
 
 <ul>
 <li>一块硬盘会被划分成多个分区</li>
@@ -458,7 +798,7 @@ $ ll -h /usr/local/php5-static/bin/php
 
 <p>预读机制示意图</p>
 
-<p>{% img /images/os/fs-pre-read.gif &lsquo;fs preread %}</p>
+<p><img src="/images/os/fs-pre-read.gif" title="&lsquo;fs preread" ></p>
 ]]></content>
   </entry>
   
@@ -528,21 +868,31 @@ brew linkapps
 
 <p>如：</p>
 
-<p>{% codeblock lang:ruby %}
-require &lsquo;formula&rsquo;</p>
-
-<p>class Emacs &lt; Formula</p>
-
-<pre><code>homepage 'http://www.gnu.org/software/emacs/'
-#url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
-url 'http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz'
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">formula</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class Emacs &amp;lt; Formula&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">homepage</span> <span class="s1">&#39;http://www.gnu.org/software/emacs/&#39;</span>
+</span><span class='line'><span class="c1">#url &#39;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#39;</span>
+</span><span class='line'><span class="n">url</span> <span class="s1">&#39;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
 
-<p>{% img /images/emacs/startup.png &lsquo;emacs start up %}</p>
+<p><img src="/images/emacs/startup.png" title="&lsquo;emacs start up" ></p>
 
 <h3>配置Emacs</h3>
 
@@ -555,7 +905,7 @@ ln -s /somepath/goblin-emacs ~/.emacs.d
 
 <p>启动emacs后，会自动下载需要的扩展，完成后即可体验。</p>
 
-<p>{% img /images/emacs/goblin-startup.png &lsquo;goblin emacs start up %}</p>
+<p><img src="/images/emacs/goblin-startup.png" title="&lsquo;goblin emacs start up" ></p>
 
 <p>完成<code>jedi</code>，python自动完成的配置</p>
 
@@ -595,7 +945,7 @@ slime－mode
 
 
 <p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。
-{% img /images/emacs/swap-control-capslock.png &lsquo;swap control caps-lock %}</p>
+<img src="/images/emacs/swap-control-capslock.png" title="&lsquo;swap control caps-lock" ></p>
 
 <ul>
 <li>某些汉字显示为方块</li>
@@ -635,66 +985,6 @@ slime－mode
 <p>[^3] <a href="http://blog.yam.com/hn12303158/article/35207136">http://blog.yam.com/hn12303158/article/35207136</a></p>
 
 <p>[^4] <a href="http://blog.chinaunix.net/uid-26354188-id-3195392.html">http://blog.chinaunix.net/uid-26354188-id-3195392.html</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在fedora上安装fcitx输入法和云拼音]]></title>
-    <link href="http://jqlblue.github.io/2013/10/26/fcitx-fedora/"/>
-    <updated>2013-10-26T12:30:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/10/26/fcitx-fedora</id>
-    <content type="html"><![CDATA[<p>从fedora18开始，ibus感觉渐渐不如以前好用了，尤其是在emacs下使用的时候，经过死机。restart input method是家常便饭。</p>
-
-<p>一次发现同事的ubuntu上在使用google输入法，让我眼前一亮。但是在64位的
-fedora19上没有配置成功。于是尝试了下fcitx输入法，特此记录。</p>
-
-<!-- more -->
-
-
-<h3>安装步骤</h3>
-
-<p>{% codeblock fcitx install step lang:bash %}
-yum install fcitx.x86_64
-yum install fcitx-configtool.x86_64
-yum install fcitx-gtk3.x86_64
-yum install fcitx-cloudpinyin.x86_64
-yum install fcitx-table-chinese.noarch
-yum intall fcitx-qt4.x86_64
-{% endcodeblock %}</p>
-
-<h3>配置</h3>
-
-<p>编辑~/.bashrc，添加：</p>
-
-<pre><code>export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-</code></pre>
-
-<p>重启系统或者logout，使之生效。</p>
-
-<pre><code>如果将im_module设置为xim，系统重启时可能会造成应用程序卡死。
-此时可以通过键盘快捷键“CTRL+ALT+F2”，切换成tty2，
-通过console模式登录系统杀死fcitx进程，再切回X window，或者直接重启。
-</code></pre>
-
-<h3>相关设置</h3>
-
-<p>如下图所示：</p>
-
-<pre><code>1. 在“input method”Tab，可以添加或者删除输入法
-2. “Global Config”Tab，主要用于设置相关快捷键
-3. “Appearance”列用于设置输入法弹出框的显示界面
-4. 点击“Addon”Tab，通过Cloud Pinyin可以设置云拼音。即可以将谷歌拼音，搜狗，百度，QQ输入法的内容合并进来。
-   下图的设置，是当输入第二个词的时候，将云拼音的结果合并到第二个位置。
-</code></pre>
-
-<p>{% img /images/fcitx_config.png &lsquo;fcitx_config images&rsquo; %}
-{% img /images/fcitx_config_cloud_pinyin.png &lsquo;fcitx_config_cloud_pinyin images&rsquo; %}</p>
-
-<p>reference：</p>
-
-<blockquote><p><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></p></blockquote>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-14T20:58:07+08:00</updated>
+  <updated>2014-05-28T22:01:21+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,332 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[再话tcpcopy的胞弟gryphon]]></title>
+    <link href="http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/"/>
+    <updated>2014-05-28T15:57:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction</id>
+    <content type="html"><![CDATA[<h1>gryphon简介</h1>
+
+<p>gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 <a href="http://weibo.com/tcpcopy">王斌</a>进行维护。更多介绍可参见<a href="https://github.com/wangbin579/gryphon">A powerful tool to simulate millions of concurrent users for loading testing</a></p>
+
+<!-- more -->
+
+
+<p>gryphon的安装和使用方法分为<code>传统架构方式</code>和<code>高级架构方式</code>。</p>
+
+<h1>相关角色说明</h1>
+
+<ul>
+<li>gryphon客户端（/usr/local/bin/gryphon）</li>
+<li>intercept拦截进程（/usr/local/bin/intercept）</li>
+</ul>
+
+
+<p>测试时，gryphon客户端读取录制的pcap文件（可以通过tcpdump产生），通过<code>Raw Socket</code>修改请求并发送到测试机。因为这些请求的来源ip可能是模拟的，为了连接的正常关闭，需要拦截测试机的响应包。</p>
+
+<pre><code>在传统架构下：
+1 netfilter-iptables在协议栈将数据包交给内核中的ip_queue模块
+2 intercept在用户态通过netlink socket接收内核传来的数据报文
+3 将处理后的报文以及对报文的处理意见（ACCEPT，DROP等）传递给内核协议栈
+</code></pre>
+
+<figure class='code'><figcaption><span>communication/tc_socket.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_raw_socket_out_init</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*</span>
+</span><span class='line'><span class="cm">     * On Linux when setting the protocol as IPPROTO_RAW,</span>
+</span><span class='line'><span class="cm">     * then by default the kernel sets the IP_HDRINCL option and</span>
+</span><span class='line'><span class="cm">     * thus does not prepend its own IP header.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_RAW</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>communication/tc_interception.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_nl_event_process</span><span class="p">(</span><span class="n">tc_event_t</span> <span class="o">*</span><span class="n">rev</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span>            <span class="n">buffer</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">register</span> <span class="kt">int</span>    <span class="n">i</span><span class="p">,</span> <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">packet_id</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">tc_ip_header_t</span> <span class="o">*</span><span class="n">ip_hdr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">tc_nl_socket_recv</span><span class="p">(</span><span class="n">rev</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="mi">65536</span><span class="p">)</span> <span class="o">==</span> <span class="n">TC_ERROR</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">TC_ERROR</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ip_hdr</span> <span class="o">=</span> <span class="n">tc_nl_ip_header</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">packet_id</span> <span class="o">=</span> <span class="n">tc_nl_packet_id</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">ip_hdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/* check if it is the valid user to pass through firewall */</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">num</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">ips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ip_hdr</span><span class="o">-&gt;</span><span class="n">daddr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">tot_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">pass_through_flag</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="cm">/* pass through the firewall */</span>
+</span><span class='line'>            <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_ACCEPT</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">tot_copy_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">router_update</span><span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">old</span><span class="p">,</span> <span class="n">ip_hdr</span><span class="p">);</span>
+</span><span class='line'>            <span class="cm">/* drop the packet */</span>
+</span><span class='line'>            <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_DROP</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">TC_OK</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>在高级架构下，是通过在测试机上配置静态路由规则，将响应路由到辅助服务器进行处理。
+</code></pre>
+
+<p><img src="http://jqlblue.github.io/images/gryphon/raw_socket.jpg" title="raw socket" ></p>
+
+<h1>传统架构下安装并使用</h1>
+
+<p>在传统架构下，<code>intercept拦截进程</code>需要运行在测试机上，用于拦截测试机的响应包。</p>
+
+<h2>安装与使用</h2>
+
+<h3>在测试机安装intercept拦截进程</h3>
+
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/tcocopy --enable-single
+make
+sudo make install
+</code></pre>
+
+<h3>安装gryphon客户端</h3>
+
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/gryphon --enable-single
+make
+sudo make install
+</code></pre>
+
+<h3>使用方法</h3>
+
+<p>以<code>intercept拦截进程</code>安装在测试机<strong>10.16.15.118</strong>，应用端口是<strong>80</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>为例，进行gryphon在传统架构下的基本使用方法。</p>
+
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
+</code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上操作</p>
+
+<pre><code>modprobe ip_queue
+iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
+/usr/local/tcpcopy/bin/intercept
+</code></pre>
+
+<blockquote><p>如果内核版本3.5，可以使用nfqueue</p></blockquote>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.118 -u 1000 -a 2 -c 10.17.15.*
+</code></pre>
+
+<p>上述命令，从xxx.pcap抓包文件中提取出访问80端口的用户会话过程，模拟1000个用户，将请求复制到测试机<strong>10.16.15.118</strong>的<strong>80</strong>端口中去。其中用户ip地址的范围是10.17.15.*。</p>
+
+<blockquote><p>-a参数用于加快数据包的分送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048</p></blockquote>
+
+<p>gryphon拦截进程中各个基本参数的释义如下：</p>
+
+<pre><code>gryphon -x historyServerPort-targetServerIP:targetServerPort -f &lt;pcapfile,&gt; -s &lt;intercept address&gt; -u &lt;user num&gt; -c &lt;ip range,&gt;
+</code></pre>
+
+<h2>调试步骤</h2>
+
+<p><code>gryphon客户端</code>和<code>intercept拦截进程</code>运行时，会在当前工作目录生成<code>error_gryphon.log</code>，<code>error_intercept.log</code>日志文件，里面有相关运行信息。当测试过程不能正常工作时，可优先查看相关日志。</p>
+
+<p>其次就是在测试机或者<code>gryphon客户端</code>所在的服务器上进行抓包。确保<code>gryphon客户端</code>发出请求，并且没有收到测试机的响应包，如：
+<img src="http://jqlblue.github.io/images/gryphon/gryphon_tcpdump.png" title="gryphon tcpdump" ></p>
+
+<h1>高级架构下安装并使用</h1>
+
+<p>在高级架构下，<code>intercept拦截进程</code>需要运行在辅助服务上，用于拦截测试机的响应包。</p>
+
+<h2>安装与使用</h2>
+
+<h3>在测试机安装intercept拦截进程</h3>
+
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/adv-tcpcopy --enable-single  --enable-pcap --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>安装gryphon客户端</h3>
+
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/adv-gryphon --enable-single --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>使用方法</h3>
+
+<p>以<code>intercept拦截进程</code>安装在辅助服务器<strong>10.16.15.116</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>，测试机<strong>10.16.15.118</strong>的应用端口是<strong>80</strong>为例，进行gryphon在高级架构下的使用方法。</p>
+
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
+</code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上设置静态路由，将响应包路由到辅助服务器<strong>10.16.15.116</strong></p>
+
+<pre><code>route add -net 10.17.15.0 netmask 255.255.255.0 gw 10.16.15.116
+</code></pre>
+
+<p>查看是否设置成功</p>
+
+<pre><code>$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.17.15.0      10.16.15.116    255.255.255.0   UG    0      0        0 eth0
+10.16.14.0      *               255.255.254.0   U     0      0        0 eth0
+169.254.0.0     *               255.255.0.0     U     0      0        0 eth0
+default         10.16.14.1      0.0.0.0         UG    0      0        0 eth0
+</code></pre>
+
+<p>如果设置错了，可以删除并重新添加</p>
+
+<pre><code>route del -net 10.17.15.0 netmask 255.255.255.0
+</code></pre>
+
+<p>在辅助服务器<strong>10.16.15.116</strong>上启动intercept拦截进程</p>
+
+<pre><code>/usr/local/adv-tcpcopy/bin/intercept -F 'tcp and src port 80'
+</code></pre>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/adv-gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.116 -u 1000 -c 10.17.15.*
+</code></pre>
+
+<p><strong> Reference </strong></p>
+
+<p>[^1] <a href="http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html">http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html</a></p>
+
+<p>[^2] <a href="http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html">http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html</a></p>
+
+<p>[^3] <a href="http://www.tenouk.com/Module42a.html">http://www.tenouk.com/Module42a.html</a></p>
+
+<p>[^4] <a href="http://blog.csdn.net/u010807313/article/details/9236581">http://blog.csdn.net/u010807313/article/details/9236581</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一个使用curl请求https资源的问题排查]]></title>
