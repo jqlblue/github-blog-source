@@ -9,7 +9,6 @@ categories: "devops"
 tags: "devops, linux"
 toc: true
 ---
-# gryphon简介 #
 gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 [王斌](http://weibo.com/tcpcopy)进行维护。更多介绍可参见[A powerful tool to simulate millions of concurrent users for loading testing](https://github.com/wangbin579/gryphon)
 <!-- more -->
 gryphon的安装和使用方法分为`传统架构方式`和`高级架构方式`。
