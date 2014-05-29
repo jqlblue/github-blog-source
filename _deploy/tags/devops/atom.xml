@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops, | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-05-28T22:27:36+08:00</updated>
+  <updated>2014-05-29T14:03:58+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -206,7 +206,7 @@ sudo make install
 
 <h3>使用方法</h3>
 
-<p>以<code>intercept拦截进程</code>安装在测试机<strong>10.16.15.118</strong>，应用端口是<strong>80</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>为例，进行gryphon在传统架构下的基本使用方法。</p>
+<p>以<code>intercept拦截进程</code>安装在测试机<strong>10.16.15.118</strong>，应用端口是<strong>80</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>为例，说明gryphon在传统架构下的基本使用方法。</p>
 
 <ul>
 <li>tcpdump抓包录制pcap文件</li>
@@ -244,7 +244,7 @@ iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
 
 <p>上述命令，从xxx.pcap抓包文件中提取出访问80端口的用户会话过程，模拟1000个用户，将请求复制到测试机<strong>10.16.15.118</strong>的<strong>80</strong>端口中去。其中用户ip地址的范围是10.17.15.*。</p>
 
-<blockquote><p>-a参数用于加快数据包的分送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048</p></blockquote>
+<blockquote><p>-a参数用于加快数据包的发送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048</p></blockquote>
 
 <p>gryphon拦截进程中各个基本参数的释义如下：</p>
 
@@ -286,7 +286,7 @@ sudo make install
 
 <h3>使用方法</h3>
 
-<p>以<code>intercept拦截进程</code>安装在辅助服务器<strong>10.16.15.116</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>，测试机<strong>10.16.15.118</strong>的应用端口是<strong>80</strong>为例，进行gryphon在高级架构下的使用方法。</p>
+<p>以<code>intercept拦截进程</code>安装在辅助服务器<strong>10.16.15.116</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>，测试机<strong>10.16.15.118</strong>的应用端口是<strong>80</strong>为例，说明gryphon在高级架构下的使用方法。</p>
 
 <ul>
 <li>tcpdump抓包录制pcap文件</li>
