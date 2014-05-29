@@ -107,7 +107,7 @@ tc_nl_event_process(tc_event_t *rev)
     make
     sudo make install
 ### 使用方法 ###
-以`intercept拦截进程`安装在测试机**10.16.15.118**，应用端口是**80**，`gryphon客户端`安装在**10.16.15.117**为例，进行gryphon在传统架构下的基本使用方法。
+以`intercept拦截进程`安装在测试机**10.16.15.118**，应用端口是**80**，`gryphon客户端`安装在**10.16.15.117**为例，说明gryphon在传统架构下的基本使用方法。
 
 * tcpdump抓包录制pcap文件
 
@@ -131,7 +131,7 @@ tc_nl_event_process(tc_event_t *rev)
 
 上述命令，从xxx.pcap抓包文件中提取出访问80端口的用户会话过程，模拟1000个用户，将请求复制到测试机**10.16.15.118**的**80**端口中去。其中用户ip地址的范围是10.17.15.*。
 
-> -a参数用于加快数据包的分送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048
+> -a参数用于加快数据包的发送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048
 
 gryphon拦截进程中各个基本参数的释义如下：
     gryphon -x historyServerPort-targetServerIP:targetServerPort -f <pcapfile,> -s <intercept address> -u <user num> -c <ip range,>
@@ -160,7 +160,7 @@ gryphon拦截进程中各个基本参数的释义如下：
     make
     sudo make install
 ### 使用方法 ###
-以`intercept拦截进程`安装在辅助服务器**10.16.15.116**，`gryphon客户端`安装在**10.16.15.117**，测试机**10.16.15.118**的应用端口是**80**为例，进行gryphon在高级架构下的使用方法。
+以`intercept拦截进程`安装在辅助服务器**10.16.15.116**，`gryphon客户端`安装在**10.16.15.117**，测试机**10.16.15.118**的应用端口是**80**为例，说明gryphon在高级架构下的使用方法。
 
 * tcpdump抓包录制pcap文件
 
