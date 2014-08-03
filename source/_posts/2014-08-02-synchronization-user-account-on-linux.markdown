@@ -23,13 +23,20 @@ tags: [linux]
 
 * 在跳板机上创建用户账号
 
-* 在要同步的服务器上创建账号，并将该用户在跳板机上如下文件中对于的条目增加到要同步到机器上
+* 在要同步的服务器上创建账号，并将该用户在跳板机上如下文件中对于的条目追加到要同步到机器上
 
 `/etc/passwd`， `/etc/group`, `/etc/shadow`
 
+以跳板机ip：`192.168.1.1`，要同步的服务器：`192.168.1.8`，新增用户名：`jqlblue`为例，登录跳板机执行：
+
+    $ useradd jqlblue
+    $ ssh -l root -p 22 192.168.1.8 "useradd jqlblue"
+    $ grep jqlblue: /etc/group | xargs -I {} ssh -l root -p 22 192.168.1.8 "echo {} >> /etc/group"
+    $ grep jqlblue: /etc/passwd | xargs -I {} ssh -l root -p 22 192.168.1.8 "echo {} >> /etc/passwd"
+    $ grep jqlblue: /etc/shadow | xargs -I {} ssh -l root -p 22 192.168.1.8 "echo {} >> /etc/shadow"
 
 上述操作，编写成脚本即可。当需要新增或者修改用户时，只需在跳板机上进行操作，同步问题，由脚本来完成。
 
-## linux用户登录过程 ##
-
-问题虽然解决了，但是我们还是需要探求背后的机制。
+*上述脚本要在生产环境使用，需要注意如下问题：*
+    1 新增用户时，uid或者gid重复的问题
+    2 修改用户密码或者组信息后，产生多条记录的问题
