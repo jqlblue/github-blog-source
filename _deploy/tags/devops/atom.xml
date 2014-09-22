@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: devops | Jqlblue's Blog]]></title>
+  <title><![CDATA[Tag: devops, | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-08-03T10:35:20+08:00</updated>
+  <updated>2014-09-22T13:16:29+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -14,321 +14,34 @@
 
   
   <entry>
-    <title type="html"><![CDATA[如何静态编译php]]></title>
-    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
-    <updated>2014-04-09T18:13:00+08:00</updated>
-    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
-    <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
-
-<p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
+    <title type="html"><![CDATA[再话tcpcopy的胞弟gryphon]]></title>
+    <link href="http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/"/>
+    <updated>2014-05-28T15:57:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction</id>
+    <content type="html"><![CDATA[<p>gryphon是由网易研发，能够模拟千万级别并发用户进行压力测试的一个软件，可用于网络消息推送服务方面的压力测试和传统web服务的压力测试。目前由网易的 <a href="http://weibo.com/tcpcopy">王斌</a>进行维护。更多介绍可参见<a href="https://github.com/wangbin579/gryphon">A powerful tool to simulate millions of concurrent users for loading testing</a></p>
 
 <!-- more -->
 
 
-<p>安装步骤如下：</p>
+<p>gryphon的安装和使用方法分为<code>传统架构方式</code>和<code>高级架构方式</code>。</p>
 
-<h1>准备源文件</h1>
+<h1>相关角色说明</h1>
 
-<p><code>
-wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
-tar zxvf php-5.5.11.tar.gz
-wget http://pecl.php.net/get/redis-2.2.5.tgz
-tar xvf redis-2.2.5.tgz
-mv redis-2.2.5 php-5.5.11/ext/redis
-</code></p>
+<ul>
+<li>gryphon客户端（/usr/local/bin/gryphon）</li>
+<li>intercept拦截进程（/usr/local/bin/intercept）</li>
+</ul>
 
-<h1>配置</h1>
 
-<h2>重新生成configure</h2>
+<p>测试时，gryphon客户端读取录制的pcap文件（可以通过tcpdump产生），通过<code>Raw Socket</code>修改请求并发送到测试机。因为这些请求的来源ip可能是模拟的，为了连接的正常关闭，需要拦截测试机的响应包。</p>
 
-<p><code>
-cd php-5.5.11
-rm -f ./configure
-./buildconf --force
-</code></p>
-
-<h2>configure</h2>
-
-<p><code>
-./configure LDFLAGS=-static \
---prefix=/usr/local/php5-static \
---disable-all \
---enable-shared=no \
---enable-static=yes \
---enable-inline-optimization \
---enable-hash \
---enable-mbstring \
---with-layout=GNU \
---enable-filter \
---with-pcre-regex \
---with-zlib \
---enable-json \
---enable-ctype \
---disable-redis-session \
---enable-redis
-</code></p>
-
-<h2>修改Makefile</h2>
-
-<p>将
-<code>
-BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)
-</code>
-替换成
-<code>
-BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
-BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)
-</code>
-即：</p>
-
-<p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
-
-<h1>安装</h1>
-
-<p><code>
-make LDFLAGS=-ldl
-sudo make install
-</code></p>
-
-<h1>检查</h1>
-
-<p>在命令行执行</p>
-
-<pre><code>$ file /usr/local/php5-static/bin/php
-/usr/local/php5-static/bin/php: ELF 64-bit LSB executable, AMD x86-64, version 1 (SYSV), for GNU/Linux 2.6.9, statically linked, for GNU/Linux 2.6.9, not stripped
-
-$ /usr/local/php5-static/bin/php -m
-[PHP Modules]
-Core
-ctype
-date
-ereg
-filter
-hash
-json
-mbstring
-pcre
-redis
-Reflection
-SPL
-standard
-zlib
-
-[Zend Modules]
+<pre><code>在传统架构下：
+1 netfilter-iptables在协议栈将数据包交给内核中的ip_queue模块
+2 intercept在用户态通过netlink socket接收内核传来的数据报文
+3 将处理后的报文以及对报文的处理意见（ACCEPT，DROP等）传递给内核协议栈
 </code></pre>
 
-<p>因为可执行文件中包含了调试信息，所以体积较大</p>
-
-<pre><code>$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 18M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<p>可以通过<code>strip</code>命令移除调试信息</p>
-
-<pre><code>$ sudo strip /usr/local/php5-static/bin/php
-$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<table>
-<thead>
-<tr>
-<th align="center">原始文件大小</th>
-<th align="center"> 去除符号表后大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><code>18M</code>      </td>
-<td align="center"> <strong>6.1M</strong></td>
-</tr>
-</tbody>
-</table>
-
-
-<p><strong> reference :</strong></p>
-
-<p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
-
-<p>[^2] <a href="http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454">http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454</a></p>
-
-<p>[^3] <a href="http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html">http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html</a></p>
-
-<p>[^4] <a href="http://markmail.org/message/cpoenglavs4vwv32">http://markmail.org/message/cpoenglavs4vwv32</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用tcpcopy导入线上流量进行功能和压力测试]]></title>
-    <link href="http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online/"/>
-    <updated>2014-01-08T17:29:00+08:00</updated>
-    <id>http://jqlblue.github.io/2014/01/08/use-tcpcopy-test-online</id>
-    <content type="html"><![CDATA[<p>假设我们要上线一个两年内不会宕机的先进架构。在上线前，免不了单元测试，功能测试，还有使用ab，webbench等等进行压力测试。</p>
-
-<p>但这些步骤非生产环境下正式用户的行为。或许你会想到灰度上线，但毕竟可能会影响到部分用户，这怎么对得起我们两年内不宕机的承诺呢？</p>
-
-<p>好在网易的 <a href="http://weibo.com/tcpcopy">王斌</a> 开发了<a href="https://github.com/wangbin579/tcpcopy">tcpcopy</a>， 可以导入线上流量进行功能和压力测试。</p>
-
-<!-- more -->
-
-
-<h3>tcpcopy介绍</h3>
-
-<p><code>tcpcopy</code>是一种请求复制工具。可以将线上流量拷贝到测试机器，实时的模拟线上环境。在不影响线上用户的情况下，使用线上流量进行测试，以尽早发现bug。也可以通过放大流量，进行压力测试，评估系统承载能力。</p>
-
-<p><code>tcpcopy</code>可以从线上服务器的<code>IP</code>层抓取在线请求的数据包，修改相关属性，利用<code>raw socket output</code>技术（<code>packet injection</code> 技术之一）将其发送给测试服务器进行测试。</p>
-
-<p>发送到测试服务器的数据包会在<code>TCP/IP</code>协议栈被识别，其中带有<code>payload</code>（tcp data）的数据包最终进入到测试服务器的上层应用（如nginx），上层应用在处理完请求之后，将响应传递给测试服务器的<code>TCP/IP</code>协议栈。</p>
-
-<p>在测试服务器上启用<code>ip_queue</code>模块，并使用<code>iptables</code>在<code>IP</code>层将响应结果数据包发往QUEUE（<code>ip_queue</code>）。</p>
-
-<p>测试服务器上运行在<code>用户空间</code>的拦截程序（intercept进程），通过打开<code>netlink</code>的socket接受内核通过<code>ip_queue</code>所传递来的网络数据包（即上层应用的响应内容）进行裁定，将结果返回内核，进行出队列的操作。intercept进程默认会丢弃上层应用的响应内容，返回ip header，以释放tcp连接。</p>
-
-<p>intercept进程也可以通过<code>-x</code>（passlist）参数，不drop指定ip lists发出请求的响应内容。默认drop是为了：</p>
-
-<pre><code>1 减少出口带宽占用，节约成本
-2 不影响客户端（线上服务）的`TCP/IP`协议栈
-3 不会在互联网上产生ghost数据包
-</code></pre>
-
-<h3>tcpcopy工作流程</h3>
-
-<p><img src="/images/tcpcopy_flow.png" title="&lsquo;tcpcopy flow&rsquo;" >
-如上图，tcpcopy拷贝一次流量访问的步骤如下：</p>
-
-<pre><code>①　一个访问到达线上前端机；
-②　socket数据包在ip层被拷贝了一份传给tcpcopy进程；
-③　tcpcopy修改包的目的及源地址，发给目标测试机；
-④　拷贝的包到达目标测试机；
-⑤　目标测试机的nginx处理访问，并返回结果；
-⑥　返回结果在ip层被截获、丢弃，由intercpet进程拷贝返回结果的ip header并返回；
-⑦　ip header被发送给线上前端机的tcpcopy进程。
-</code></pre>
-
-<h3>安装和配置</h3>
-
-<p>tcpcopy有两种工作模式：</p>
-
-<pre><code>1 实时拷贝数据包
-2 通过使用tcpdump等抓包生成的文件进行离线（offline）请求重放
-</code></pre>
-
-<p>如果采用实时拷贝线上流程进行导入的方式，需要分别在线上服务器和测试服务器安装<code>tcpcopy</code>，对于离线模式，只需要在测试服务器上安装<code>tcpcopy</code>，编译时指定 <code>--enable-offline</code>。</p>
-
-<h5>安装步骤如下：</h5>
-
-<pre><code>wget https://github.com/wangbin579/tcpcopy/archive/0.9.0.tar.gz -O tcpcopy-0.9.0.tar.gz --no-check-certificate
-tar zxvf tcpcopy-0.9.0.tar.gz
-cd tcpcopy-0.9.0
-./autogen.sh
-./configure --prefix=/usr/local/tcpcopy
-make
-sudo make install
-</code></pre>
-
-<h5>目标测试机配置</h5>
-
-<p>线上服务器拷贝的数据包发送至测试服务器进行处理之后，测试服务器需要通过<code>iptables</code>将响应结果发送至QUEUE（<code>ip_queue</code>），这样测试服务器上运行的<code>intercept</code>拦截进程才能通过打开的<code>netlink</code>socket获取传递过来的数据包并进行裁定。所以测试服务器上需要开启<code>iptables</code>防火墙，并启用内核模块<code>ip_queue</code></p>
-
-<pre><code>modprobe ip_queue
-/etc/init.d/iptables start
-</code></pre>
-
-<p>因为线上服务器需要和目标测试服务器通信，传递请求数据包和控制信息（封装的ip packet header），所以需要在测试服务器上添加相关<code>iptables</code>防火墙规则。编辑<code>/etc/sysconfig/iptables</code>，添加：</p>
-
-<pre><code>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 36524 -j ACCEPT
-</code></pre>
-
-<p>然后重启<code>iptables</code></p>
-
-<pre><code>/etc/init.d/iptables restart
-</code></pre>
-
-<p>接着执行：</p>
-
-<pre><code>iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
-</code></pre>
-
-<p>将响应结果发送至QUEUE（<code>ip_queue</code>），从而实现运行在用户态的进程对相关数据包进行裁定。</p>
-
-<h3>相关使用</h3>
-
-<p>本文以线上和测试机的web服务都使用80端口，传递控制信息使用默认的36524端口为例。如果使用别的端口，记得修改相关<code>iptables</code>防火墙规则。</p>
-
-<h5>离线 offline</h5>
-
-<p>1） 在线上服务器抓包</p>
-
-<pre><code>tcpdump -i eth0 tcp and port 80 -s 0 -w online.pcap
-</code></pre>
-
-<p>2） 将抓包生成的文件拷贝到测试服务器</p>
-
-<p>3） 在测试服务器上进行执行如下命令进行重放</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./intercept
-sudo ./tcpcopy -i /path/online.pcap -x 80-10.16.12.11:80
-
-tcpcopy -i &lt;抓包文件地址&gt; -x &lt;port&gt;-&lt;本地ip&gt;:&lt;port&gt;
-</code></pre>
-
-<h5>在线实时复制 online</h5>
-
-<p>1） 在测试服务器上启动<code>intercept</code>拦截进程</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./intercept
-</code></pre>
-
-<p>2） 在线上服务器复制流量到测试服务器</p>
-
-<pre><code>cd /usr/local/tcpcopy/bin
-sudo ./tcpcopy -x 80-10.16.12.11:80 -c 10.16.12.12
-
-tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应用端口 -c 本地服务器ip
-</code></pre>
-
-<p>reference：</p>
-
-<p>[^1] <a href="https://github.com/wangbin579/tcpcopy">https://github.com/wangbin579/tcpcopy</a></p>
-
-<p>[^2] <a href="http://www.searchtb.com/2012/05/using-tcpcopy-to-simulate-traffic.html">http://www.searchtb.com/2012/05/using-tcpcopy-to-simulate-traffic.html</a></p>
-
-<p>[^3] <a href="http://hi.baidu.com/yacker/item/e6bd5b287fe5a3f150fd8731">http://hi.baidu.com/yacker/item/e6bd5b287fe5a3f150fd8731</a></p>
-
-<p>[^4] <a href="http://blog.yam.com/hn12303158/article/35207136">http://blog.yam.com/hn12303158/article/35207136</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在生产环境部署sentry进行错误收集和提醒]]></title>
-    <link href="http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product/"/>
-    <updated>2013-12-18T11:10:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/12/18/deploy-sentry-in-product</id>
-    <content type="html"><![CDATA[<p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
-
-<!-- more -->
-
-
-<p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
-
-<p><code>Python</code>，<code>PHP</code>，<code>Ruby</code>，<code>Javascript</code>，<code>Java</code>，<code>Nodejs</code>，<code>IOS</code></p>
-
-<p>项目地址：<a href="https://github.com/getsentry/sentry">https://github.com/getsentry/sentry</a></p>
-
-<p>本文以收集<code>PHP</code>错误为例。</p>
-
-<h3>安装步骤</h3>
-
-<p>Sentry的文档清晰且完善，包括<code>安装</code>，<code>配置</code>，<code>调优</code>以及<code>客户端调用</code>，正式使用之前，建议看看，以加深理解。地址：<a href="http://sentry.readthedocs.org/en/latest/">http://sentry.readthedocs.org/en/latest/</a></p>
-
-<h4>python环境安装</h4>
-
-<p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>python2.7.3-install.sh </span></figcaption>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_socket.c </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -345,299 +58,25 @@ tcpcopy -x 服务器应用端口号-测试服务器ip地址:测试服务器应�
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~
-</span><span class='line'>yum install -y bzip2-devel.x86_64
-</span><span class='line'>yum install -y sqlite-devel.x86_64
-</span><span class='line'>yum install -y readline-devel.x86_64
-</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&quot;</span>&gt;http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2&lt;/a&gt;
-</span><span class='line'>tar jxvf Python-2.7.3.tar.bz2
-</span><span class='line'><span class="nb">cd </span>Python-2.7.3
-</span><span class='line'>./configure &amp;mdash;prefix<span class="o">=</span>/usr/local/python2.7.3
-</span><span class='line'>make
-</span><span class='line'>sudo make install&lt;/p&gt;
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_raw_socket_out_init</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&quot;</span>&gt;https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz&lt;/a&gt; &amp;mdash;no-check-certificate
-</span><span class='line'>tar zxvf distribute-0.6.49.tar.gz
-</span><span class='line'><span class="nb">cd </span>distribute-0.6.49
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenv
-</span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install -i &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://e.pypi.python.org/simple&quot;</span>&gt;http://e.pypi.python.org/simple&lt;/a&gt; virtualenvwrapper
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
-
-<pre><code>/usr/local/python2.7.3/bin/python
-</code></pre>
-
-<h4>安装Sentry server</h4>
-
-<p>初始化安装目录</p>
-
-<pre><code>mkdir -p /data/server/python-envs
-</code></pre>
-
-<p>添加相关环境变量</p>
-
-<pre><code>vim ~/.bashrc
-</code></pre>
-
-<p>添加：</p>
-
-<pre><code>export WORKON_HOME=/data/server/python-envs
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/python2.7.3/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/python2.7.3/bin/virtualenv
-source /usr/local/python2.7.3/bin/virtualenvwrapper.sh
-</code></pre>
-
-<p>使环境变量生效</p>
-
-<pre><code>source ~/.bashrc
-</code></pre>
-
-<p>安装Sentry server</p>
-
-<pre><code>mkvirtualenv sentry
-pip install sentry
-pip install sentry[mysql]
-pip install sentry[mysql] --upgrade
-</code></pre>
-
-<p>修改<code>~/.bashrc</code>，添加如下代码，以便登录后自动切换到相关python环境</p>
-
-<pre><code>source /data/server/python-envs/sentry/bin/activate
-</code></pre>
-
-<h3>快速配置</h3>
-
-<p>或许你还没有做好决定，只是想尽快体验下Sentry，在完成上面的安装之后，通过下面三个步骤即可满足你的愿望：</p>
-
-<p>1 初始化配置</p>
-
-<pre><code>sentry init ~/sentry.conf.py
-</code></pre>
-
-<p>2 修改配置</p>
-
-<p>修改初始配置中的如下两项就行</p>
-
-<p><code>SENTRY_WEB_HOST</code>，<code>SENTRY_URL_PREFIX</code>，如：</p>
-
-<pre><code>SENTRY_URL_PREFIX = 'http://10.16.15.1:9000'
-SENTRY_WEB_HOST = '10.16.15.1'
-</code></pre>
-
-<p>3 创建超级管理员帐号，启动server</p>
-
-<pre><code>sentry --config=~/sentry.conf.py upgrade
-sentry --config=~/sentry.conf.py createsuperuser
-sentry --config=~/sentry.conf.py start
-</code></pre>
-
-<p>然后就可以通过url <a href="http://server_host:port">http://server_host:port</a> ，使用创建的帐号登录系统后台，进行项目，帐号等管理，和已收集日志的查看等等</p>
-
-<h3>配置在生产环境中使用</h3>
-
-<h4>Sentry server</h4>
-
-<p><em>我们在生产环境下的使用状况：</em></p>
-
-<ul>
-<li><p>使用<code>mysql</code>作为后端数据存储</p></li>
-<li><p>使用<code>celery</code>任务队列（<code>broker</code>使用<code>redis</code>），处理数据入库，发送邮件提醒等工作</p></li>
-<li><p>同时，使用<code>redis</code>作为<code>Update Buffers</code>，用于将频繁出现的相同事件合并，这在高并发时会相当有用</p></li>
-<li><p>使用<code>memcache</code>作为前端<code>Cache</code>，管理后台通过轮询的访问获取是否有新的事件提醒，使用<code>memcache</code>，可以减轻直接查询数据库的压力</p></li>
-<li><p>使用<code>Udp</code>协议发送并接收相关事件</p></li>
-<li><p>使用<code>Nginx</code>反向代理前端http请求，并使用<code>HttpLimitReqModule</code>限制请求的发送速率</p></li>
-<li><p>使用<code>supervisor</code>管理<code>celery</code>和<code>sentry</code>server</p></li>
-</ul>
-
-
-<p><em>相关安装步骤：</em></p>
-
-<pre><code>pip install redis hiredis nydus
-pip install redis hiredis nydus --upgrade
-pip install python-memcached
-pip install gevent
-pip install eventlet
-pip install supervisor
-</code></pre>
-
-<p><em>初始化配置</em></p>
-
-<pre><code>mkdir -p /data/server/sentry/etc
-sentry init /data/server/sentry/etc/sentry.conf.py
-</code></pre>
-
-<p><em>创建超级管理员帐号</em></p>
-
-<pre><code>sentry --config=/data/server/sentry/etc/sentry.conf.py upgrade
-sentry --config=/data/server/sentry/etc/sentry.conf.py createsuperuser
-</code></pre>
-
-<p><em>初始化supervisor配置</em></p>
-
-<pre><code>echo_supervisord_conf &gt; /data/server/sentry/etc/supervisord.conf
-</code></pre>
-
-<p><em>配置Sentry</em></p>
-
-<p>示例配置请参见 <a href="https://gist.github.com/jqlblue/8018185">https://gist.github.com/jqlblue/8018185</a></p>
-
-<p>修改<code>/data/server/sentry/etc/supervisord.conf</code>，添加：</p>
-
-<pre><code>[program:web]
-command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start
-process_name=%(program_name)s_%(process_num)02d
-numprocs=3
-numprocs_start=0
-startsecs=5
-startretries=3
-stopsignal=QUIT
-stopwaitsecs=10
-stopasgroup=true
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-
-[program:sentry_udp]
-command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start udp
-process_name=sentry_udp_server
-numprocs=1
-numprocs_start=0
-startsecs=5
-startretries=3
-stopsignal=QUIT
-stopwaitsecs=10
-stopasgroup=true
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-
-[program:celeryd]
-command=/data/server/python-envs/sentry/bin/sentry celery worker -c 6 -P processes -l WARNING -n worker-%(process_num)02d.worker
-process_name=%(program_name)s_%(process_num)02d
-numprocs=1
-numprocs_start=0
-startsecs=1
-startretries=3
-stopsignal=TERM
-stopwaitsecs=10
-stopasgroup=false
-killasgroup=true
-environment=SENTRY_CONF="/data/server/sentry/etc/sentry.conf.py"
-directory=/data/server/python-envs/sentry/
-</code></pre>
-
-<p><em>管理Sentry server</em></p>
-
-<ul>
-<li>启动superviord</li>
-</ul>
-
-
-<p>执行如下命令，同时，<code>celery</code>，<code>sentry web</code>，<code>sentry udp server</code>也将随之启动</p>
-
-<pre><code>supervisord -c /data/server/sentry/etc/supervisord.conf
-</code></pre>
-
-<ul>
-<li>停止sentry相关server</li>
-</ul>
-
-
-<p>执行如下命令</p>
-
-<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
-</code></pre>
-
-<ul>
-<li>停止superviord</li>
-</ul>
-
-
-<p>执行如下命令，同时，已启动的<code>centry</code>相关server也将停止</p>
-
-<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
-</code></pre>
-
-<p><code>supervisor</code>更多使用方法请参见 <a href="http://supervisord.org/">http://supervisord.org/</a></p>
-
-<p><code>nginx</code>配置请参见 <a href="https://gist.github.com/jqlblue/8019629">https://gist.github.com/jqlblue/8019629</a></p>
-
-<h4>Sentry client</h4>
-
-<p>可以通过在程序中<code>registerExceptionHandler</code>和<code>registerErrorHandler</code>将相关信息即时发送至server端。</p>
-
-<p>相关sdk项目地址 <a href="https://github.com/getsentry/raven-php">https://github.com/getsentry/raven-php</a></p>
-
-<p>实例化<code>Raven_Client</code>时使用的<code>DSN</code>中的<code>public:secret</code>可以在使用管理员登录后台后，在<code>项目</code>&ndash;<code>设置</code>下面查看到。示例地址：<a href="http://sentry_host/team_name/project_name/docs/php/">http://sentry_host/team_name/project_name/docs/php/</a></p>
-
-<p>我们采用通过增量读取php error log，使用crontab将错误信息上报。</p>
-
-<p>基于sentry php sdk修改之后的代码地址：<a href="https://gist.github.com/jqlblue/8019312">https://gist.github.com/jqlblue/8019312</a></p>
-
-<p>安装依赖</p>
-
-<pre><code>yum install -y logcheck.noarch
-</code></pre>
-
-<p><code>logcheck</code>中的<code>logtail2</code>用于增量读取日志，<code>flock</code>用于防止定时任务堆积。</p>
-
-<blockquote><p>另外，需要安装php的sockets扩展</p></blockquote>
-
-<p>添加定时任务</p>
-
-<pre><code>* * * * * /usr/bin/flock -xn /tmp/sentry_client.lock /opt/php-5.5.4/bin/php /path/client.php --project=project_name 2&gt;&amp;1 &gt; /dev/null
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
-    <updated>2013-08-10T09:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
-    <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
-看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
-
-<p>面对打着补丁的5.2，我们决定升级到php5.5</p>
-
-<!-- more -->
-
-
-<h3>The reason</h3>
-
-<p>左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
-的关系。</p>
-
-<p>作为一个在开发一线的互联网从业人员。优化，重构，这可能是我们要经常提及
-的两个话题。</p>
-
-<p>通过监控，度量，找出系统中那20%的瓶颈问题，一般就能让系统的性能有很大
-的提升。这种优化算作自身能力的提升。</p>
-
-<p>一个在线上运行的系统，实际上还依赖与服务器，带宽等硬件环境；操作系统，
-程序编译器或者解释器等软件环境。这些环境，也在更新优化。</p>
-
-<p>在自身能力不变的情况化，如果这些环境得以更新优化，我们的系统也会跑地更
-快。</p>
-
-<p>就像nike，同样的人，穿着nike会有飞一般的感觉。</p>
-
-<h3>Step</h3>
-
-<p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
-<img src="/images/php-5.5-prefermance.png" title="&lsquo;php-5.5-prefermance 'images&rsquo;" ></p>
-
-<p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
-
-<p>当然，升级有风险，操作需谨慎。</p>
-
-<p>下面是升级步骤：</p>
-
-<h5>1. 安装php5.5</h5>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * On Linux when setting the protocol as IPPROTO_RAW,</span>
+</span><span class='line'><span class="cm"> * then by default the kernel sets the IP_HDRINCL option and</span>
+</span><span class='line'><span class="cm"> * thus does not prepend its own IP header.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_RAW</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_interception.c </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -679,148 +118,236 @@ directory=/data/server/python-envs/sentry/
 <span class='line-number'>39</span>
 <span class='line-number'>40</span>
 <span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
-</span><span class='line'>wget -c &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.php.net/get/php-$&quot;</span>&gt;http://www.php.net/get/php-<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>PHP_VERSION<span class="o">}</span>.tar.gz/from/this/mirror
-</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
-</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
-</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
-</span><span class='line'>./configure <span class="se">\</span>
-</span><span class='line'>&amp;mdash;prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
-</span><span class='line'>&amp;mdash;disable-debug <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-inline-optimization <span class="se">\</span>
-</span><span class='line'>&amp;mdash;disable-all <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-fpm <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-libxml <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-session <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-xml <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-hash <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-mbstring <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-layout<span class="o">=</span>GNU <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-filter <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-pcre-regex <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-zlib <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-json <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-mysqlnd <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-pdo <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-simplexml <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-dom <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-phar <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-tokenizer <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-posix <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-xmlwriter <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-xmlreader <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-curl <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-iconv <span class="se">\</span>
-</span><span class='line'>&amp;mdash;with-mcrypt <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-ctype <span class="se">\</span>
-</span><span class='line'>&amp;mdash;enable-opcache
-</span><span class='line'>make
-</span><span class='line'>make install
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_nl_event_process</span><span class="p">(</span><span class="n">tc_event_t</span> <span class="o">*</span><span class="n">rev</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">char</span>            <span class="n">buffer</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
+</span><span class='line'><span class="k">register</span> <span class="kt">int</span>    <span class="n">i</span><span class="p">,</span> <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">packet_id</span><span class="p">;</span>
+</span><span class='line'><span class="n">tc_ip_header_t</span> <span class="o">*</span><span class="n">ip_hdr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">tc_nl_socket_recv</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="mi">65536</span><span class="p">)</span> <span class="o">==</span> <span class="n">TC_ERROR</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">TC_ERROR</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ip_hdr</span> <span class="o">=</span> <span class="n">tc_nl_ip_header</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'><span class="n">packet_id</span> <span class="o">=</span> <span class="n">tc_nl_packet_id</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">ip_hdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="cm">/* check if it is the valid user to pass through firewall */</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">num</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">ips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ip_hdr</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">daddr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tot_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pass_through_flag</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* pass through the firewall */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_ACCEPT</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">tot_copy_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">router_update</span><span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">old</span><span class="p">,</span> <span class="n">ip_hdr</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* drop the packet */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_DROP</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="n">TC_OK</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>完整脚本可参见：
-<a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
-
-<p>备注：</p>
-
-<pre><code>1. 安装php时，要指定安装目录(prefix)，以备出现问题时可以及时回滚
-2. 安装扩展时同样需要注意，不要覆盖其他版本的扩展
-   1) 使用绝对路径执行phpize
-   2) 在configure时指定php5.5目录下的php-config，--with-php-config
-   3) 编译扩展需要的lib库时，也要指定版本和安装目录
+<pre><code>在高级架构下，是通过在测试机上配置静态路由规则，将响应路由到辅助服务器进行处理。
 </code></pre>
 
-<h5>2. php代码语法兼容性检测</h5>
+<p><img src="/images/gryphon/raw_socket.jpg" title="raw socket" ></p>
 
-<p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
-就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;use sh ./check-php-compatibility.sh /path/code&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> &amp;lsquo;&amp;rsquo; <span class="o">]]</span>;<span class="k">then</span>
-</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span>&amp;lsquo;/path/code/src&amp;rsquo;
-</span><span class='line'><span class="k">fi</span>
-</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span>&amp;lsquo;/usr/local/php-5.5.0/bin/php&amp;rsquo;
-</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname &amp;lsquo;*.php&amp;rsquo;<span class="k">)</span>; <span class="k">do</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;<span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;done
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
+<h1>传统架构下安装并使用</h1>
 
-<h5>3. 从服务器上收集请求情况</h5>
+<p>在传统架构下，<code>intercept拦截进程</code>需要运行在测试机上，用于拦截测试机的响应包。</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F &amp;ldquo;<span class="o">[</span> ?<span class="o">]</span>&amp;rdquo; &amp;lsquo;<span class="o">{</span>urls<span class="o">[</span><span class="nv">$7</span><span class="o">]</span>++<span class="o">}</span> END <span class="o">{</span><span class="k">for</span><span class="o">(</span>key in urls<span class="o">)</span>print urls<span class="o">[</span>key<span class="o">]</span>,&amp;ldquo;<span class="se">\t</span>&amp;rdquo;,key<span class="o">}</span>&amp;rsquo; | sort -nr
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<h2>安装与使用</h2>
 
-<h5>4. 通过收集的请求url进行测试</h5>
+<h3>在测试机安装intercept拦截进程</h3>
 
-<p>对于get方式的url请求，直接wget或者curl就好。</p>
-
-<p>对于post方式的curl请求，需要用curl模拟post请求进行提交。同时需要在
-webserver日志中记录post请求参数。</p>
-
-<h5>5. 查看webserver的错误日志，进行改进</h5>
-
-<h3>Improve</h3>
-
-<p>上线后通过在nginx的access log中开启记录upstream_time和request_time进行
-统计，php-5.5.0环境下接口的响应速度较5.2.5环境提升了(0.00487559-0.00366027)/0.00487559=24.9%</p>
-
-<pre><code>php-5.5.0
-total_request_time:196416 total_upstream_time:1122.52 total_request:306678 avg_requst_time:0.640464 avg_upstream_time:0.00366027
-
-php-5.2.5
-total_request_time:200400 total_upstream_time:1498.65 total_request:307378 avg_requst_time:0.651966 avg_upstream_time:0.00487559
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/tcocopy --enable-single
+make
+sudo make install
 </code></pre>
 
-<p>统计脚本</p>
+<h3>安装gryphon客户端</h3>
 
-<pre><code>cat access.log | grep '/api/getInfo' | awk -F ')"' '{print $2}' | grep -v ' -' | awk 'BEGIN{_request=0;_upstream=0;_i=0}{_request+=$2;_upstream+=$3;_i+=1}END{print "total_request_time:"_request" total_upstream_time:"_upstream" total_request:"_i" avg_requst_time:"_request/_i" avg_upstream_time:"_upstream/_i}'
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/gryphon --enable-single
+make
+sudo make install
 </code></pre>
 
-<p>另外，做了php5.3.10和php.5.5.0的压测比较</p>
+<h3>使用方法</h3>
 
-<pre><code>php5.3.10
-Speed=30441 pages/min, 1224275 bytes/sec.
-Requests: 30441 susceed, 0 failed.
+<p>以<code>intercept拦截进程</code>安装在测试机<strong>10.16.15.118</strong>，应用端口是<strong>80</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>为例，说明gryphon在传统架构下的基本使用方法。</p>
 
-php5.5.0
-Speed=42514 pages/min, 1727526 bytes/sec.
-Requests: 42514 susceed, 0 failed.
-PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
 </code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上操作</p>
+
+<pre><code>modprobe ip_queue
+iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
+/usr/local/tcpcopy/bin/intercept
+</code></pre>
+
+<blockquote><p>如果内核版本3.5，可以使用nfqueue</p></blockquote>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.118 -u 1000 -a 2 -c 10.17.15.*
+</code></pre>
+
+<p>上述命令，从xxx.pcap抓包文件中提取出访问80端口的用户会话过程，模拟1000个用户，将请求复制到测试机<strong>10.16.15.118</strong>的<strong>80</strong>端口中去。其中用户ip地址的范围是10.17.15.*。</p>
+
+<blockquote><p>-a参数用于加快数据包的发送速度。-a 2代表将数据包之间的发送间隔缩短一半，相当于加速2倍。也可和－i配合，如 －a 10 －i 2048</p></blockquote>
+
+<p>gryphon拦截进程中各个基本参数的释义如下：</p>
+
+<pre><code>gryphon -x historyServerPort-targetServerIP:targetServerPort -f &lt;pcapfile,&gt; -s &lt;intercept address&gt; -u &lt;user num&gt; -c &lt;ip range,&gt;
+</code></pre>
+
+<h2>调试步骤</h2>
+
+<p><code>gryphon客户端</code>和<code>intercept拦截进程</code>运行时，会在当前工作目录生成<code>error_gryphon.log</code>，<code>error_intercept.log</code>日志文件，里面有相关运行信息。当测试过程不能正常工作时，可优先查看相关日志。</p>
+
+<p>其次就是在测试机或者<code>gryphon客户端</code>所在的服务器上进行抓包。确保<code>gryphon客户端</code>发出请求，并且没有收到测试机的响应包，如：
+<img src="/images/gryphon/gryphon_tcpdump.png" title="gryphon tcpdump" ></p>
+
+<h1>高级架构下安装并使用</h1>
+
+<p>在高级架构下，<code>intercept拦截进程</code>需要运行在辅助服务上，用于拦截测试机的响应包。</p>
+
+<h2>安装与使用</h2>
+
+<h3>在测试机安装intercept拦截进程</h3>
+
+<pre><code>git clone git://github.com/wangbin579/tcpcopy.git
+cd tcpcopy
+sh autogen.sh
+./configure --prefix=/usr/local/adv-tcpcopy --enable-single  --enable-pcap --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>安装gryphon客户端</h3>
+
+<pre><code>git clone git://github.com/wangbin579/gryphon.git
+cd gryphon
+sh autogen.sh
+./configure --prefix=/usr/local/adv-gryphon --enable-single --enable-advanced
+make
+sudo make install
+</code></pre>
+
+<h3>使用方法</h3>
+
+<p>以<code>intercept拦截进程</code>安装在辅助服务器<strong>10.16.15.116</strong>，<code>gryphon客户端</code>安装在<strong>10.16.15.117</strong>，测试机<strong>10.16.15.118</strong>的应用端口是<strong>80</strong>为例，说明gryphon在高级架构下的使用方法。</p>
+
+<ul>
+<li>tcpdump抓包录制pcap文件</li>
+</ul>
+
+
+<p>可以在线上服务器抓包录制，并拷贝到<code>gryphon客户端</code>所在的服务器<strong>10.16.15.117</strong></p>
+
+<pre><code>tcpdump -i eth0 port 80 -s 0 -w xxx.pcap
+</code></pre>
+
+<ul>
+<li>拦截响应包</li>
+</ul>
+
+
+<p>在测试机<strong>10.16.15.118</strong>上设置静态路由，将响应包路由到辅助服务器<strong>10.16.15.116</strong></p>
+
+<pre><code>route add -net 10.17.15.0 netmask 255.255.255.0 gw 10.16.15.116
+</code></pre>
+
+<p>查看是否设置成功</p>
+
+<pre><code>$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.17.15.0      10.16.15.116    255.255.255.0   UG    0      0        0 eth0
+10.16.14.0      *               255.255.254.0   U     0      0        0 eth0
+169.254.0.0     *               255.255.0.0     U     0      0        0 eth0
+default         10.16.14.1      0.0.0.0         UG    0      0        0 eth0
+</code></pre>
+
+<p>如果设置错了，可以删除并重新添加</p>
+
+<pre><code>route del -net 10.17.15.0 netmask 255.255.255.0
+</code></pre>
+
+<p>在辅助服务器<strong>10.16.15.116</strong>上启动intercept拦截进程</p>
+
+<pre><code>/usr/local/adv-tcpcopy/bin/intercept -F 'tcp and src port 80'
+</code></pre>
+
+<ul>
+<li>发送测试请求</li>
+</ul>
+
+
+<p>在<code>gryphon客户端</code>所在服务器<strong>10.16.15.117</strong>上操作</p>
+
+<pre><code>/usr/local/adv-gryphon/bin/gryphon -x 80-10.16.15.118:80 -f ./xxx.pcap -s 10.16.15.116 -u 1000 -c 10.17.15.*
+</code></pre>
+
+<p><strong> Reference </strong></p>
+
+<p>[^1] <a href="http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html">http://www.ibm.com/developerworks/cn/linux/l-ntflt/index.html</a></p>
+
+<p>[^2] <a href="http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html">http://www.ibm.com/developerworks/cn/linux/l-netlink/index.html</a></p>
+
+<p>[^3] <a href="http://www.tenouk.com/Module42a.html">http://www.tenouk.com/Module42a.html</a></p>
+
+<p>[^4] <a href="http://blog.csdn.net/u010807313/article/details/9236581">http://blog.csdn.net/u010807313/article/details/9236581</a></p>
 ]]></content>
   </entry>
   
