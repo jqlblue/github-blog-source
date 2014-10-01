@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>使用graphite和cabot搭建监控系统 - Jqlblue's Blog</title>
+  <title>使用graphite和cabot搭建监控服务 - Jqlblue's Blog</title>
 
   <meta name="author" content="jqlblue">
   
@@ -104,7 +104,7 @@ var _hmt = _hmt || [];
   
   <header>
     
-      <h1 class="entry-title">使用graphite和cabot搭建监控系统</h1>
+      <h1 class="entry-title">使用graphite和cabot搭建监控服务</h1>
     
     
       <p class="meta">
@@ -193,10 +193,11 @@ var _hmt = _hmt || [];
 <h2>相关配置</h2>
 
 <ul>
-<li>创建管理python环境的用户
-为了便于环境的统一管理，创建一个普通用户进行新创建python环境的管理和相关python扩展的安装。同时，向数字公司的<code>addops</code>们致敬。</li>
+<li>创建管理python环境的用户</li>
 </ul>
 
+
+<p>为了便于环境的统一管理，创建一个普通用户进行新创建python环境的管理和相关python扩展的安装。同时，向数字公司的<code>addops</code>们致敬。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>useradd appops</span></code></pre></td></tr></table></div></figure>
@@ -376,7 +377,10 @@ var _hmt = _hmt || [];
 </pre></td><td class='code'><pre><code class=''><span class='line'>python manage.py syncdb</span></code></pre></td></tr></table></div></figure>
 
 
-<p><em>启动graphite-web</em></p>
+<ul>
+<li>启动graphite-web</li>
+</ul>
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>uwsgi --http localhost:8085 --master --processes 1 --home /data/server/python-envs/graphite --pythonpath /opt/graphite/webapp/graphite --wsgi-file=/opt/graphite/conf/graphite.wsgi --enable-threads --thunder-lock</span></code></pre></td></tr></table></div></figure>
@@ -579,15 +583,17 @@ jenkins编译任务的状态
 
 
 <ul>
-<li><p>配置cabot
-使用foreman启动cabot时，会先读取<code>.foreman</code></p>
-
-<p>  # vi: set ft=yaml :</p>
-
-<p>  procfile: Procfile.dev
-  env: conf/development.env</p></li>
+<li>配置cabot</li>
 </ul>
 
+
+<p>使用foreman启动cabot时，会先读取<code>.foreman</code></p>
+
+<pre><code># vi: set ft=yaml :
+
+procfile: Procfile.dev
+env: conf/development.env
+</code></pre>
 
 <p><code>Procfile.dev</code>内容如下：</p>
 
@@ -742,7 +748,7 @@ var jiathis_config = {data_track_clickback:'true'};
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/2014/10/01/use-graphite-and-alter-build-monitor-system/">使用graphite和cabot搭建监控系统</a>
+        <a href="/2014/10/01/use-graphite-and-alter-build-monitor-system/">使用graphite和cabot搭建监控服务</a>
       </li>
     
       <li class="post">

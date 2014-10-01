@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-01T20:52:02+08:00</updated>
+  <updated>2014-10-01T20:55:54+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[使用graphite和cabot搭建监控系统]]></title>
+    <title type="html"><![CDATA[使用graphite和cabot搭建监控服务]]></title>
     <link href="http://jqlblue.github.io/2014/10/01/use-graphite-and-alter-build-monitor-system/"/>
     <updated>2014-10-01T09:43:00+08:00</updated>
     <id>http://jqlblue.github.io/2014/10/01/use-graphite-and-alter-build-monitor-system</id>
@@ -61,12 +61,17 @@ sudo /usr/local/python2.7.3/bin/easy_install virtualenvwrapper
 <h2>相关配置</h2>
 
 <ul>
-<li><p>创建管理python环境的用户
-为了便于环境的统一管理，创建一个普通用户进行新创建python环境的管理和相关python扩展的安装。同时，向数字公司的<code>addops</code>们致敬。
+<li>创建管理python环境的用户</li>
+</ul>
+
+
+<p>为了便于环境的统一管理，创建一个普通用户进行新创建python环境的管理和相关python扩展的安装。同时，向数字公司的<code>addops</code>们致敬。
 <code>
 useradd appops
-</code></p></li>
-<li><p>创建python环境安装目录</p></li>
+</code></p>
+
+<ul>
+<li>创建python环境安装目录</li>
 </ul>
 
 
@@ -171,18 +176,17 @@ DATABASES
 示例配置文件<a href="https://gist.github.com/jqlblue/88f8a9b14bbe4bae3666">local_settings.py</a></p>
 
 <ul>
-<li>初始化数据库
+<li><p>初始化数据库
 <code>
 python manage.py syncdb
-</code></li>
-</ul>
-
-
-<p><em>启动graphite-web</em>
+</code></p></li>
+<li><p>启动graphite-web
 <code>
 uwsgi --http localhost:8085 --master --processes 1 --home /data/server/python-envs/graphite --pythonpath /opt/graphite/webapp/graphite --wsgi-file=/opt/graphite/conf/graphite.wsgi --enable-threads --thunder-lock
 </code>
-<img src="/images/graphite/web.jpg" title="graphite web" ></p>
+<img src="/images/graphite/web.jpg" title="graphite web" ></p></li>
+</ul>
+
 
 <h2>配置数据收集服务</h2>
 
@@ -341,15 +345,17 @@ python setup.py install
 </code></p>
 
 <ul>
-<li><p>配置cabot
-使用foreman启动cabot时，会先读取<code>.foreman</code></p>
-
-<p>  # vi: set ft=yaml :</p>
-
-<p>  procfile: Procfile.dev
-  env: conf/development.env</p></li>
+<li>配置cabot</li>
 </ul>
 
+
+<p>使用foreman启动cabot时，会先读取<code>.foreman</code></p>
+
+<pre><code># vi: set ft=yaml :
+
+procfile: Procfile.dev
+env: conf/development.env
+</code></pre>
 
 <p><code>Procfile.dev</code>内容如下：</p>
 
