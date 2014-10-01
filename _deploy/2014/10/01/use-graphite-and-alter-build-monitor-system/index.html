@@ -354,7 +354,7 @@ var _hmt = _hmt || [];
 </span><span class='line'>cp /opt/graphite/conf/dashboard.conf.example /opt/graphite/conf/dashboard.conf</span></code></pre></td></tr></table></div></figure>
 
 
-<p>修改或者增加如下配置</p>
+<p>修改或者增加如下配置：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -428,7 +428,7 @@ var _hmt = _hmt || [];
 <p>即只存储以<code>test.</code>和<code>server.</code>开头的metrics。</p>
 
 <ul>
-<li>配置存储赛scheme</li>
+<li>配置存储Schemas</li>
 </ul>
 
 
@@ -517,8 +517,8 @@ var _hmt = _hmt || [];
 
 <p><code>cabot</code>是一个轻量级的监控报警服务。其报警可以基于：</p>
 
-<pre><code>graphite收集的Metrics
-一个url的响应内容和状态码
+<pre><code>graphite收集的监控数据
+url的响应内容和状态码
 jenkins编译任务的状态
 </code></pre>
 
@@ -535,7 +535,7 @@ jenkins编译任务的状态
 </span><span class='line'>sudo gem install foreman</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p>因为foreman要求ruby版本需要在1.9.3以后，如果系统自带ruby版本过低，可以通过rvm安装ruby，再安装foreman。</p></blockquote>
+<blockquote><p>因为foreman要求ruby版本需要在1.9.3以上，如果系统自带ruby版本过低，可以通过rvm安装ruby，再安装foreman。</p></blockquote>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -601,7 +601,7 @@ env: conf/development.env
 celery:    celery -A cabot worker --loglevel=DEBUG -B -c 8 -Ofair
 </code></pre>
 
-<p>其中定义了启动cabot-web和，celery任务队列时使用的命令，针对不同的环境，可以酌情修改<code>.foreman</code>和对应的<code>procfile</code>及<code>env</code>。</p>
+<p>其中定义了启动cabot-web和celery任务队列时使用的命令，针对不同的环境，可以酌情修改<code>.foreman</code>和对应的<code>procfile</code>及<code>env</code>。</p>
 
 <p>对于邮件报警，需要修改<a href="https://gist.github.com/jqlblue/a6329a7649be16e92df4">conf/development.env</a>中的如下内容：</p>
 
