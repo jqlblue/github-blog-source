@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "使用graphite和cabot搭建监控系统"
+title: "使用graphite和cabot搭建监控服务"
 description: "如何使用python实现的开源系统graphite搭建监控系统，并结合定时任务，收集服务器和webserver运行状态，配合cabot进行相关监控数值的报警"
 keywords: "graphite cabot alter monitor 监控 报警 搭建"
 date: 2014-10-01 09:43
@@ -46,6 +46,7 @@ sudo /usr/local/python2.7.3/bin/easy_install virtualenvwrapper
 
 ## 相关配置 ##
 * 创建管理python环境的用户
+
 为了便于环境的统一管理，创建一个普通用户进行新创建python环境的管理和相关python扩展的安装。同时，向数字公司的`addops`们致敬。
 ```
 useradd appops
@@ -148,7 +149,7 @@ DATABASES
 python manage.py syncdb
 ```
 
-*启动graphite-web*
+* 启动graphite-web
 ```
 uwsgi --http localhost:8085 --master --processes 1 --home /data/server/python-envs/graphite --pythonpath /opt/graphite/webapp/graphite --wsgi-file=/opt/graphite/conf/graphite.wsgi --enable-threads --thunder-lock
 ```
@@ -283,6 +284,7 @@ python setup.py install
 ```
 
 * 配置cabot
+
 使用foreman启动cabot时，会先读取`.foreman`
 
     # vi: set ft=yaml :
