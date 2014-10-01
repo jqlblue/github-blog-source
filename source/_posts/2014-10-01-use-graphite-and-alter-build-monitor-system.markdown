@@ -135,7 +135,7 @@ cp /opt/graphite/conf/graphTemplates.conf.example /opt/graphite/conf/graphTempla
 cp /opt/graphite/conf/dashboard.conf.example /opt/graphite/conf/dashboard.conf
 ```
 
-修改或者增加如下配置
+修改或者增加如下配置：
 ```
 TIME_ZONE
 DEBUG
@@ -168,6 +168,7 @@ cp /opt/graphite/conf/whitelist.conf.example /opt/graphite/conf/whitelist.conf
 替换成
 
     import daemonize
+
 否则启动cabon时会遇到`ImportError: cannot import name daemonize`。
 
 * 配置存储白名单
@@ -181,7 +182,7 @@ vim /opt/graphite/conf/whitelist.conf
 
 即只存储以`test.`和`server.`开头的metrics。
 
-* 配置存储赛scheme
+* 配置存储Schemas
 ```
 vim /opt/graphite/conf/storage-schemas.conf
 ```
@@ -238,8 +239,8 @@ echo -n "server.$IDC.$HOST.system.disk_used $SYSTEM_DISK_USED $TIMESTAMP" > /dev
 # 搭建cabot报警服务 #
 `cabot`是一个轻量级的监控报警服务。其报警可以基于：
 
-    graphite收集的Metrics
-    一个url的响应内容和状态码
+    graphite收集的监控数据
+    url的响应内容和状态码
     jenkins编译任务的状态
 
 * 安装依赖
@@ -250,7 +251,7 @@ sudo gem sources -a http://ruby.taobao.org/
 sudo gem install foreman
 ```
 
-> 因为foreman要求ruby版本需要在1.9.3以后，如果系统自带ruby版本过低，可以通过rvm安装ruby，再安装foreman。
+> 因为foreman要求ruby版本需要在1.9.3以上，如果系统自带ruby版本过低，可以通过rvm安装ruby，再安装foreman。
 
 ```
 sudo yum install npm
@@ -296,7 +297,7 @@ python setup.py install
     web:       python manage.py runserver 0.0.0.0:$PORT
     celery:    celery -A cabot worker --loglevel=DEBUG -B -c 8 -Ofair
 
-其中定义了启动cabot-web和，celery任务队列时使用的命令，针对不同的环境，可以酌情修改`.foreman`和对应的`procfile`及`env`。
+其中定义了启动cabot-web和celery任务队列时使用的命令，针对不同的环境，可以酌情修改`.foreman`和对应的`procfile`及`env`。
 
 对于邮件报警，需要修改[conf/development.env](https://gist.github.com/jqlblue/a6329a7649be16e92df4)中的如下内容：
 ```
