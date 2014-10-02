@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-01T21:03:05+08:00</updated>
+  <updated>2014-10-02T11:10:18+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -334,7 +334,7 @@ cd cabot
 cp conf/development.env.example conf/development.env
 </code></p>
 
-<p>修改<a href="https://gist.github.com/jqlblue/165d50a949cd4aae2191">setup.py</a>setup.py，添加</p>
+<p>修改<a href="https://gist.github.com/jqlblue/165d50a949cd4aae2191">setup.py</a>，添加</p>
 
 <pre><code>'MySQL-python==1.2.5',
 </code></pre>
