@@ -6,7 +6,7 @@ keywords: "graphite cabot alter monitor 监控 报警 搭建"
 date: 2014-10-01 09:43
 comments: true
 categories: [devops]
-tags: [devops]
+tags: [devops, monitor]
 toc: true
 ---
 说起监控，我们一般会首先想到`zabbix`，`nagios`，`ganglia`等等。但是对于非`ops`开发人员而言，这些东西，多多少少让人感到陌生。所以本文将从一个`服务端开发人员`的视角，介绍如何通过`graphite`，`cabot`，加一个`shell`定时脚本，搭建监控报警服务。
@@ -275,7 +275,7 @@ cd cabot
 cp conf/development.env.example conf/development.env
 ```
 
-修改[setup.py](https://gist.github.com/jqlblue/165d50a949cd4aae2191)setup.py，添加
+修改[setup.py](https://gist.github.com/jqlblue/165d50a949cd4aae2191)，添加
 
     'MySQL-python==1.2.5',
 

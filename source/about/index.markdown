@@ -8,13 +8,13 @@ footer: true
 ---
 
 ### About jqlblue ###
-互联网从业人员，从事于服务端web开发工作。当然，还负责服务端基础环境的搭建，系统优化，与ops等兄弟部门的沟通等工作。
+互联网从业人员，从事于服务端web开发工作。
 
 使用feodra操作系统和emacs，目前使用64位的fedora20和emacs24.3。
 
-平常使用的开发语言是：php，python，bash，awk，lua
+平常使用的开发语言有：php，python，bash，awk，lua
 
-擅长php，python，java等平台在linux服务端环境的安装与部署，以及lnmp等web系统的性能优化。
+擅长php，python，java等平台在linux服务端环境的安装与部署，以及web服务的性能优化。
 
 对于服务端基础环境，如：开发，测试，部署（代码发布于review），度量
 （profile），监控（monitor）等很感兴趣。
@@ -35,7 +35,7 @@ footer: true
 ### Contact me ###
 Email: gaoyuan.blue@gmail.com
 
-Weibo(Sina): jqlblue
+Weibo(Sina): [jqlblue](http://weibo.com/jqlblue)
 
 Google Plus: gaoyuan.blue@gmail.com
 
