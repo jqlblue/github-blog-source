@@ -44,6 +44,13 @@ sudo /usr/local/python2.7.3/bin/python setup.py install
 sudo /usr/local/python2.7.3/bin/easy_install virtualenvwrapper
 ```
 
+> 如果遇到 [FATAL] Failed to create text with cairo, this probably means cairo cant find any fonts. Install some system fonts and try again。可以尝试安装bitmap font。
+
+```
+sudo yum install bitmap.x86_64
+sudo yum install bitmap-fonts-compat.noarch
+```
+
 ## 相关配置 ##
 * 创建管理python环境的用户
 
