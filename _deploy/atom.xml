@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-02T11:10:18+08:00</updated>
+  <updated>2014-10-11T11:15:02+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -79,6 +79,14 @@
 </span><span class='line'>cd virtualenv-1.10.1
 </span><span class='line'>sudo /usr/local/python2.7.3/bin/python setup.py install
 </span><span class='line'>sudo /usr/local/python2.7.3/bin/easy_install virtualenvwrapper</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>如果遇到 [FATAL] Failed to create text with cairo, this probably means cairo cant find any fonts. Install some system fonts and try again。可以尝试安装bitmap font。</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install bitmap.x86_64
+</span><span class='line'>sudo yum install bitmap-fonts-compat.noarch</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>相关配置</h2>

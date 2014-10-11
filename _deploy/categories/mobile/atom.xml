@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mobile | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/mobile/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-02T11:10:18+08:00</updated>
+  <updated>2014-10-11T11:15:07+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -41,7 +41,7 @@
 <blockquote><p>如何设置可参见博文<a href="http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture/">移动应用无线抓包指南</a>”</p></blockquote>
 
 <p>设置完成后，再请求时发现更新包的无法下载。
-<img src="/images/mobile/android-4.4.3-update.png" title="android-4.4.3-update" ></p>
+{% img /images/mobile/android-4.4.3-update.png android-4.4.3-update %}</p>
 
 <p>这时有两种方案：</p>
 
@@ -77,7 +77,7 @@
 
 <p>手机上应该会出现如下画面。选择<code>允许</code></p>
 
-<p><img src="/images/mobile/android-usb-debug.png" title="安卓usb调试" ></p>
+<p>{% img /images/mobile/android-usb-debug.png 安卓usb调试 %}</p>
 
 <p>使用usb连接手机后，电脑上可能会自动安装相关驱动程序，请耐心等待完成。</p>
 
@@ -99,7 +99,7 @@ adb.exe devices
 
 <p>如果看到下图，说明准备工作告一段落。如果没有，可能是相关驱动安装地有问题，可自行查阅解决。</p>
 
-<p><img src="/images/mobile/android-adb-devices.png" title="安卓adb devices" ></p>
+<p>{% img /images/mobile/android-adb-devices.png 安卓adb devices %}</p>
 
 <h2>开刷</h2>
 
@@ -108,18 +108,18 @@ adb.exe devices
 </ul>
 
 
-<p><img src="/images/mobile/android-fastboot.png" title="安卓fastboot" ></p>
+<p>{% img /images/mobile/android-fastboot.png 安卓fastboot %}</p>
 
 <ul>
 <li>通过按<code>音量上下键</code>进行切换，切换到<code>Recovery Mode</code>模式，按<code>电源键</code>选择进入：</li>
 </ul>
 
 
-<p><img src="/images/mobile/android-recovery-mode.png" title="安卓recovery-mode" ></p>
+<p>{% img /images/mobile/android-recovery-mode.png 安卓recovery-mode %}</p>
 
 <p>此时，你可以看到一个倒地的机器人：</p>
 
-<p><img src="/images/mobile/android-recovery-mode-2.png" title="安卓recovery-mode" ></p>
+<p>{% img /images/mobile/android-recovery-mode-2.png 安卓recovery-mode %}</p>
 
 <ul>
 <li>按<code>电源键</code>，然后再迅速按<code>音量上键</code></li>
@@ -130,11 +130,11 @@ adb.exe devices
 
 <p>直到看到如下界面：</p>
 
-<p><img src="/images/mobile/android-apply-update.png" title="安卓adb update" ></p>
+<p>{% img /images/mobile/android-apply-update.png 安卓adb update %}</p>
 
 <p>再按<code>音量上下键</code>进行切换，切换到<code>apply update from ADB</code>，按<code>电源键</code>选择进入：</p>
 
-<p><img src="/images/mobile/android-sideload.png" title="安卓sideload" ></p>
+<p>{% img /images/mobile/android-sideload.png 安卓sideload %}</p>
 
 <ul>
 <li>通过USB再次连接电脑和手机</li>
@@ -146,19 +146,19 @@ adb.exe devices
 <pre><code>adb.exe sideload kitkat-4.4.3.zip
 </code></pre>
 
-<p><img src="/images/mobile/android-adb-sideload.png" title="安卓 adb sideload" ></p>
+<p>{% img /images/mobile/android-adb-sideload.png 安卓 adb sideload %}</p>
 
 <p>手机上将会出现如下界面：</p>
 
-<p><img src="/images/mobile/android-update-ota-1.png" title="安卓 ota update" ></p>
+<p>{% img /images/mobile/android-update-ota-1.png 安卓 ota update %}</p>
 
 <p>耐心等待，等ota更新包安装完成时，会出现如下界面，按<code>电源键</code>选择重启即可。</p>
 
-<p><img src="/images/mobile/android-update-ota-2.png" title="安卓 ota update" ></p>
+<p>{% img /images/mobile/android-update-ota-2.png 安卓 ota update %}</p>
 
 <p>重启后，会对已安装的应用进行优化。通过<code>设置</code>，<code>关于手机</code>查看系统版本，发现已经是<code>4.4.3</code>。</p>
 
-<p><img src="/images/mobile/android-4.4.3-update-end.jpg" title="安卓 ota 更新完成" ></p>
+<p>{% img /images/mobile/android-4.4.3-update-end.jpg  安卓 ota 更新完成 %}</p>
 ]]></content>
   </entry>
   
@@ -215,7 +215,7 @@ classes.dex: Dalvik dex file version 035
 
 <h5>android平台架构</h5>
 
-<p><img src="/images/mobile/android_architecture.png" title="&lsquo;android architecture images&rsquo;" ></p>
+<p>{% img /images/mobile/android_architecture.png &lsquo;android architecture images&rsquo; %}</p>
 
 <p>如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。</p>
 
@@ -233,7 +233,7 @@ classes.dex: Dalvik dex file version 035
 <h5>apk启动速度</h5>
 
 <p>在分析之前，我们先看看android程序的执行流程
-<img src="/images/mobile/android_application_execute_flow.png" title="&lsquo;android application execute flow images&rsquo;" ></p>
+{% img /images/mobile/android_application_execute_flow.png &lsquo;android application execute flow images&rsquo; %}</p>
 
 <p>如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。</p>
 
@@ -254,7 +254,7 @@ classes.dex: Dalvik dex file version 035
 <h5>页面渲染性能</h5>
 
 <p>android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
-<img src="/images/mobile/android_view_execute_flow.png" title="&lsquo;android view execute flow images&rsquo;" ></p>
+{% img /images/mobile/android_view_execute_flow.png &lsquo;android view execute flow images&rsquo; %}</p>
 
 <p>即：
 <code>计算视图大小（measure） -&gt; 安置视图的位置（layout） -&gt; 绘制（draw）视图</code></p>
@@ -288,7 +288,7 @@ classes.dex: Dalvik dex file version 035
 </code></pre>
 
 <p>这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的<code>insert</code>&ndash;><code>chart</code>，即可生成相关图表
-<img src="/images/mobile/frame_render_time.png" title="&lsquo;frame render time images&rsquo;" ></p>
+{% img /images/mobile/frame_render_time.png &lsquo;frame render time images&rsquo; %}</p>
 
 <blockquote><p>其中<code>com.sina.weibo</code>就是app的包名</p></blockquote>
 
@@ -310,7 +310,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 <p>上面这条命令将会在<code>android-sdk-linux/platform-tools/systrace</code>目录下生成<code>trace.html</code>。其中收集了包名为<code>com.qihoo.appstore</code>的应用在android系统上针对<code>gfx</code>和<code>view</code> category的执行数据。</p>
 
 <p><code>trace.html</code>在浏览器中打开如下图：
-<img src="/images/mobile/android_systrace_output.png" title="&lsquo;android systrace output images&rsquo;" ></p>
+{% img /images/mobile/android_systrace_output.png &lsquo;android systrace output images&rsquo; %}</p>
 
 <p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
 * 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
@@ -320,7 +320,7 @@ python systrace.py --app=com.qihoo.appstore gfx view
 * 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
 
 <p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
-<img src="/images/mobile/android_systrace_output_zoom.png" title="&lsquo;android systrace output detail images&rsquo;" ></p>
+{% img /images/mobile/android_systrace_output_zoom.png &lsquo;android systrace output detail images&rsquo; %}</p>
 
 <p>发现对于那些<code>performTraversals</code>处理超过16ms的帧，其中<code>eglSwapBuffers</code>处理的时间都比较长，这应该就是问题所在。</p>
 
@@ -448,22 +448,22 @@ fiddle抓包嘛，码农应该都知道</em>）。</p>
   <a href="http://wifi.360.cn/">官网</a>,因为不定期会在京东开启抢购。安装非常简
   单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）</p>
 
-<p>  <img src="/images/360wifi_1.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_2.png" title="&lsquo;360 wifi images&rsquo;" >
-  <img src="/images/360wifi_3.png" title="&lsquo;360 wifi images&rsquo;" ></p></li>
+<p>  {% img /images/360wifi_1.png &lsquo;360 wifi images&rsquo; %}
+  {% img /images/360wifi_2.png &lsquo;360 wifi images&rsquo; %}
+  {% img /images/360wifi_3.png &lsquo;360 wifi images&rsquo; %}</p></li>
 <li><p>在电脑上用fiddle设置代理</p>
 
-<p>  <img src="/images/360wifi_fiddle.png" title="&lsquo;360 wifiproxy fidlle images&rsquo;" ></p></li>
+<p>  {% img /images/360wifi_fiddle.png &lsquo;360 wifiproxy fidlle images&rsquo; %}</p></li>
 <li><p>修改手机上的网络设置，并设置代理</p>
 
-<p>  <img src="/images/360wifi_proxy_1.png" title="&lsquo;360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_2.png" title="'360 wifi mobile network" >
-  <img src="/images/360wifi_proxy_3.png" title="'360 wifi mobile network" ></p>
+<p>  {% img /images/360wifi_proxy_1.png &lsquo;360 wifi mobile network %}
+  {% img /images/360wifi_proxy_2.png '360 wifi mobile network %}
+  {% img /images/360wifi_proxy_3.png '360 wifi mobile network %}</p>
 
 <p>  代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
   fiddle中设置的"listen on port"</p>
 
-<p>  <img src="/images/360wifi_proxy_ip.png" title="&lsquo;360 wifi mobile network" ></p></li>
+<p>  {% img /images/360wifi_proxy_ip.png &lsquo;360 wifi mobile network %}</p></li>
 </ul>
 
 ]]></content>
