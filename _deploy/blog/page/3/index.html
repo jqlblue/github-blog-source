@@ -98,6 +98,62 @@ var _hmt = _hmt || [];
       
   <header>
     
+      <h1 class="entry-title"><a href="/2014/03/29/read-wirite-on-linux-file-system/">Linux文件系统如何进行文件存取</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-29T13:32:00+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>乍一看，这个题目好像有点小儿科。</p>
+
+<p>写文件嘛</p>
+
+<pre><code>echo hello &gt; /tmp/foo
+</code></pre>
+
+<p>读文件嘛</p>
+
+<pre><code>cat /tmp/foo
+</code></pre>
+
+<p>对于普通文件的存取，的确可以使用上面的方法。但是在linux操作系统上，一
+切都是文件。除了<code>普通文件</code>，还包括：<code>目录</code>，<code>符号链接</code>，<code>IPC Endpoints</code>（如pipe，unix socket）和<code>设备文件</code>(块设备，字符设备)。</p>
+
+<p>当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2014/03/29/read-wirite-on-linux-file-system/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/2014/02/28/emacs24-on-mac-and-linux/">在mac系统上使用emacs24打造web开发环境</a></h1>
     
     
@@ -263,47 +319,6 @@ var _hmt = _hmt || [];
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2013/11/16/pdo-mysql-escape-string/">在php5.5中使用pdo和mysql_escape_string的一个坑</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-16T18:04:00+08:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2013/11/16/pdo-mysql-escape-string/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -332,13 +347,17 @@ var _hmt = _hmt || [];
 <li class='category'><a href='/categories/linux/'>linux (3)</a></li>
 <li class='category'><a href='/categories/mobile/'>mobile (3)</a></li>
 <li class='category'><a href='/categories/network/'>network (1)</a></li>
-<li class='category'><a href='/categories/php/'>php (7)</a></li>
+<li class='category'><a href='/categories/php/'>php (8)</a></li>
 
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/11/23/build-payment-system-in-one-week/">一周打造支付系统</a>
+      </li>
     
       <li class="post">
         <a href="/2014/10/01/use-graphite-and-alter-build-monitor-system/">使用graphite和cabot搭建监控服务</a>
@@ -356,25 +375,21 @@ var _hmt = _hmt || [];
         <a href="/2014/07/05/0012/">0012</a>
       </li>
     
-      <li class="post">
-        <a href="/2014/06/08/manual-update-android-ota-update/">手动刷入android 4.4.3 OTA 更新包</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
+    <a style="font-size: 90%" href="/tags/android/">android</a>
+<a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
 <a style="font-size: 189%" href="/tags/devops/">devops</a>
 <a style="font-size: 133%" href="/tags/essay/">essay</a>
 <a style="font-size: 210%" href="/tags/linux/">linux</a>
-<a style="font-size: 90%" href="/tags/mac/">mac</a>
 <a style="font-size: 158%" href="/tags/mobile/">mobile</a>
 <a style="font-size: 133%" href="/tags/monitor/">monitor</a>
-<a style="font-size: 90%" href="/tags/pcntl/">pcntl</a>
-<a style="font-size: 158%" href="/tags/php/">php</a>
+<a style="font-size: 175%" href="/tags/php/">php</a>
 <a style="font-size: 175%" href="/tags/php5-dot-5/">php5.5</a>
+<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
 
   </ul>
 </section>

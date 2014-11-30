@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/php/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-11T11:15:07+08:00</updated>
+  <updated>2014-11-30T18:15:32+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,224 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[一周打造支付系统]]></title>
+    <link href="http://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week/"/>
+    <updated>2014-11-23T14:34:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week</id>
+    <content type="html"><![CDATA[<p>获取食物的最佳方式就是处于食物链的顶端，以捕食该链条之下的所有动植物。不言而喻，搭建处于资金流顶端的支付系统，伴随资金的转移过程，也是积累财富的绝佳手段。</p>
+
+<!-- more -->
+
+
+<h1>一般网购流程</h1>
+
+<p><img src="/images/payment/shopping_flow.png" title="shopping flow" ></p>
+
+<p>一般的网购流程如上图：</p>
+
+<ul>
+<li>商品筛选</li>
+<li>将选中的商品添加到购物车（顾名思义，推着车去购物。如果只卖一个商品的话，可以省略这步）</li>
+<li>确认要购买物品，去结算</li>
+<li>下订单，即提交要结算物品的清单</li>
+<li>网上支付该订单</li>
+</ul>
+
+
+<h1>支付流程</h1>
+
+<p><img src="/images/payment/flow.jpg" title="payment flow" ></p>
+
+<p>一个典型的支付流程如上图。</p>
+
+<p>用户下单时，订单系统需要和产品库交互，生成支付连接。支付系统对请求地址进行验签之后，调用第三方平台的支付接口进行支付，然后更新订单状态。在订单成功支付之后，更新产品库存信息。</p>
+
+<p>属于支付系统的功能有：</p>
+
+<ul>
+<li>请求参数验签</li>
+<li>第三方支付接口对接</li>
+<li>订单系统对接</li>
+</ul>
+
+
+<blockquote><p>只要完成与第三方支付接口的对接，即可解决搭建支付系统中最难啃的一块硬骨头。</p></blockquote>
+
+<h1>第三方支付平台</h1>
+
+<p>目前比较流行的第三方支付平台主要有：</p>
+
+<ul>
+<li>支付宝</li>
+<li>财付通</li>
+<li>快钱</li>
+<li>网银在线</li>
+<li>微信支付</li>
+</ul>
+
+
+<p>对于网银支付，可以调用银联的接口，或者直接对接银行（可以降低手续费，支持大额等个性化支付方法。但是实现成本较高）。</p>
+
+<p>虽然支付宝的手续费不是最实惠的，但是支付宝本身对接了个大银行的网银支付，而我们的目标是一周打造支付系统，当然选择最省事的。</p>
+
+<p>对接支付宝支付接口的流程如下：</p>
+
+<p><img src="/images/payment/zhifubao.jpg" title="支付宝对接" ></p>
+
+<p>完成<code>技术集成</code>之前的工作，理论上需要8-10个工作日，所以需要提前申请。</p>
+
+<p>最好找商务部的同事出马，不要怕麻烦boss。有问题，及时向组织反馈。</p>
+
+<h1>支付宝接口</h1>
+
+<p>与支付宝接口的交互流程如下</p>
+
+<p><img src="/images/payment/zhifubao_flow.jpg" title="支付宝接口交互流程" ></p>
+
+<p>支付宝提供的sdk，主要包含如下文件</p>
+
+<p><code>
+alipay_core.function.php -- 支付宝接口公用函数，是请求、通知返回两个文件所调用的公用函数核心处理文件
+alipay_md5.function.php  -- MD5加密
+alipay_notify.class.php  -- 支付宝通知处理类，处理支付宝各接口通知返回
+alipay_submit.class.php  -- 支付宝各接口请求提交类，构造支付宝各接口表单HTML文本，获取远程HTTP数据
+</code></p>
+
+<p><em>要调用的方法</em></p>
+
+<ul>
+<li>提交订单时，调用<code>alipay_submit.class.php</code>中的<code>buildRequestUrl</code>方法，同时，需要注册通知回调<code>return_url</code>和<code>notify_url</code>。</li>
+</ul>
+
+
+<p>其中：</p>
+
+<pre><code>return_url是同步回调，一般用于在支付成功后，调转至支付成功页。
+notify_url是异步回调，一般用于更新订单状态等等（支付宝有相关队列服务运行异步回调，回调失败后，会以不定的间隔进行重试）。
+</code></pre>
+
+<ul>
+<li>在通知回调时，都需要调用<code>alipay_notify.class.php</code>中的<code>verifyReturn</code>验证回调的合法性。</li>
+</ul>
+
+
+<h1>ssl证书</h1>
+
+<p>俗话说，没有买卖就没有杀戮。凡是涉及利益的地方，就不会很安全。使用采用http进行数据通讯，难免发生如下问题：
+<img src="/images/payment/http_flow.jpg" title="中间人攻击" ></p>
+
+<p>但是换成https，会有如下好处：</p>
+
+<p><img src="/images/payment/https_2.jpg" title="http ssl" ></p>
+
+<p><img src="/images/payment/https_3.jpg" title="https flow" ></p>
+
+<p>申请ssl证书，推荐数字公司使用的<a href="http://www.wosign.com/price.htm">WoSign超真 SSL</a>。</p>
+
+<p><img src="/images/payment/ssl.jpg" title="ssl" ></p>
+
+<h1>请求验签</h1>
+
+<p>请求参数签名，需要使用可逆加密算法。其中又分为：</p>
+
+<ul>
+<li>对称加解密算法</li>
+<li>非对称加解密算法</li>
+</ul>
+
+
+<p>对称加解密算法，在加密和解密时都使用一个密钥，加解密性能较好。但安全性较低（密钥只要被拿到，就gameover）。</p>
+
+<p>非对称加解密算法，一般使用私钥加密，公钥解密。其安全性较好（只要保存好私钥就行），但是性能较差。</p>
+
+<p>所以可以使用对称加解密算法加密请求参数。但加解密时，不使用同一个密钥。相关密钥，通过非对称加解密算法加密后，在请求参数中传递。</p>
+
+<p>解密流程如下：</p>
+
+<pre><code>1. 在请求参数中获取使用非对称加解密算法加密的密钥ekey
+2. 使用非对称加解密算法解密密钥ekey为dkey
+3. 使用对称加解密算法和dkey，解密请求参数
+</code></pre>
+
+<h1>订单</h1>
+
+<p>我们用一周打造的支付系统，不能是一个远在云端的架构，而要是一个可运行的系统。那么，订单自然也少不了。</p>
+
+<p>订单是按照如下对应关系产生的：</p>
+
+<pre><code>用户 -&gt; 商品 -&gt; 订单
+</code></pre>
+
+<p>在整个支付过程中，一般要存在两个订单号：</p>
+
+<ul>
+<li>用于在内部系统（订单，支付，个人中心）中流通的订单号 <code>order_no</code>，在每一次下单时产生。</li>
+<li>用于支付的订单号 <code>pay_order_no</code>，由 <code>order_no</code> ＋ 时间戳 ＋ salt等，在每一次支付时产生。</li>
+</ul>
+
+
+<h1>联调部署</h1>
+
+<p>开发阶段涉及的模块可做如下划分：</p>
+
+<ul>
+<li>产品页</li>
+<li>支付页</li>
+<li>支付</li>
+<li>订单</li>
+<li>个人中心</li>
+<li>测试，部署上线</li>
+</ul>
+
+
+<p>衡量一个互联网的标准有：功能，交互，ui。</p>
+
+<p>因为我们的目标是一周内打造支付，那么，优先是完成支付和订单。至于是否要在产品页添加购物车，是否要在订单支付页面保存配送地址，是否要在个人中心对接物流，以及退款等等，都可以暂时砍掉。</p>
+
+<p>互联网产品，唯快不破。快速上线，快速迭代。</p>
+
+<h1>The Hole</h1>
+
+<p>开发过程中，难免会遇到不少坑，特此纪录，希望帮助有缘人。</p>
+
+<ul>
+<li>产品金额存储</li>
+</ul>
+
+
+<p>为了避免因退款，对账时，和银行或者第三方支付平台产生因为数据精度而舍入等问题，可以将产品金额以<code>分</code>为单位存储，前台展示时除以100。</p>
+
+<ul>
+<li>需要两个订单号</li>
+</ul>
+
+
+<p>支付宝等第三方平台，对订单号有验证，一个订单号只能支付一次。所以系统中需要存在两个订单号，一个用于内部系统流通，一个用于支付，每次支付时都产品一个最新的（与内部系统流通的订单号有对应关系）。</p>
+
+<ul>
+<li>权限验证</li>
+</ul>
+
+
+<p>下单，或者支付完成后，在个人中心等位置，一般可以查看订单状态。此时需要注意，需要增加权限验证。否则会产生平行权限安全漏洞（可查看别人的订单等信息）</p>
+
+<ul>
+<li>系统安全性</li>
+</ul>
+
+
+<p>在支付和个人中心等页面，因为存在前后端交互。所以需要排查，是否存在sql注入或者xss等安全漏洞。推荐<code>XSScrapy</code>和<code>SqlMap</code>。</p>
+
+<ul>
+<li>日志</li>
+</ul>
+
+
+<p>在整个交易过程中，需要有完善详尽的日志记录。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一个使用curl请求https资源的问题排查]]></title>
@@ -160,7 +378,7 @@ $ curl 'https://x.x.x.x/get_ips' -k
 
 <p>其UML结构图如下：</p>
 
-<p>{% img /images/pattern/singleton-uml.png singleton-uml %}</p>
+<p><img src="/images/pattern/singleton-uml.png" title="singleton-uml" ></p>
 
 <p>在php中实现单例模式需要注意：</p>
 
@@ -174,101 +392,185 @@ $ curl 'https://x.x.x.x/get_ips' -k
 <h1>代码实现解析</h1>
 
 <p>一个单例模式的php实现大致如下:
-{% codeblock lang:php %}
-class Singleton
-{</p>
-
-<pre><code>private static $_instance = null;
-
-private function __construct()
-{
-}
-
-public function __clone()
-{
-    trigger_error("clone method is not allowed.", E_USER_ERROR);
-}
-
-public static function getInstance()
-{
-    if (self::$_instance === null) {
-        self::$_instance = new self();
-    }
-
-    return self::$_instance;
-}
-</code></pre>
-
-<p>}
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 上述代码通过<code>静态成员变量</code>保存创建的实例，通过将构造函数设置为私有的，并使用魔术方法<code>__clone</code>&ldquo;重载"clone方法以避免通过外部程序获取相关实例。</p>
 
 <p>由于php中的静态变量包括：<code>静态全局变量</code>，<code>静态局部变量</code>，<code>静态成员变量</code>，所以也可以通过<code>静态局部变量</code>来保存创建的实例。但是在子类中获取创建的实例时，会遇到一些问题。示例如下：</p>
 
 <h2>使用静态局部变量</h2>
 
-<p>{% codeblock singleton-static.php lang:php %}
-class Singleton
-{</p>
-
-<pre><code>private $_handle = null;
-
-private function __construct()
-{
-    $this-&gt;_handle = new StdClass();
-}
-
-public function __clone()
-{
-    trigger_error("clone method is not allowed.", E_USER_ERROR);
-}
-
-public static function getInstance()
-{
-    static $_instance = null;
-
-    if ($_instance === null) {
-        $_instance = new self();
-    }
-
-    return $_instance;
-}
-
-public function getObj()
-{
-    return $this-&gt;_handle;
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class UserModel extends Singleton
-{</p>
-
-<pre><code>public static function getUser()
-{
-    var_dump(self::getInstance()-&gt;getObj());
-    //logic no care
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class GroupModel extends Singleton
-{</p>
-
-<pre><code>public static function getGroup()
-{
-    var_dump(self::getInstance()-&gt;getObj());
-    //logic no care
-}
-</code></pre>
-
-<p>}</p>
-
-<p>UserModel::getUser();
-GroupModel::getGroup();
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>singleton-static.php </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
+</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <pre><code>$ php /.singleton-static.php
 object(Singleton)#2 (0) {
@@ -287,66 +589,124 @@ object(Singleton)#4 (0) {
 
 <h2>使用静态成员变量</h2>
 
-<p>{% codeblock singleton-static-member.php lang:php %}
-class Singleton
-{</p>
-
-<pre><code>private $_handle = null;
-
-private static $_instance = null;
-
-private function __construct()
-{
-    $this-&gt;_handle = new StdClass();
-}
-
-public function __clone()
-{
-    trigger_error("clone method is not allowed.", E_USER_ERROR);
-}
-
-public static function getInstance()
-{
-    if (self::$_instance === null) {
-        self::$_instance = new self();
-    }
-    return self::$_instance;
-}
-
-public function getObj()
-{
-    return $this-&gt;_handle;
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class UserModel extends Singleton
-{</p>
-
-<pre><code>public static function getUser()
-{
-    var_dump(self::getInstance()-&gt;getObj());
-    //logic no care
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class GroupModel extends Singleton
-{</p>
-
-<pre><code>public static function getGroup()
-{
-    var_dump(self::getInstance()-&gt;getObj());
-    //logic no care
-}
-</code></pre>
-
-<p>}
-UserModel::getUser();
-GroupModel::getGroup();
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>singleton-static-member.php </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+</span><span class='line'>    <span class="c1">//logic no care</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span><span class='line'><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
+</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <pre><code>$ php /.singleton-static-member.php
 object(Singleton)#2 (0) {
@@ -361,82 +721,155 @@ object(Singleton)#2 (0) {
 
 <p>有时我们的项目中有个缓存类，还有数据库类，还有个文件操作类。想让这三个类都是单例的话，我们需要实现三个单例，这有点繁琐。于是我们可以创建一个单例的基类，要实现单例的类继承这个基类即可。直接上代码：</p>
 
-<p>{% codeblock lang:php %}
-&lt;?php
-class Singleton
-{</p>
-
-<pre><code>private static $_instances = array();
-
-protected function __construct()
-{
-}
-
-final public function __clone()
-{
-    trigger_error("clone method is not allowed.", E_USER_ERROR);
-}
-
-final public static function getInstance()
-{
-    $c = get_called_class();
-
-    if(!isset(self::$_instances[$c])) {
-        self::$_instances[$c] = new $c;
-    }
-
-    return self::$_instances[$c];
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class Cache Extends Singleton
-{</p>
-
-<pre><code>private $_handle = null;
-
-protected function __construct()
-{
-    $this-&gt;_connect();
-}
-
-private function _connect()
-{
-    $this-&gt;_handle = new StdClass();
-}
-
-public function getHandle()
-{
-    return $this-&gt;_handle;
-}
-</code></pre>
-
-<p>}</p>
-
-<p>class Db Extends Singleton
-{</p>
-
-<pre><code>private $_handle = null;
-
-protected function __construct()
-{
-    $this-&gt;_connect();
-}
-
-private function _connect()
-{
-    $this-&gt;_handle = new StdClass();
-}
-
-public function getHandle()
-{
-    return $this-&gt;_handle;
-}
-</code></pre>
-
-<p>}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="nv">$_instances</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">final</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">final</span> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$c</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$c</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Cache</span> <span class="k">Extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_connect</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">_connect</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getHandle</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Db</span> <span class="k">Extends</span> <span class="nx">Singleton</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_connect</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">_connect</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getHandle</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>reference：</p>
 
@@ -652,178 +1085,6 @@ $dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
 3 使用的是pdo，没有找到相关连接。于是尝试使用不带任何参数的mysql_connect()去建立一个连接来使用
 4 本机没有mysql server，自然建立连接失败。于是发生错误，并产生警告信息（E_WARNING）
 5 服务器上设置的错误报告等级已经屏蔽了E_WARNING，所以也没有监控到相关错误
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
-    <updated>2013-08-10T09:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
-    <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
-看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
-
-<p>面对打着补丁的5.2，我们决定升级到php5.5</p>
-
-<!-- more -->
-
-
-<h3>The reason</h3>
-
-<p>左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
-的关系。</p>
-
-<p>作为一个在开发一线的互联网从业人员。优化，重构，这可能是我们要经常提及
-的两个话题。</p>
-
-<p>通过监控，度量，找出系统中那20%的瓶颈问题，一般就能让系统的性能有很大
-的提升。这种优化算作自身能力的提升。</p>
-
-<p>一个在线上运行的系统，实际上还依赖与服务器，带宽等硬件环境；操作系统，
-程序编译器或者解释器等软件环境。这些环境，也在更新优化。</p>
-
-<p>在自身能力不变的情况化，如果这些环境得以更新优化，我们的系统也会跑地更
-快。</p>
-
-<p>就像nike，同样的人，穿着nike会有飞一般的感觉。</p>
-
-<h3>Step</h3>
-
-<p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
-{% img /images/php-5.5-prefermance.png &lsquo;php-5.5-prefermance 'images&rsquo; %}</p>
-
-<p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
-
-<p>当然，升级有风险，操作需谨慎。</p>
-
-<p>下面是升级步骤：</p>
-
-<h5>1. 安装php5.5</h5>
-
-<p>{% codeblock php-5.5.0-install.sh lang:bash %}
-PHP_VERSION=5.5.0
-wget -c <a href="http://www.php.net/get/php-$">http://www.php.net/get/php-$</a>{PHP_VERSION}.tar.gz/from/this/mirror
-tar zxvf php-${PHP_VERSION}.tar.gz
-cd php-${PHP_VERSION}
-PHP_PREFIX=/usr/local/php-${PHP_VERSION}
-./configure \
-&mdash;prefix=${PHP_PREFIX} \
-&mdash;with-config-file-path=${PHP_PREFIX}/etc \
-&mdash;disable-debug \
-&mdash;enable-inline-optimization \
-&mdash;disable-all \
-&mdash;enable-fpm \
-&mdash;enable-libxml \
-&mdash;enable-session \
-&mdash;enable-xml \
-&mdash;enable-hash \
-&mdash;enable-mbstring \
-&mdash;with-layout=GNU \
-&mdash;enable-filter \
-&mdash;with-pcre-regex \
-&mdash;with-zlib \
-&mdash;enable-json \
-&mdash;enable-mysqlnd \
-&mdash;enable-pdo \
-&mdash;with-mysql=mysqlnd \
-&mdash;with-mysqli=mysqlnd \
-&mdash;with-pdo-mysql=mysqlnd \
-&mdash;enable-simplexml \
-&mdash;enable-dom \
-&mdash;enable-phar \
-&mdash;enable-tokenizer \
-&mdash;enable-posix \
-&mdash;enable-xmlwriter \
-&mdash;enable-xmlreader \
-&mdash;with-curl \
-&mdash;with-iconv \
-&mdash;with-mcrypt \
-&mdash;enable-ctype \
-&mdash;enable-opcache
-make
-make install
-{% endcodeblock %}</p>
-
-<p>完整脚本可参见：
-<a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
-
-<p>备注：</p>
-
-<pre><code>1. 安装php时，要指定安装目录(prefix)，以备出现问题时可以及时回滚
-2. 安装扩展时同样需要注意，不要覆盖其他版本的扩展
-   1) 使用绝对路径执行phpize
-   2) 在configure时指定php5.5目录下的php-config，--with-php-config
-   3) 编译扩展需要的lib库时，也要指定版本和安装目录
-</code></pre>
-
-<h5>2. php代码语法兼容性检测</h5>
-
-<p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
-就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。
-{% codeblock check-php5.5-compatibility.sh lang:bash %}</p>
-
-<h1>!/bin/sh</h1>
-
-<h1>use sh ./check-php-compatibility.sh /path/code</h1>
-
-<p>if [[ $1 != &lsquo;&rsquo; ]];then
-   SOURCE_ROOT=$1
-else
-   SOURCE_ROOT=&lsquo;/path/code/src&rsquo;
-fi
-PHP_BIN=&lsquo;/usr/local/php-5.5.0/bin/php&rsquo;
-for file in $(find ${SOURCE_ROOT} -type f -iname &lsquo;*.php&rsquo;); do</p>
-
-<pre><code>${PHP_BIN} -d error_reporting=E_ALL -l $file | grep -v 'No syntax errors detected'
-</code></pre>
-
-<p>done
-{% endcodeblock %}
-更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
-
-<h5>3. 从服务器上收集请求情况</h5>
-
-<p>{% codeblock lang:bash %}
-cat access.log | awk -F &ldquo;[ ?]&rdquo; &lsquo;{urls[$7]++} END {for(key in urls)print urls[key],&ldquo;\t&rdquo;,key}&rsquo; | sort -nr
-{% endcodeblock %}</p>
-
-<h5>4. 通过收集的请求url进行测试</h5>
-
-<p>对于get方式的url请求，直接wget或者curl就好。</p>
-
-<p>对于post方式的curl请求，需要用curl模拟post请求进行提交。同时需要在
-webserver日志中记录post请求参数。</p>
-
-<h5>5. 查看webserver的错误日志，进行改进</h5>
-
-<h3>Improve</h3>
-
-<p>上线后通过在nginx的access log中开启记录upstream_time和request_time进行
-统计，php-5.5.0环境下接口的响应速度较5.2.5环境提升了(0.00487559-0.00366027)/0.00487559=24.9%</p>
-
-<pre><code>php-5.5.0
-total_request_time:196416 total_upstream_time:1122.52 total_request:306678 avg_requst_time:0.640464 avg_upstream_time:0.00366027
-
-php-5.2.5
-total_request_time:200400 total_upstream_time:1498.65 total_request:307378 avg_requst_time:0.651966 avg_upstream_time:0.00487559
-</code></pre>
-
-<p>统计脚本</p>
-
-<pre><code>cat access.log | grep '/api/getInfo' | awk -F ')"' '{print $2}' | grep -v ' -' | awk 'BEGIN{_request=0;_upstream=0;_i=0}{_request+=$2;_upstream+=$3;_i+=1}END{print "total_request_time:"_request" total_upstream_time:"_upstream" total_request:"_i" avg_requst_time:"_request/_i" avg_upstream_time:"_upstream/_i}'
-</code></pre>
-
-<p>另外，做了php5.3.10和php.5.5.0的压测比较</p>
-
-<pre><code>php5.3.10
-Speed=30441 pages/min, 1224275 bytes/sec.
-Requests: 30441 susceed, 0 failed.
-
-php5.5.0
-Speed=42514 pages/min, 1727526 bytes/sec.
-Requests: 42514 susceed, 0 failed.
-PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
 </code></pre>
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-10-11T11:15:02+08:00</updated>
+  <updated>2014-11-30T18:15:32+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,227 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[一周打造支付系统]]></title>
+    <link href="http://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week/"/>
+    <updated>2014-11-23T14:34:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week</id>
+    <content type="html"><![CDATA[<p>获取食物的最佳方式就是处于食物链的顶端，以捕食该链条之下的所有动植物。不言而喻，搭建处于资金流顶端的支付系统，伴随资金的转移过程，也是积累财富的绝佳手段。</p>
+
+<!-- more -->
+
+
+<h1>一般网购流程</h1>
+
+<p><img src="http://jqlblue.github.io/images/payment/shopping_flow.png" title="shopping flow" ></p>
+
+<p>一般的网购流程如上图：</p>
+
+<ul>
+<li>商品筛选</li>
+<li>将选中的商品添加到购物车（顾名思义，推着车去购物。如果只卖一个商品的话，可以省略这步）</li>
+<li>确认要购买物品，去结算</li>
+<li>下订单，即提交要结算物品的清单</li>
+<li>网上支付该订单</li>
+</ul>
+
+
+<h1>支付流程</h1>
+
+<p><img src="http://jqlblue.github.io/images/payment/flow.jpg" title="payment flow" ></p>
+
+<p>一个典型的支付流程如上图。</p>
+
+<p>用户下单时，订单系统需要和产品库交互，生成支付连接。支付系统对请求地址进行验签之后，调用第三方平台的支付接口进行支付，然后更新订单状态。在订单成功支付之后，更新产品库存信息。</p>
+
+<p>属于支付系统的功能有：</p>
+
+<ul>
+<li>请求参数验签</li>
+<li>第三方支付接口对接</li>
+<li>订单系统对接</li>
+</ul>
+
+
+<blockquote><p>只要完成与第三方支付接口的对接，即可解决搭建支付系统中最难啃的一块硬骨头。</p></blockquote>
+
+<h1>第三方支付平台</h1>
+
+<p>目前比较流行的第三方支付平台主要有：</p>
+
+<ul>
+<li>支付宝</li>
+<li>财付通</li>
+<li>快钱</li>
+<li>网银在线</li>
+<li>微信支付</li>
+</ul>
+
+
+<p>对于网银支付，可以调用银联的接口，或者直接对接银行（可以降低手续费，支持大额等个性化支付方法。但是实现成本较高）。</p>
+
+<p>虽然支付宝的手续费不是最实惠的，但是支付宝本身对接了个大银行的网银支付，而我们的目标是一周打造支付系统，当然选择最省事的。</p>
+
+<p>对接支付宝支付接口的流程如下：</p>
+
+<p><img src="http://jqlblue.github.io/images/payment/zhifubao.jpg" title="支付宝对接" ></p>
+
+<p>完成<code>技术集成</code>之前的工作，理论上需要8-10个工作日，所以需要提前申请。</p>
+
+<p>最好找商务部的同事出马，不要怕麻烦boss。有问题，及时向组织反馈。</p>
+
+<h1>支付宝接口</h1>
+
+<p>与支付宝接口的交互流程如下</p>
+
+<p><img src="http://jqlblue.github.io/images/payment/zhifubao_flow.jpg" title="支付宝接口交互流程" ></p>
+
+<p>支付宝提供的sdk，主要包含如下文件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>alipay_core.function.php -- 支付宝接口公用函数，是请求、通知返回两个文件所调用的公用函数核心处理文件
+</span><span class='line'>alipay_md5.function.php  -- MD5加密
+</span><span class='line'>alipay_notify.class.php  -- 支付宝通知处理类，处理支付宝各接口通知返回
+</span><span class='line'>alipay_submit.class.php  -- 支付宝各接口请求提交类，构造支付宝各接口表单HTML文本，获取远程HTTP数据</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>要调用的方法</em></p>
+
+<ul>
+<li>提交订单时，调用<code>alipay_submit.class.php</code>中的<code>buildRequestUrl</code>方法，同时，需要注册通知回调<code>return_url</code>和<code>notify_url</code>。</li>
+</ul>
+
+
+<p>其中：</p>
+
+<pre><code>return_url是同步回调，一般用于在支付成功后，调转至支付成功页。
+notify_url是异步回调，一般用于更新订单状态等等（支付宝有相关队列服务运行异步回调，回调失败后，会以不定的间隔进行重试）。
+</code></pre>
+
+<ul>
+<li>在通知回调时，都需要调用<code>alipay_notify.class.php</code>中的<code>verifyReturn</code>验证回调的合法性。</li>
+</ul>
+
+
+<h1>ssl证书</h1>
+
+<p>俗话说，没有买卖就没有杀戮。凡是涉及利益的地方，就不会很安全。使用采用http进行数据通讯，难免发生如下问题：
+<img src="http://jqlblue.github.io/images/payment/http_flow.jpg" title="中间人攻击" ></p>
+
+<p>但是换成https，会有如下好处：</p>
+
+<p><img src="http://jqlblue.github.io/images/payment/https_2.jpg" title="http ssl" ></p>
+
+<p><img src="http://jqlblue.github.io/images/payment/https_3.jpg" title="https flow" ></p>
+
+<p>申请ssl证书，推荐数字公司使用的<a href="http://www.wosign.com/price.htm">WoSign超真 SSL</a>。</p>
+
+<p><img src="http://jqlblue.github.io/images/payment/ssl.jpg" title="ssl" ></p>
+
+<h1>请求验签</h1>
+
+<p>请求参数签名，需要使用可逆加密算法。其中又分为：</p>
+
+<ul>
+<li>对称加解密算法</li>
+<li>非对称加解密算法</li>
+</ul>
+
+
+<p>对称加解密算法，在加密和解密时都使用一个密钥，加解密性能较好。但安全性较低（密钥只要被拿到，就gameover）。</p>
+
+<p>非对称加解密算法，一般使用私钥加密，公钥解密。其安全性较好（只要保存好私钥就行），但是性能较差。</p>
+
+<p>所以可以使用对称加解密算法加密请求参数。但加解密时，不使用同一个密钥。相关密钥，通过非对称加解密算法加密后，在请求参数中传递。</p>
+
+<p>解密流程如下：</p>
+
+<pre><code>1. 在请求参数中获取使用非对称加解密算法加密的密钥ekey
+2. 使用非对称加解密算法解密密钥ekey为dkey
+3. 使用对称加解密算法和dkey，解密请求参数
+</code></pre>
+
+<h1>订单</h1>
+
+<p>我们用一周打造的支付系统，不能是一个远在云端的架构，而要是一个可运行的系统。那么，订单自然也少不了。</p>
+
+<p>订单是按照如下对应关系产生的：</p>
+
+<pre><code>用户 -&gt; 商品 -&gt; 订单
+</code></pre>
+
+<p>在整个支付过程中，一般要存在两个订单号：</p>
+
+<ul>
+<li>用于在内部系统（订单，支付，个人中心）中流通的订单号 <code>order_no</code>，在每一次下单时产生。</li>
+<li>用于支付的订单号 <code>pay_order_no</code>，由 <code>order_no</code> ＋ 时间戳 ＋ salt等，在每一次支付时产生。</li>
+</ul>
+
+
+<h1>联调部署</h1>
+
+<p>开发阶段涉及的模块可做如下划分：</p>
+
+<ul>
+<li>产品页</li>
+<li>支付页</li>
+<li>支付</li>
+<li>订单</li>
+<li>个人中心</li>
+<li>测试，部署上线</li>
+</ul>
+
+
+<p>衡量一个互联网的标准有：功能，交互，ui。</p>
+
+<p>因为我们的目标是一周内打造支付，那么，优先是完成支付和订单。至于是否要在产品页添加购物车，是否要在订单支付页面保存配送地址，是否要在个人中心对接物流，以及退款等等，都可以暂时砍掉。</p>
+
+<p>互联网产品，唯快不破。快速上线，快速迭代。</p>
+
+<h1>The Hole</h1>
+
+<p>开发过程中，难免会遇到不少坑，特此纪录，希望帮助有缘人。</p>
+
+<ul>
+<li>产品金额存储</li>
+</ul>
+
+
+<p>为了避免因退款，对账时，和银行或者第三方支付平台产生因为数据精度而舍入等问题，可以将产品金额以<code>分</code>为单位存储，前台展示时除以100。</p>
+
+<ul>
+<li>需要两个订单号</li>
+</ul>
+
+
+<p>支付宝等第三方平台，对订单号有验证，一个订单号只能支付一次。所以系统中需要存在两个订单号，一个用于内部系统流通，一个用于支付，每次支付时都产品一个最新的（与内部系统流通的订单号有对应关系）。</p>
+
+<ul>
+<li>权限验证</li>
+</ul>
+
+
+<p>下单，或者支付完成后，在个人中心等位置，一般可以查看订单状态。此时需要注意，需要增加权限验证。否则会产生平行权限安全漏洞（可查看别人的订单等信息）</p>
+
+<ul>
+<li>系统安全性</li>
+</ul>
+
+
+<p>在支付和个人中心等页面，因为存在前后端交互。所以需要排查，是否存在sql注入或者xss等安全漏洞。推荐<code>XSScrapy</code>和<code>SqlMap</code>。</p>
+
+<ul>
+<li>日志</li>
+</ul>
+
+
+<p>在整个交易过程中，需要有完善详尽的日志记录。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用graphite和cabot搭建监控服务]]></title>
@@ -3637,120 +3858,6 @@ Speed=42514 pages/min, 1727526 bytes/sec.
 Requests: 42514 susceed, 0 failed.
 PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[移动应用无线抓包指南]]></title>
-    <link href="http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture/"/>
-    <updated>2013-08-04T11:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/04/guide-of-packet-mobile-capture</id>
-    <content type="html"><![CDATA[<h3>引子</h3>
-
-<p>如果将互联网比喻成纵横交错的铁道，那由c，h，o等元素组成的人和物则被打
-包装进一节节车厢，然后组成一列火车在铁道上穿行。手机，笔记本等终端，可
-以理解为车站，每天都有很多人进进出出。</p>
-
-<p>有一天，你突然发现车站少了个东西，或者想了解下都有些什么人出站，什么人
-入站。这时，我们就需要抓包（Capturing Packages）。</p>
-
-<p>继续以铁路为例。一般情况下，我们只要在装载这人和物的火车入站和出站的时候设置关卡，
-进行检查就可以了。</p>
-
-<!-- more -->
-
-
-<p>但突然有天发现某个车站是德国人给造的，我们要私自设置
-关卡的话，就没有保修了。</p>
-
-<p>实际上，我们私自设置关卡也无防。现在的东西更新换代太快，等坏的时候，直
-接入手一个新的，或许比保修还经济呢。</p>
-
-<p>等要动手的时候，想起这个德国制造，还是有些不忍。</p>
-
-<p>在你正想点燃那支兰州的当儿，想起西边有你表哥建造的一个车站。所以可以代
-理一把，让要进出的火车先去你表哥的车站。</p>
-
-<h3>抓包的三种方式</h3>
-
-<p>至此，我们可以看到抓包的三种方式：</p>
-
-<pre><code>1. 本地抓包
-2. 远程服务器抓包
-3. 代理抓包
-</code></pre>
-
-<h3>本地抓包</h3>
-
-<p>不管使用手机还是平板，进出的数据包，都会经过该设备的网卡。如果你的设备
-已经root，可以使用tcpdump将抓包数据存成xxx.pcap，然后在电脑上就可以使
-用wireshark进行查看。也可以使用webview
-<a href="http://www.cloudshark.org">cloudshark</a>。
-更多信息请上google查询。</p>
-
-<h3>远程服务器抓包</h3>
-
-<p>从设备上发出的请求，在网络通畅的情况下，最终都会达到某个服务器。所以我
-们可以在远程服务器上抓包。可以使用tcpdump，但是我更推荐ngrep(network
-grep)。</p>
-
-<p>在centos上，直接</p>
-
-<pre><code>yum install ngrep
-</code></pre>
-
-<p>下面是一些简单示例</p>
-
-<pre><code>ngrep -t -d any port 25
-ngrep -q -W byline "(GET|POST).*"
-</code></pre>
-
-<p>更多用法请查看</p>
-
-<pre><code>man ngrep
-</code></pre>
-
-<h3>代理抓包</h3>
-
-<p>开始废话说地有点多，这才是本文的重点。</p>
-
-<p>设置代理，就是要在你的移动终端和某台电脑之间网络互通的情况下：</p>
-
-<pre><code>1. 在电脑上设置代理
-2. 移动终端上网的时候连接这个代理
-</code></pre>
-
-<p>就可以在电脑上进行抓包了（<em>把一个陌生的概念转行成一个很熟悉的概念，
-fiddle抓包嘛，码农应该都知道</em>）。</p>
-
-<p>我们以移动终端与要进行代理抓包的电脑之间网络不通的情况为例进行说明（<em>如
-果电脑和移动终端可以连接同一wifi，只要按照设置代理的部分进行操作就好</em>）</p>
-
-<ul>
-<li><p>在电脑上创建无线网络</p>
-
-<p>  我们使用360随身wifi在电脑上创建无线网络。要购买的话，现阶段需要时常关注
-  <a href="http://wifi.360.cn/">官网</a>,因为不定期会在京东开启抢购。安装非常简
-  单，插入usb接口，就自动创建好无线网络了（目前只支持windows系统）</p>
-
-<p>  <img src="http://jqlblue.github.io/images/360wifi_1.png" title="'360 wifi images'" >
-  <img src="http://jqlblue.github.io/images/360wifi_2.png" title="'360 wifi images'" >
-  <img src="http://jqlblue.github.io/images/360wifi_3.png" title="'360 wifi images'" ></p></li>
-<li><p>在电脑上用fiddle设置代理</p>
-
-<p>  <img src="http://jqlblue.github.io/images/360wifi_fiddle.png" title="'360 wifiproxy fidlle images'" ></p></li>
-<li><p>修改手机上的网络设置，并设置代理</p>
-
-<p>  <img src="http://jqlblue.github.io/images/360wifi_proxy_1.png" title="'360 wifi mobile network" >
-  <img src="http://jqlblue.github.io/images/360wifi_proxy_2.png" title="'360 wifi mobile network" >
-  <img src="http://jqlblue.github.io/images/360wifi_proxy_3.png" title="'360 wifi mobile network" ></p>
-
-<p>  代理服务器的ip可以通过在电脑上查看网络连接获取，代理的端口就是在
-  fiddle中设置的&#8221;listen on port&#8221;</p>
-
-<p>  <img src="http://jqlblue.github.io/images/360wifi_proxy_ip.png" title="'360 wifi mobile network" ></p></li>
-</ul>
-
 ]]></content>
   </entry>
   
