@@ -4,7 +4,7 @@
   <title><![CDATA[Category: essay | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/essay/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-11-30T18:15:32+08:00</updated>
+  <updated>2015-01-25T19:42:04+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2014年总结－但行好事，莫问前程]]></title>
+    <link href="http://jqlblue.github.io/2014/12/31/user-nginx-proxy-cache-mirror-website/"/>
+    <updated>2014-12-31T10:28:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/12/31/user-nginx-proxy-cache-mirror-website</id>
+    <content type="html"><![CDATA[<p>2014年，是特别的一年。对于码农而言，这一年的过去，可以当作是第二个千年的结束。当然，也将是新千年的开始，期待ing。</p>
+
+<!-- more -->
+
+
+<p>这一年，有个同学博士毕业，还有一个同学荣升副教授。最重要的是，乘着2014的小尾巴，我们迎接到了一个新生命的降临。hello world！</p>
+
+<p>这本是一篇技术博文，但是相对于技术而言，有些东西会更重要一些。</p>
+
+<p>科技改变生活，技术本来就是为了让生活更美好，让大家能活着更容易些，莫忘初心。</p>
+
+<p>分享点技术之外的东西，希望能走地更远，不管是在技术的道路上，还是非技术的道路上。</p>
+
+<p>虽然在有生之年，可以很难达到那种境界，但是尽力去向那个境界靠拢。</p>
+
+<p>但行好事，莫问前程。</p>
+
+<p>谋事在人，成事在天，尽力就好，人能做的，大抵只能如此。</p>
+
+<blockquote><p>以下内容，摘自特兰修女箴言 － From Mother Theresa</p></blockquote>
+
+<p>人们经常是不讲道理的、没有逻辑的和以自我为中心的
+不管怎样，你要原谅他们</p>
+
+<pre><code>People are often unreasonable, illogical and self-centered; Forgive them anyway.
+</code></pre>
+
+<p>即使你是友善的，人们可能还是会说你自私和动机不良
+不管怎样，你还是要友善</p>
+
+<pre><code>If you are kind, people may accuse you of selfish, ulterior motives; Be kind anyway.
+</code></pre>
+
+<p>当你功成名就，你会有一些虚假的朋友
+和一些真实的敌人
+不管怎样，你还是要取得成功</p>
+
+<pre><code>If you are successful, you will win some false friends And some true enemies; Succeed anyway.
+</code></pre>
+
+<p>即使你是诚实的和率直的，人们可能还是会欺骗你
+不管怎样，你还是要诚实和率直</p>
+
+<pre><code>If you are honest and frank, people may cheat you; Be honest and frank anyway.
+</code></pre>
+
+<p>你多年来营造的东西
+有人在一夜之间把它摧毁
+不管怎样，你还是要去营造</p>
+
+<pre><code>What you spend years building, Someone could destroy overnight; Build anyway.
+</code></pre>
+
+<p>如果你找到了平静和幸福，他们可能会嫉妒你
+不管怎样，你还是要快乐</p>
+
+<pre><code>If you find serenity and happiness, they may be jealous; Be happy anyway.
+</code></pre>
+
+<p>你今天做的善事，人们往往明天就会忘记
+不管怎样，你还是要做善事</p>
+
+<pre><code>The good you do today, people will often forget tomorrow; Be good anyway.
+</code></pre>
+
+<p>即使把你最好的东西给了这个世界
+也许这些东西永远都不够
+不管怎样，把你最好的东西给这个世界</p>
+
+<pre><code>Give the world the best you have, And it may never be enough; Give the world the best you have anyway.
+</code></pre>
+
+<p>你看，说到底，它是你和上帝之间的事
+而决不是你和他人之间的事</p>
+
+<pre><code>You see, in the final analysis, it is between you and God; It is never between you and them anyway.
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[0012]]></title>

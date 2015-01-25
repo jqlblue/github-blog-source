@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2014-11-30T18:15:32+08:00</updated>
+  <updated>2015-01-25T19:42:04+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,202 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[互联网信息分类方法]]></title>
+    <link href="http://jqlblue.github.io/2015/01/25/categorize-web-information/"/>
+    <updated>2015-01-25T19:12:00+08:00</updated>
+    <id>http://jqlblue.github.io/2015/01/25/categorize-web-information</id>
+    <content type="html"><![CDATA[<p>目前，虽然搜索已经代替分类目录（google颠覆yahoo模式）成为人们获取信息的主要途径，但是没有好的信息分类，再好的搜索也是白搭。只有信息足够格式化，标准化，搜索才有效。即分类提升展示逻辑，搜索输出内容结果。</p>
+
+<!--more-->
+
+
+<h1>如何判定分类的好坏</h1>
+
+<p>一个好的分类方法需要做到如下几点：</p>
+
+<ul>
+<li>能够涵盖集合中的所有元素</li>
+<li>类和类之间不能重叠</li>
+<li>能够比较容易地为每一个元素找到其对应的分类</li>
+</ul>
+
+
+<h1>常见的分类方法</h1>
+
+<h2>分类之前的准备工作</h2>
+
+<p>在对信息进行分类之前，可以先做如下几件事：</p>
+
+<h5>1. 明确如下问题</h5>
+
+<p>信息如何产生？如何组织关联？通过什么渠道传播？</p>
+
+<h5>2. 观察别人</h5>
+
+<p>可以去一家真正的商店看看，或者参观一座图书馆，还可以拜访竞争对手的商店。</p>
+
+<h5>3. 研究竞争对手</h5>
+
+<p>访问竞争对手的网站。他们是怎样组织信息的？要对多种组织方案加以比较。存在哪些相似之外？又有哪些区别？要尽量明确竞争对手为什么做出那样的选择。这是失误还是明智之举？你甚至可以对他们的网站做可用性测试，从而发现其组织方案中哪些方面奏效，哪些部分没有意义。</p>
+
+<h2>常见的分类方法</h2>
+
+<h5>1. 主题分类法</h5>
+
+<p>主题分类法的特征是选择某一个主题作为一阶类目，在一阶类目下又可分若干二阶类目，二阶类目下再分若干三阶类目，形成一个大的树形结构。同阶的类目按照字顺排序。</p>
+
+<p>由于网络资源数不胜数，所以一般会选取14-24个热点事物作为一阶分类，分类的阶数为3到6级。</p>
+
+<p>其优点是可以将事物相关的内容全部集中在一起。如汽车大类下可包含汽车制造，交易，保养，维修，赛车等等子类目。但是容量较小，对网络资源的覆盖率有限。</p>
+
+<h5>2. 分面分类法</h5>
+
+<p>分面分类法是根据实物都具有多维度的特征而建立的。可以将信息分成定义明确、互斥的区域。常见的是按字母顺序、按年表、按地理位置等分类。也可按照如下类型进行分类：</p>
+
+<ul>
+<li>按主题；设计时需要定义好内容的范围，注意涵盖面的广度</li>
+<li>按任务；将内容和应用程序组织成流程、功能或工作的集合。最常见的是电商网站</li>
+<li>按用户；如果用户群可以界定的比较清楚，可以提供很好的个性化服务，但模糊性依然存在，对系统“猜测”的要求很高</li>
+<li>按隐喻；多用于游戏</li>
+<li>混用以上类型</li>
+</ul>
+
+
+<h5>3. 卡片分类法</h5>
+
+<p>卡片分类就是把类似的东西放在一起。</p>
+
+<ul>
+<li>把你收集的各种信息整理出来写在卡片上。(如果没有，可以用一堆CD或者照片代替，可以是任何东西，只要数量足够多，可以零乱散落在地板上)</li>
+<li>把所有卡片从盒子里倒在地板上。</li>
+<li>把所有卡片从盒子里倒在地板上。</li>
+<li>现在开始分组。如果你看到某些东西与另外一些东西相像，就把它们放在一起。</li>
+<li>最后，当分组完毕时，再拿一些背面有胶的便条标出每一个堆的名称，分类完毕。</li>
+</ul>
+
+
+<h5>4. 公众分类法</h5>
+
+<p>所谓&#8221;公众分类法&#8221;，就是由公众来为信息贴加标签（tagging），被使用最多的标签就最能说明这条信息的特点。</p>
+
+<p>使用标签分类，非常的便捷，而且易于组合，但是也存在一些问题：</p>
+
+<ul>
+<li>不同的用户对相同的标签，往往有不同的理解，比如在&#8221;工具&#8221;标签下，可能会发现彼此完全没有关系的内容。</li>
+<li>同义词问题。用户可能使用同义词作为标签，比如&#8221;tv/television&#8221;，&#8221;Holland/Netherlands/Dutch&#8221;，&#8221;超级女生/超女&#8221;。英语中，还存在复数问题。</li>
+<li>词的多义性问题。比如&#8221;china&#8221;这个标签，到底指中国，还是指瓷器。</li>
+<li>用户的标签五花八门，可能会产生大量&#8221;噪音&#8221;，加重系统负担，降低分类的准确性。</li>
+</ul>
+
+
+<p>所以，最好的解决方法应该是，自上而下的目录分类法与标签式的公众分类法相结合，然后对能够用作标签的词汇进行控制（controlled vocabulary），不能什么词都用来当标签。</p>
+
+<h1>实施建议</h1>
+
+<ul>
+<li>尝试按照主题分类和分面分类发进行分类</li>
+<li>试试卡片分类</li>
+<li>使用2的标准去判定分类是否合理</li>
+<li>如果单纯的分类无法解决问题，考虑下打标签（公众分类法）</li>
+</ul>
+
+
+<p>reference：</p>
+
+<p>[^1] <a href="http://zhanglichuan.me/resolve-ia">http://zhanglichuan.me/resolve-ia</a></p>
+
+<p>[^2] <a href="http://www.ruanyifeng.com/blog/2007/01/categories.html">http://www.ruanyifeng.com/blog/2007/01/categories.html</a></p>
+
+<p>[^3] <a href="http://www.uegeek.com/reading/web_ia_note">http://www.uegeek.com/reading/web_ia_note</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2014年总结－但行好事，莫问前程]]></title>
+    <link href="http://jqlblue.github.io/2014/12/31/user-nginx-proxy-cache-mirror-website/"/>
+    <updated>2014-12-31T10:28:00+08:00</updated>
+    <id>http://jqlblue.github.io/2014/12/31/user-nginx-proxy-cache-mirror-website</id>
+    <content type="html"><![CDATA[<p>2014年，是特别的一年。对于码农而言，这一年的过去，可以当作是第二个千年的结束。当然，也将是新千年的开始，期待ing。</p>
+
+<!-- more -->
+
+
+<p>这一年，有个同学博士毕业，还有一个同学荣升副教授。最重要的是，乘着2014的小尾巴，我们迎接到了一个新生命的降临。hello world！</p>
+
+<p>这本是一篇技术博文，但是相对于技术而言，有些东西会更重要一些。</p>
+
+<p>科技改变生活，技术本来就是为了让生活更美好，让大家能活着更容易些，莫忘初心。</p>
+
+<p>分享点技术之外的东西，希望能走地更远，不管是在技术的道路上，还是非技术的道路上。</p>
+
+<p>虽然在有生之年，可以很难达到那种境界，但是尽力去向那个境界靠拢。</p>
+
+<p>但行好事，莫问前程。</p>
+
+<p>谋事在人，成事在天，尽力就好，人能做的，大抵只能如此。</p>
+
+<blockquote><p>以下内容，摘自特兰修女箴言 － From Mother Theresa</p></blockquote>
+
+<p>人们经常是不讲道理的、没有逻辑的和以自我为中心的
+不管怎样，你要原谅他们</p>
+
+<pre><code>People are often unreasonable, illogical and self-centered; Forgive them anyway.
+</code></pre>
+
+<p>即使你是友善的，人们可能还是会说你自私和动机不良
+不管怎样，你还是要友善</p>
+
+<pre><code>If you are kind, people may accuse you of selfish, ulterior motives; Be kind anyway.
+</code></pre>
+
+<p>当你功成名就，你会有一些虚假的朋友
+和一些真实的敌人
+不管怎样，你还是要取得成功</p>
+
+<pre><code>If you are successful, you will win some false friends And some true enemies; Succeed anyway.
+</code></pre>
+
+<p>即使你是诚实的和率直的，人们可能还是会欺骗你
+不管怎样，你还是要诚实和率直</p>
+
+<pre><code>If you are honest and frank, people may cheat you; Be honest and frank anyway.
+</code></pre>
+
+<p>你多年来营造的东西
+有人在一夜之间把它摧毁
+不管怎样，你还是要去营造</p>
+
+<pre><code>What you spend years building, Someone could destroy overnight; Build anyway.
+</code></pre>
+
+<p>如果你找到了平静和幸福，他们可能会嫉妒你
+不管怎样，你还是要快乐</p>
+
+<pre><code>If you find serenity and happiness, they may be jealous; Be happy anyway.
+</code></pre>
+
+<p>你今天做的善事，人们往往明天就会忘记
+不管怎样，你还是要做善事</p>
+
+<pre><code>The good you do today, people will often forget tomorrow; Be good anyway.
+</code></pre>
+
+<p>即使把你最好的东西给了这个世界
+也许这些东西永远都不够
+不管怎样，把你最好的东西给这个世界</p>
+
+<pre><code>Give the world the best you have, And it may never be enough; Give the world the best you have anyway.
+</code></pre>
+
+<p>你看，说到底，它是你和上帝之间的事
+而决不是你和他人之间的事</p>
+
+<pre><code>You see, in the final analysis, it is between you and God; It is never between you and them anyway.
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一周打造支付系统]]></title>
@@ -3547,317 +3743,6 @@ export XMODIFIERS="@im=fcitx"
 
 <p>又要到九月了。
 突然发现九月对于我，是一个值得回忆和期待的数字。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[an introduction to systemtap]]></title>
-    <link href="http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap/"/>
-    <updated>2013-08-18T10:07:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/18/an-introduction-to-systemtap</id>
-    <content type="html"><![CDATA[<p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
-
-<!-- more -->
-
-
-<pre><code>SystemTap is a tool for the Linux Operating System
-that allows developers and system administrators to deeply investigate
-the behavior of the kernel and even user space applications
-in order to discover error conditions, performance issues,
-or just to understand how the system works, similarly to DTrace.
-
-systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
-</code></pre>
-
-<p>以往在收集这些信息时，我们需要添加检测点，重新编译，安装，重启使之生效。
-挺没意思的。。。</p>
-
-<p>使用systemtap就不需要了，我们只要编写相关脚本，并让systemtap的命令
-行接口stap（systemtap script translator/driver）进行调用就可以收集到用
-户空间和内核空间的相关信息。</p>
-
-<p>通过编写SystemTap脚本，我们就可以很容易地收集甚至篡改系统数据，这是普
-通的linux系统工具所做不到的。</p>
-
-<h3>相关背景知识</h3>
-
-<p>在Solaris系统上，有一个大名鼎鼎的动态跟踪工具
-<a href="http://en.wikipedia.org/wiki/DTrace">Dtrace</a>，这一个相当棒的工具（从
-2001年10月开始开发，在2005年1月首次发布），曾
-荣获《华尔街杂志》
-<a href="https://blogs.oracle.com/swan/date/20070307">2006技术创新大奖中的金奖</a>
-，和ZFS文件系统一样，DTrace一直都因版权问题而无法移植到Linux上，但
-Oracle（SUN公司被Oracle收购）在2012年2月宣布发布DTrace for Linux beta
-版，即将Solaris操作系统的动态跟踪工具移植到他们的Unbreakable
-Enterprise Kernel(2.6.39)内，也就是说Linux人员终于也可以使用DTrace了。</p>
-
-<p>在2005年1月开始，开源社区为linux操作系统开发了基于GPL许可的systemtap。</p>
-
-<p>目前一般的Linux发行版，比如Fedora、OpenSuse、CentOS等，已经包含有systemtap的完整支持了。</p>
-
-<h3>与其他trace工具比较</h3>
-
-<ul>
-<li>Dtrace：
-dtrace不用多说了，systemtap的开发，就是用来替代dtrace的，但是他们还
-是有以下几个明确的差异：
-
-<ol>
-<li>Dtrace不允许你任意地注入c代码，即在运行时修改系统数据，通过-g选项</li>
-<li>Dtrace脚本是以虚拟机字节码的形式在内核中进行解释，而systemtap脚本
-则是以本地二进制代码的形式被进行加载</li>
-</ol>
-</li>
-<li>strace：
-strace工作于用户态，只能用于处理系统调用</li>
-<li>ltrace：
-ltrace工作于用户态，只能用于处理用户态的函数</li>
-<li>gdb：
-gdb也工作于用户态，它的目标是进行交互式的调试</li>
-</ul>
-
-
-<p>更多信息请参见：<a href="http://sourceware.org/systemtap/wiki/SystemtapDtraceComparison">SystemtapDtraceComparison</a></p>
-
-<p>而systemtap作为一个通用工具，通过追踪（tracing），可以了解：</p>
-
-<pre><code>在一段时间内，某进程执行了哪些系统调用以及次数
-一个函数执行了多长时间
-进程函数调用栈并使用相关工具生成火焰图 (Flame Graph)
-甚至可以使用systemtap脚本进行任意发挥
-</code></pre>
-
-<p>reference:
-<a href="http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000">http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000</a>
-<a href="http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf">http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf</a>
-<a href="http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf">http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf</a>
-<a href="http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf">http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf</a>
-<a href="http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf">http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf</a>
-<a href="http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/">http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/</a>
-<a href="http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/">http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php 5.5 upgrade guide]]></title>
-    <link href="http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide/"/>
-    <updated>2013-08-10T09:41:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/08/10/php-5-dot-5-upgrade-guide</id>
-    <content type="html"><![CDATA[<p>前一阵子经常收到应用服务器的报警。登录服务器查看日志，netstat，strace
-看不出问题（道行不够）。然后restart之后，一切又都正常。</p>
-
-<p>面对打着补丁的5.2，我们决定升级到php5.5</p>
-
-<!-- more -->
-
-
-<h3>The reason</h3>
-
-<p>左右事物发展变化的，除了自身的能力和品质，有时跟环境的变迁，也有着莫大
-的关系。</p>
-
-<p>作为一个在开发一线的互联网从业人员。优化，重构，这可能是我们要经常提及
-的两个话题。</p>
-
-<p>通过监控，度量，找出系统中那20%的瓶颈问题，一般就能让系统的性能有很大
-的提升。这种优化算作自身能力的提升。</p>
-
-<p>一个在线上运行的系统，实际上还依赖与服务器，带宽等硬件环境；操作系统，
-程序编译器或者解释器等软件环境。这些环境，也在更新优化。</p>
-
-<p>在自身能力不变的情况化，如果这些环境得以更新优化，我们的系统也会跑地更
-快。</p>
-
-<p>就像nike，同样的人，穿着nike会有飞一般的感觉。</p>
-
-<h3>Step</h3>
-
-<p>先引用鸟哥在 <a href="http://www.thinkinlamp.com/">thinkinlamp</a>演讲内容：
-<img src="http://jqlblue.github.io/images/php-5.5-prefermance.png" title="'php-5.5-prefermance 'images'" ></p>
-
-<p>理论上，从php5.2升级到php5.5，性能最少能提升30%。</p>
-
-<p>当然，升级有风险，操作需谨慎。</p>
-
-<p>下面是升级步骤：</p>
-
-<h5>1. 安装php5.5</h5>
-
-<figure class='code'><figcaption><span>php-5.5.0-install.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
-</span><span class='line'>wget -c http://www.php.net/get/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz/from/this/mirror
-</span><span class='line'>tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
-</span><span class='line'><span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
-</span><span class='line'><span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
-</span><span class='line'>./configure <span class="se">\</span>
-</span><span class='line'>--prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
-</span><span class='line'>--with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
-</span><span class='line'>--disable-debug <span class="se">\</span>
-</span><span class='line'>--enable-inline-optimization <span class="se">\</span>
-</span><span class='line'>--disable-all <span class="se">\</span>
-</span><span class='line'>--enable-fpm <span class="se">\</span>
-</span><span class='line'>--enable-libxml <span class="se">\</span>
-</span><span class='line'>--enable-session <span class="se">\</span>
-</span><span class='line'>--enable-xml <span class="se">\</span>
-</span><span class='line'>--enable-hash <span class="se">\</span>
-</span><span class='line'>--enable-mbstring <span class="se">\</span>
-</span><span class='line'>--with-layout<span class="o">=</span>GNU <span class="se">\</span>
-</span><span class='line'>--enable-filter <span class="se">\</span>
-</span><span class='line'>--with-pcre-regex <span class="se">\</span>
-</span><span class='line'>--with-zlib <span class="se">\</span>
-</span><span class='line'>--enable-json <span class="se">\</span>
-</span><span class='line'>--enable-mysqlnd <span class="se">\</span>
-</span><span class='line'>--enable-pdo <span class="se">\</span>
-</span><span class='line'>--with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>--with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>--with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
-</span><span class='line'>--enable-simplexml <span class="se">\</span>
-</span><span class='line'>--enable-dom <span class="se">\</span>
-</span><span class='line'>--enable-phar <span class="se">\</span>
-</span><span class='line'>--enable-tokenizer <span class="se">\</span>
-</span><span class='line'>--enable-posix <span class="se">\</span>
-</span><span class='line'>--enable-xmlwriter <span class="se">\</span>
-</span><span class='line'>--enable-xmlreader <span class="se">\</span>
-</span><span class='line'>--with-curl <span class="se">\</span>
-</span><span class='line'>--with-iconv <span class="se">\</span>
-</span><span class='line'>--with-mcrypt <span class="se">\</span>
-</span><span class='line'>--enable-ctype <span class="se">\</span>
-</span><span class='line'>--enable-opcache
-</span><span class='line'>make
-</span><span class='line'>make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>完整脚本可参见：
-<a href="https://gist.github.com/jqlblue/6198630">在centos5上安装php5.5.0</a></p>
-
-<p>备注：</p>
-
-<pre><code>1. 安装php时，要指定安装目录(prefix)，以备出现问题时可以及时回滚
-2. 安装扩展时同样需要注意，不要覆盖其他版本的扩展
-   1) 使用绝对路径执行phpize
-   2) 在configure时指定php5.5目录下的php-config，--with-php-config
-   3) 编译扩展需要的lib库时，也要指定版本和安装目录
-</code></pre>
-
-<h5>2. php代码语法兼容性检测</h5>
-
-<p>php每次大版本的升级，都会废弃一些函数，这些函数在新版本的php中使用的话，
-就会报致命错误（Fatal error）。通过下面的方法，可以检测这些场景。</p>
-
-<figure class='code'><figcaption><span>check-php5.5-compatibility.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
-</span><span class='line'><span class="c">#use sh ./check-php-compatibility.sh /path/code</span>
-</span><span class='line'><span class="k">if</span> <span class="o">[[</span> <span class="nv">$1</span> !<span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">]]</span>;<span class="k">then</span>
-</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="nv">$1</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'><span class="k">   </span><span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="s1">&#39;/path/code/src&#39;</span>
-</span><span class='line'><span class="k">fi</span>
-</span><span class='line'><span class="nv">PHP_BIN</span><span class="o">=</span><span class="s1">&#39;/usr/local/php-5.5.0/bin/php&#39;</span>
-</span><span class='line'><span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname <span class="s1">&#39;*.php&#39;</span><span class="k">)</span>; <span class="k">do</span>
-</span><span class='line'>    <span class="k">${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -d <span class="nv">error_reporting</span><span class="o">=</span>E_ALL -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span>
-</span><span class='line'><span class="k">done</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>更多的信息，请参见 <a href="http://codeascraft.com/2012/08/10/static-analysis-for-php/">static-analysis-for-php</a></p>
-
-<h5>3. 从服务器上收集请求情况</h5>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat access.log | awk -F <span class="s2">&quot;[ ?]&quot;</span> <span class="s1">&#39;{urls[$7]++} END {for(key in urls)print urls[key],&quot;\t&quot;,key}&#39;</span> | sort -nr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>4. 通过收集的请求url进行测试</h5>
-
-<p>对于get方式的url请求，直接wget或者curl就好。</p>
-
-<p>对于post方式的curl请求，需要用curl模拟post请求进行提交。同时需要在
-webserver日志中记录post请求参数。</p>
-
-<h5>5. 查看webserver的错误日志，进行改进</h5>
-
-<h3>Improve</h3>
-
-<p>上线后通过在nginx的access log中开启记录upstream_time和request_time进行
-统计，php-5.5.0环境下接口的响应速度较5.2.5环境提升了(0.00487559-0.00366027)/0.00487559=24.9%</p>
-
-<pre><code>php-5.5.0
-total_request_time:196416 total_upstream_time:1122.52 total_request:306678 avg_requst_time:0.640464 avg_upstream_time:0.00366027
-
-php-5.2.5
-total_request_time:200400 total_upstream_time:1498.65 total_request:307378 avg_requst_time:0.651966 avg_upstream_time:0.00487559
-</code></pre>
-
-<p>统计脚本</p>
-
-<pre><code>cat access.log | grep '/api/getInfo' | awk -F ')"' '{print $2}' | grep -v ' -' | awk 'BEGIN{_request=0;_upstream=0;_i=0}{_request+=$2;_upstream+=$3;_i+=1}END{print "total_request_time:"_request" total_upstream_time:"_upstream" total_request:"_i" avg_requst_time:"_request/_i" avg_upstream_time:"_upstream/_i}'
-</code></pre>
-
-<p>另外，做了php5.3.10和php.5.5.0的压测比较</p>
-
-<pre><code>php5.3.10
-Speed=30441 pages/min, 1224275 bytes/sec.
-Requests: 30441 susceed, 0 failed.
-
-php5.5.0
-Speed=42514 pages/min, 1727526 bytes/sec.
-Requests: 42514 susceed, 0 failed.
-PHP 5.5 vs 5.3 improve 39% (708-507)/507=0.3964497041
-</code></pre>
 ]]></content>
   </entry>
   
