@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: php | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/php/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-01-25T19:42:04+08:00</updated>
+  <updated>2015-03-27T00:13:46+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[那个套模版的，放开你的F5]]></title>
+    <link href="http://jqlblue.github.io/2015/02/28/release-f5-for-template-engineer/"/>
+    <updated>2015-02-28T18:29:00+08:00</updated>
+    <id>http://jqlblue.github.io/2015/02/28/release-f5-for-template-engineer</id>
+    <content type="html"><![CDATA[<p>老江说过：“科学技术是第一生产力”。技术的魅力在于通过改善相关流程或者提供相关工具，对人们的生活进行改善，make live esaier。</p>
+
+<!-- more -->
+
+
+<p><em>对于自喻为模版工程师的同行们，套模版的流程大抵是：</em></p>
+
+<pre><code>写代码，保存
+
+打开浏览器，按F5刷新页面，检查相关前端效果
+</code></pre>
+
+<p>我记得<a href="http://weibo.com/yjf10">轩脉刃</a>曾经写过一个统计鼠标按键的小工具。如果对模版工程师工作时键盘的按键进行统计，那么F5的使用率肯定不容忽视。</p>
+
+<p>倘若能在代码保存后就自动刷新浏览器，那不仅能解放模版工程师的F5按键，也能提升他们的开发效率。突然感觉非常美妙。</p>
+
+<p>我记得有人说过，这个世界上不缺乏原创的idea，缺的只是一双能发现它的眼睛。</p>
+
+<p>正如<code>livereload</code>所说的－“The Web Developer Wonderland”。</p>
+
+<p>使用<code>livereload</code>，<em>通过如下几个步骤</em>，就可以做到当我们保存代码后，自动刷新浏览器中相关页面内容。</p>
+
+<blockquote><p>安装livereload浏览器扩展</p></blockquote>
+
+<p>相关浏览器扩展的下载地址如下：</p>
+
+<p><a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions">browser extensions</a></p>
+
+<blockquote><p>安装livereload server端</p></blockquote>
+
+<p>安装python环境，然后在终端执行</p>
+
+<pre><code>pip install livereload
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>easy_install livereload
+</code></pre>
+
+<blockquote><p>启动livereload server端</p></blockquote>
+
+<p>假设我的代码目录在<code>/home/galendy/code/demo</code>，在终端执行</p>
+
+<pre><code>livereload /home/galendy/code/demo
+</code></pre>
+
+<blockquote><p>点击浏览器扩展</p></blockquote>
+
+<p><code>livereload</code>的基本原理是：</p>
+
+<pre><code>livereload server端会启动本地的socket服务（默认开放本地的35729端口），当监听的目录下的文件内容有变化时，向该socket写入数据
+
+livereload浏览器扩展会连接本地的35729端口，当有新消息到来时，会在浏览器中插入一段js代码，刷新当前页面
+</code></pre>
+
+<p>实际上，前端工程师还会使用<code>livereload</code>完成css，js等文件的合并和压缩。想要了解更多，请参考：</p>
+
+<p><a href="http://livereload.com/">livereload</a></p>
+
+<p><a href="http://livereload.readthedocs.org/en/latest/">python livereload</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一周打造支付系统]]></title>
