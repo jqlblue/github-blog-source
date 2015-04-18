@@ -4,7 +4,7 @@
   <title><![CDATA[Category: essay | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/essay/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-03-27T00:13:46+08:00</updated>
+  <updated>2015-04-19T07:35:46+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -152,7 +152,7 @@
 
 <p>再见360，希望你们一切都好。</p>
 
-<p><img src="/images/0012.jpg" title="card" ></p>
+<p>{% img /images/0012.jpg card %}</p>
 ]]></content>
   </entry>
   

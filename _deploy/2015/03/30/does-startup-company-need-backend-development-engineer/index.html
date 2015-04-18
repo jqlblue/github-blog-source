@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>互联网创业公司是否需要后端工程师 - Jqlblue's Blog</title>
+
+  <meta name="author" content="jqlblue">
+  
+  <meta name="description" content="对于互联网创业公司而言，随着baas等云服务的兴起，是否还需要专门的后端工程师">
+  <meta name="keywords" content="baas 互联网创业公司 后端工程师 业务逻辑 领域逻辑">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jqlblue.github.io/2015/03/30/does-startup-company-need-backend-development-engineer">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
+  <link href="/atom.xml" rel="alternate" title="Jqlblue's Blog" type="application/atom+xml">
+
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+
+
+  <script type="text/javascript">
+    jQuery.noConflict();
+  </script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49934763-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?d2b96656c83497acc0d393854dba07cb";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jqlblue's Blog</a></h1>
+  
+    <h2>Make Live Easier.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jqlblue.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="https://github.com/jqlblue" target="_blank">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">互联网创业公司是否需要后端工程师</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-30T18:05:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>随着LeanCloud等<code>baas</code>云服务的兴起，对于一个互联网创业公司而言，是否还需要专门的后端工程师？</p>
+
+<!-- more -->
+
+
+<p>一个典型的web app的架构如下：</p>
+
+<p><img src="/images/baas/app_struct.png" title="web app典型架构" ></p>
+
+<p>客户端或者浏览器调用后端服务，进行数据的写入和读取。让用户通过互联网，完成信息的交换。</p>
+
+<p>以一个b-s结构的web服务为例，其前后端基本架构大致如下：</p>
+
+<p><img src="/images/baas/simple_web_struct.png" title="web 服务的前后端基本架构" ></p>
+
+<p>前端主要负责用户界面的布局和交互处理，后端包括：</p>
+
+<pre><code>1. 后端业务逻辑处理
+2. 与前端用户界面进行相关交互
+</code></pre>
+
+<p>而一个要运行在生产环节下的后端服务架构，应该大致是下面这个样子：</p>
+
+<p><img src="/images/baas/web_struct.png" title="web web服务后端架构" ></p>
+
+<p>后端服务并不是直接对数据库进行写入和查询操作，每一次到达后端服务的请求，都附带着自身的业务逻辑。</p>
+
+<p>虽然我们可以剥离某些与业务不是强关联的模块，增加一层公共服务。但是由于每个公司商业模式和运营需求的限制，业务逻辑的<code>领域</code>特性，会一直存在。</p>
+
+<p>而现在的<code>baas</code>等服务，主要提供的是数据存储、实时消息、统计分析以及扩展组件等基础公共服务。有了这些服务，的确满足业务需求的情况下，降低后端服务的开发成本。</p>
+
+<p>互联网的核心价值是：</p>
+
+<pre><code>平等，共享，透明，高度化的信息对称
+快速和善变，强烈的交互式客户体验
+</code></pre>
+
+<p><code>信息</code>（数据）和<code>交互体验</code>（前端ui）都很重要。</p>
+
+<p>当然，随着<code>baas</code>服务的发展，对于业务逻辑不是很复杂的互联网应用，的确可以完全使用<code>baas</code>服务替代现有的后端服务。但是这样就会把后端逻辑变成一个黑盒。出了问题只能等待baas服务提供商解决。</p>
+
+<p>对于创业公司而言，在选择类似的服务时，需要根据自身的业务形态和人员配备等，在前期的人员投入，后期的维护成本以及业务的最终形态，系统的扩展性，数据的安全性等方面，进行权衡。</p>
+
+<p>而身处创业公司的后端工程师，也需要积极了解行业动态，如果使用<code>baas</code>服务能满足业务需求的，也就没有必要再去重复开发。</p>
+
+<blockquote><p>baas（Backend as a Service）</p></blockquote>
+
+<p>即软件即服务，如APICloud，LeanCloud。</p>
+
+<blockquote><p>paas（Platform as a Service）</p></blockquote>
+
+<p>即平台即服务，如google的gae，sina的sae。</p>
+
+<blockquote><p>laas（Infrastructure as a Service）</p></blockquote>
+
+<p>即基础设施即服务，如亚马逊的aws，阿里云，腾讯云，linode。</p>
+
+<blockquote><p>saas（Software as a Service）</p></blockquote>
+
+<p>即软件即服务，如云盘。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">jqlblue</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-30T18:05:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/collect/'>collect</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <style>
+.flash-video {
+    display:none;
+}
+</style>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a href="http://www.jiathis.com/share?uid=1823276" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1359039158528928" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1823276"></script>
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2015/02/28/release-f5-for-template-engineer/" title="Previous Post: 那个套模版的，放开你的F5">&laquo; 那个套模版的，放开你的F5</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>版权协议</h1>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh"><img alt="知识共享许可协议" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.zh">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/categories/collect/'>collect (4)</a></li>
+<li class='category'><a href='/categories/devops/'>devops (6)</a></li>
+<li class='category'><a href='/categories/emacs/'>emacs (1)</a></li>
+<li class='category'><a href='/categories/essay/'>essay (3)</a></li>
+<li class='category'><a href='/categories/linux/'>linux (3)</a></li>
+<li class='category'><a href='/categories/mobile/'>mobile (3)</a></li>
+<li class='category'><a href='/categories/network/'>network (1)</a></li>
+<li class='category'><a href='/categories/php/'>php (8)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2015/03/30/does-startup-company-need-backend-development-engineer/">互联网创业公司是否需要后端工程师</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/02/28/release-f5-for-template-engineer/">那个套模版的，放开你的F5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/01/25/categorize-web-information/">互联网信息分类方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/12/31/user-nginx-proxy-cache-mirror-website/">2014年总结－但行好事，莫问前程</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/11/23/build-payment-system-in-one-week/">一周打造支付系统</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 90%" href="/tags/codesniffer/">codesniffer</a>
+<a style="font-size: 189%" href="/tags/devops/">devops</a>
+<a style="font-size: 158%" href="/tags/essay/">essay</a>
+<a style="font-size: 210%" href="/tags/linux/">linux</a>
+<a style="font-size: 158%" href="/tags/mobile/">mobile</a>
+<a style="font-size: 133%" href="/tags/monitor/">monitor</a>
+<a style="font-size: 189%" href="/tags/php/">php</a>
+<a style="font-size: 175%" href="/tags/php5-dot-5/">php5.5</a>
+<a style="font-size: 90%" href="/tags/systemtap/">systemtap</a>
+<a style="font-size: 90%" href="/tags/wireshark/">wireshark</a>
+
+  </ul>
+</section>
+
+<section>
+    <h1>新浪微博</h1>
+    <ul id="weibo">
+    <li>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1282083982&verifier=f2e5e0d3&dpc=1"></iframe>
+      </li>
+    </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - jqlblue -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+<script src="/javascripts/libs/jquery.1.7.1.min.js" type="text/javascript"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+
+<script src="/javascripts/libs/jquery.tableofcontents.min.js" type="text/javascript"></script>
+<script src="/javascripts/libs/generate-toc.js" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+  if (jQuery("#main").find("#content").find(".hentry").find(".entry-content").length  > 0 ) {
+     jQuery('body').addClass('collapse-sidebar');
+  }
+  });
+</script>
+
+
+</body>
+</html>
