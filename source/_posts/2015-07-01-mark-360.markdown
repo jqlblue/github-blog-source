@@ -1,10 +1,35 @@
 ---
 layout: post
 title: "mark 360"
-description: 
-keywords: 
+description:
+keywords:
 date: 2015-07-01 16:18
 comments: true
-categories: 
-tags: 
+categories: [mind]
+tags: [mind, web]
 ---
+读史使人明智，读诗使人聪慧。离开360有一年时间了。
+<!--more-->
+# 360的历史 #
+
+内容整理
+
+logo
+http://a1.att.hudong.com/03/39/20300542458558139712390479277_s.jpg
+
+3721 奇虎 360
+三家马车 搜索，360，口碑营销。
+
+
+
+# 360的用户观 #
+http://tech.qq.com/a/20080821/000240.htm
+http://news.imeigu.com/a/1357542049092.html
+http://www.huxiu.com/article/24211/1.html
+http://www.guokr.com/post/67269/
+http://www.zhihu.com/question/23765561
+http://m.guokr.com/post/67269/
+# 360的产品观 #
+
+# 360的人才观 #
+# 一些历史事件 #
