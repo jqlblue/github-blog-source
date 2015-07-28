@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: devops, | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-04-19T07:35:46+08:00</updated>
+  <updated>2015-07-28T19:43:17+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -41,77 +41,142 @@
 3 将处理后的报文以及对报文的处理意见（ACCEPT，DROP等）传递给内核协议栈
 </code></pre>
 
-<p>{% codeblock communication/tc_socket.c lang:c %}
-tc_raw_socket_out_init()
-{</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_socket.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_raw_socket_out_init</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * On Linux when setting the protocol as IPPROTO_RAW,</span>
+</span><span class='line'><span class="cm"> * then by default the kernel sets the IP_HDRINCL option and</span>
+</span><span class='line'><span class="cm"> * thus does not prepend its own IP header.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_RAW</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<pre><code>int fd, n;
-
-n = 1;
-
-/*
- * On Linux when setting the protocol as IPPROTO_RAW,
- * then by default the kernel sets the IP_HDRINCL option and
- * thus does not prepend its own IP header.
- */
-fd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<p>{% codeblock communication/tc_interception.c lang:c %}
-tc_nl_event_process(tc_event_t *rev)
-{</p>
-
-<pre><code>char            buffer[65536];
-register int    i, pass_through_flag = 0;
-unsigned long   packet_id;
-tc_ip_header_t *ip_hdr;
-
-if (tc_nl_socket_recv(rev-&gt;fd, buffer, 65536) == TC_ERROR)
-{
-    return TC_ERROR;
-}
-
-ip_hdr = tc_nl_ip_header(buffer);
-packet_id = tc_nl_packet_id(buffer);
-
-if (ip_hdr != NULL) {
-    /* check if it is the valid user to pass through firewall */
-    for (i = 0; i &lt; srv_settings.passed_ips.num; i++) {
-        if (srv_settings.passed_ips.ips[i] == ip_hdr-&gt;daddr) {
-            pass_through_flag = 1;
-            break;
-        }
-    }
-
-    tot_resp_packs++;
-
-    if (pass_through_flag) {
-
-        /* pass through the firewall */
-        dispose_netlink_packet(rev-&gt;fd, NF_ACCEPT, packet_id);
-
-    } else {
-
-        tot_copy_resp_packs++;
-        router_update(srv_settings.old, ip_hdr);
-        /* drop the packet */
-        dispose_netlink_packet(rev-&gt;fd, NF_DROP, packet_id);
-    }
-}
-
-return TC_OK;
-</code></pre>
-
-<p>}</p>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>communication/tc_interception.c </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">tc_nl_event_process</span><span class="p">(</span><span class="n">tc_event_t</span> <span class="o">*</span><span class="n">rev</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">char</span>            <span class="n">buffer</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
+</span><span class='line'><span class="k">register</span> <span class="kt">int</span>    <span class="n">i</span><span class="p">,</span> <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">packet_id</span><span class="p">;</span>
+</span><span class='line'><span class="n">tc_ip_header_t</span> <span class="o">*</span><span class="n">ip_hdr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">tc_nl_socket_recv</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="mi">65536</span><span class="p">)</span> <span class="o">==</span> <span class="n">TC_ERROR</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">TC_ERROR</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ip_hdr</span> <span class="o">=</span> <span class="n">tc_nl_ip_header</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'><span class="n">packet_id</span> <span class="o">=</span> <span class="n">tc_nl_packet_id</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">ip_hdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="cm">/* check if it is the valid user to pass through firewall */</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">num</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">passed_ips</span><span class="p">.</span><span class="n">ips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ip_hdr</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">daddr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">pass_through_flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tot_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pass_through_flag</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* pass through the firewall */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_ACCEPT</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">tot_copy_resp_packs</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">router_update</span><span class="p">(</span><span class="n">srv_settings</span><span class="p">.</span><span class="n">old</span><span class="p">,</span> <span class="n">ip_hdr</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* drop the packet */</span>
+</span><span class='line'>        <span class="n">dispose_netlink_packet</span><span class="p">(</span><span class="n">rev</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">fd</span><span class="p">,</span> <span class="n">NF_DROP</span><span class="p">,</span> <span class="n">packet_id</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="n">TC_OK</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <pre><code>在高级架构下，是通过在测试机上配置静态路由规则，将响应路由到辅助服务器进行处理。
 </code></pre>
 
-<p>{% img /images/gryphon/raw_socket.jpg raw socket %}</p>
+<p><img src="/images/gryphon/raw_socket.jpg" title="raw socket" ></p>
 
 <h1>传统架构下安装并使用</h1>
 
@@ -191,7 +256,7 @@ iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
 <p><code>gryphon客户端</code>和<code>intercept拦截进程</code>运行时，会在当前工作目录生成<code>error_gryphon.log</code>，<code>error_intercept.log</code>日志文件，里面有相关运行信息。当测试过程不能正常工作时，可优先查看相关日志。</p>
 
 <p>其次就是在测试机或者<code>gryphon客户端</code>所在的服务器上进行抓包。确保<code>gryphon客户端</code>发出请求，并且没有收到测试机的响应包，如：
-{% img /images/gryphon/gryphon_tcpdump.png gryphon tcpdump %}</p>
+<img src="/images/gryphon/gryphon_tcpdump.png" title="gryphon tcpdump" ></p>
 
 <h1>高级架构下安装并使用</h1>
 

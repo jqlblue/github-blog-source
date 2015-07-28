@@ -4,7 +4,7 @@
   <title><![CDATA[Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-04-19T07:35:36+08:00</updated>
+  <updated>2015-07-28T19:43:17+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,171 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[再见360]]></title>
+    <link href="http://jqlblue.github.io/2015/07/01/mark-360/"/>
+    <updated>2015-07-01T16:18:00+08:00</updated>
+    <id>http://jqlblue.github.io/2015/07/01/mark-360</id>
+    <content type="html"><![CDATA[<p>离开360有一年的时间了。虽然老周的手机目前没了消息。但是再次去看这家在经历3Q，3B大战后，依然的能活跃在互联网风头浪尖的公司，还是有不少感悟。</p>
+
+<!--more-->
+
+
+<h1>360的历史</h1>
+
+<p><img src="http://jqlblue.github.io/images/360_timeline.jpg" title="'history of 360" ></p>
+
+<p>360的前身是奇虎，现在也叫<code>奇虎360</code>。奇虎当时有3个业务方向：</p>
+
+<ul>
+<li>奇虎搜索</li>
+<li>社区口碑营销</li>
+<li>360</li>
+</ul>
+
+
+<p>当时，主要的人力都在投入奇虎搜索。360属于一个边缘业务，其前身是<code>流氓克星</code>，用于干掉其它浏览器插件，并在浏览器上推荐奇虎搜索插件。</p>
+
+<p>大家最早所知道的360叫<code>360安全卫士</code>，被定位成“口碑项目”，即：</p>
+
+<ul>
+<li>不求商业利益</li>
+<li>开放源代码</li>
+<li>任何时候都可交给第三方运营</li>
+</ul>
+
+
+<p>在06年反流氓软件的大潮中，360的项目负责人在民间组织了一个叫<code>360督导委员会</code>的实体讨论组。其承诺是，不以盈利为目的、只为打击流氓软件，并保证360自己不做流氓软件。</p>
+
+<p>后来，360安全卫士的总安装量达到了几千万，每天就有几十万的新安装量，而其它两条业务线，依然没有太大起色。到08年的时候，老周痛下角色，全力做360。</p>
+
+<h1>360的用户观</h1>
+
+<p>了解360的人都知道，<code>用户利益至上</code>，是老周在任何场合基本上都会强调的，这主要体现其强有力的运营体系。</p>
+
+<ul>
+<li>每一款上线的产品，基本都有<code>意见反馈</code>入口</li>
+<li>每一款开始运营的产品的，在<code>360bbs</code>上都有相关板块。</li>
+</ul>
+
+
+<p><img src="http://jqlblue.github.io/images/360_bbs.jpg" title="'bbs of 360" >
+<img src="http://jqlblue.github.io/images/360_bbs_zhushou.jpg" title="'bbs of 360 zhushou" ></p>
+
+<ul>
+<li>用户提交的任何反馈，都能在24小时内得到运营人员的反馈。</li>
+</ul>
+
+
+<p>记得有一年十一假期，正在家里配置我的<a href="http://jqlblue.github.io/2014/02/28/emacs24-on-mac-and-linux/">emacs</a>，突然接到运营的反馈，说助手id化服务出了问题，有用户反馈经验值降了，还有截图。我vpn登录公司网络，查看服务<a href="http://jqlblue.github.io/2014/10/01/use-graphite-and-alter-build-monitor-system/">监控和报警</a>，都在正常运行，于是第一时间联系了dba。</p>
+
+<p>然后就得到了一个很悲惨的消息，dba在维护数据期间，将id化服务的redis实例回滚到了2天之前，正在想办法恢复，不过没有最新的数据备份。我只好将这个噩耗反馈给了运营，然后答应尽快恢复。</p>
+
+<p>挂了电话没多久，就收到了运营发的邮件，有故障的相关描述，用户的联系方式，目前的处理进度和责任人，并且cc了一堆人。</p>
+
+<p>突然感觉压力山大，感觉整个假期都要废掉了。</p>
+
+<p>好在和同事沟通后，通过重放服务器访问日志，将丢失的经验值又给增加了回去。</p>
+
+<h1>360的产品观</h1>
+
+<p>360现在的产品，已经覆盖了<code>PC</code>，<code>手机</code>，<code>智能硬件</code>以及<code>海外市场</code>。</p>
+
+<p><img src="http://jqlblue.github.io/images/360_product.jpg" title="'product of 360" ></p>
+
+<p>在产品方面，老周经常会说的一个词叫<code>小白用户</code>。其<code>小白哲学</code>不仅体现在360的产品在功能和交互层面，让普通小白用户都可以轻易上手，还抓住了普通用户<code>宁信其有、不信其无</code>的心态。</p>
+
+<p>例如，借鉴ipad界面交互的<code>360安全桌面</code>，曾经每天有好几千万的日活。而<code>360安全卫士</code>的红色弹窗，会很自然让<code>小白用户</code>积极地使用360安全卫士给windows系统打补丁，修复漏洞。</p>
+
+<p>还有一个词叫<code>小步快跑</code>，这也是老周经常说的另一个词。</p>
+
+<p>在360内部，有很多产品都是由1个产品经理，拉上两个研发，开发一两周，然后随着某一个beta版对外发布，然后持续关注相关<code>统计数据</code>和<code>用户反馈</code>，不断放量或者进行功能改进。</p>
+
+<p>第一版<code>手机游戏wap站</code>，就是在没有前端的情况下，由3个后端在不到一周的情况下，完成了后台数据的整理和前端产品上线。</p>
+
+<h1>360的人才观</h1>
+
+<p>最近360股价不是很给力，所以有些重金挖过来的人才，又去投奔了新的东家。但是，铁打的营盘，流水的兵。业务和产品还是要向前发展。</p>
+
+<p>纵观现在在一些关键岗位上的人员，有不少都是校招过来的。</p>
+
+<p>这或许就是曾经要成立360学院的初衷。</p>
+
+<p><img src="http://jqlblue.github.io/images/360_xueyuan.jpg" title="'institute of 360" ></p>
+
+<h1>一些历史事件</h1>
+
+<h3>3q大战始末</h3>
+
+<p><img src="http://jqlblue.github.io/images/3q_event.jpg" title="'the war of 360 and qq" ></p>
+
+<p>我没有第一时间接触到3q大战的始末，但是我加入360的时候，公司是不允许安装qq的。</p>
+
+<p>3q大战过去这么久，作为当时国内第一大桌面客户端qq和第二大桌面客户端360安全卫士对战的利益冲突点，这不是我非常关心的。</p>
+
+<p>当时sns在国内还没有完全兴起，在几天的时间内，如何去影响几亿客户端参与战斗，这依然离不开强大的运营。其中包括：</p>
+
+<ul>
+<li>在360成名之前，就通过督导版等一系列策略，沉淀了一批忠实用户</li>
+<li>健全的产品更新策略，又包括<code>用户主动拉取的更新</code>和<code>推送给用户的更新</code>（即被神秘化的v3）</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[学习卓有成效（转自彼得德鲁克《卓有成效的管理者》读书笔记）]]></title>
+    <link href="http://jqlblue.github.io/2015/04/30/study-to-effective/"/>
+    <updated>2015-04-30T22:49:00+08:00</updated>
+    <id>http://jqlblue.github.io/2015/04/30/study-to-effective</id>
+    <content type="html"><![CDATA[<p>学习如何卓有成效。</p>
+
+<!--more-->
+
+
+<h1>《卓有成效的管理者》读书笔记</h1>
+
+<p>先看了德鲁克的《卓有成效的管理者》，觉得写得真好。就反过去找来他的《管理的实践》，大略的看完了。后面这本书可以算是管理学的百科全书，极为详尽，说事论理非常透彻，假如要研习管理学，这本书应该可算是必读书；不过也因为太过详尽了点，对于只想浅尝辄止的人就不是特别适合了。</p>
+
+<p>适合的应该是这本《卓有成效的管理者》，讲的并不是如何管理一个组织的方方面面，而是一个人如何能够成为有效的管理这个组织的管理者的方法。而按照德鲁克的讲法，所有从事知识工作的人，他本身所从事的工作，即便是他并不在一个明显的管理者的位置上，其实也是在做管理。所以从这个角度说，这本书就是所有从事知识工作的人的必读书。</p>
+
+<ul>
+<li><p>知识工作的有效性与体力劳动不同。对于后者，一般有很明确的“对的事情”的定义，要做的只是把这些已经明了的对的事情最好。而对于知识工作，尽管也许我们知道要达到的目标（甚至有时候目标也是不明确的），在一开始我们却总是不知道什么才是达到目标“对的事情”&mdash;这种对于如何做事必须进行规划的要求，正是知识工作本身需要管理的本质原因所在。对于体力劳动，勤奋总是有助于效率；而对于知识工作，假如对“如何去做”这个问题考虑不清楚，勤奋可能适得其反。</p></li>
+<li><p>授权。错误的认识：我的工作应该由别人来做；充分授权之后，最闲散的经理人便是最好的经理人。正确认识：把可以别人做的事情交给别人，这样才能做真正应该自己做的事情。其实我一直相信“最闲散的经理人便是最好的经理人”这个有关授权的错误认识，认为一个组织良好的机构，管理者可以撒手而组织运行良好。这固然不是没有任何道理，一个设计优良的组织应该有抗单个节点失效（即便这个节点是最高管理者）的鲁棒性，然而，如果一个管理者可以从组织中消失而不引起任何不良后果，那这个管理者本身在组织中就是冗余的－他本来就不需要在那里。</p></li>
+<li><p>零碎的时间和整块的时间不同，即便加起来的总量相同。对于严肃的思考工作，必须有大块的不受打扰的时间才可以，零碎的时间再多也难以进行富有成效的使用。</p></li>
+<li><p>所谓会议，顾名思义，是靠集会来商议，是组织缺陷的一种补救措施。一个结构设计理想的组织，应该没有任何会议。这一点有其深意。</p></li>
+<li><p>重视贡献，就是重视有效性。这里是说，有效性是以目标导向的。重视所能够做出的贡献，并为了这些贡献而做努力，是通往有效性的必然途径。</p></li>
+<li><p>管理工作所看的，只是一个人的优点。这是所有不掺杂私人关系的社会关系中所应该看重的东西。一个人的缺点重要，仅当这个人跟你有私人关系，你关心他的个人成长的时候才重要。</p></li>
+</ul>
+
+
+<h1>[箴言]彼得．德鲁克：管理者，就必须卓有成效</h1>
+
+<ul>
+<li><p>有效的管理者在用人所长的同时，必须容忍人之所短。</p></li>
+<li><p>一个重视贡献的人，为成果负责的人，不管他职位多么卑微，仍属于“高层管理者”。</p></li>
+<li><p>有效的管理者用人，是着眼于机会，而非着眼于问题。</p></li>
+<li><p>有效的决策人，首先要辨明问题的性质:这是一再发生的经常性问题呢，还是偶然的例外?</p></li>
+<li><p>有效的管理者不做太多的决策。他们所做的，都是重大的决策。</p></li>
+<li><p>应该将行动纳入决策当中，否则就是纸上谈兵。</p></li>
+<li><p>有效的管理者要的是决策所产生的影响，而非技巧;他们要的是合理有效的决策，而非乖巧的决策。</p></li>
+<li><p>有效的管理者都知道，一项决策不是从搜集事实开始的，他们首先都有自己的见解。</p></li>
+<li><p>我们该知道运用自己上司的长处，这也正是下属工作卓有成效的关键。</p></li>
+<li><p>管理者，就必须卓有成效。</p></li>
+<li><p>卓有成效是一种习惯，是通过不断训练达成的。</p></li>
+<li><p>“认识你的时间”，只要你肯，这就是一条卓有成效之路。</p></li>
+<li><p>管理者的一项具体任务，就是要把今天的资源投入到创造未来中去。</p></li>
+<li><p>有效的管理者坚持把重要的事放在前面做，每次只做好一件事。</p></li>
+<li><p>“专心”是一种勇气，就是敢于决定真正该做和真正先做的工作。</p></li>
+</ul>
+
+
+<p>reference：</p>
+
+<p>[^1] <a href="http://www.jianshu.com/p/358ff4e67931">http://www.jianshu.com/p/358ff4e67931</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[互联网创业公司是否需要后端工程师]]></title>
@@ -3486,259 +3651,6 @@ directory=/data/server/python-envs/sentry/
 <p>添加定时任务</p>
 
 <pre><code>* * * * * /usr/bin/flock -xn /tmp/sentry_client.lock /opt/php-5.5.4/bin/php /path/client.php --project=project_name 2&gt;&amp;1 &gt; /dev/null
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[初探android应用性能分析]]></title>
-    <link href="http://jqlblue.github.io/2013/11/22/android-app-profile-tools/"/>
-    <updated>2013-11-22T18:03:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/11/22/android-app-profile-tools</id>
-    <content type="html"><![CDATA[<p>如果一个android应用打开时比较慢，或者使用起来比较卡。这个可能是客户端代码有待优化，也可能是服务端性能比较挫。对一个客户端开发者而言，在客户端代码中增加相关debug日志，即可比较准确地定位问题。但这活要落到一个服务端开发人员手里，要怎么办？</p>
-
-<p>本文将在没有apk源码的情况下，以服务端开发人员的视角进行客户端app性能的分析。</p>
-
-<!-- more -->
-
-
-<p>在分析之前，我们先补充点android基础知识。</p>
-
-<h3>android基础知识</h3>
-
-<p>我们所说的android应用，一般都是通过将一个以apk结尾的文件安装在手机等移动设备上才能运行起来的。所以我们先从apk说起。</p>
-
-<h5>什么是apk</h5>
-
-<p>我们先从网上下载一个apk</p>
-
-<pre><code>$ wget http://shouji.360tpcdn.com/131106/0124832c4cf8c35a762cfece3bac52b1/com.sina.weibo_650.apk
-</code></pre>
-
-<p>然后查看这个文件的类型</p>
-
-<pre><code>$ file com.sina.weibo_650.apk
-com.sina.weibo_650.apk: Zip archive data, at least v2.0 to extract
-</code></pre>
-
-<p>会发现<code>com.sina.weibo_650.apk</code>是一个zip压缩文件。解压缩后的文件，主要包括<em>一些资源文件</em>，<em>一些配置文件</em>，<em>一些类库</em>，还有<em>一个class.dex</em>。目录结构如下</p>
-
-<pre><code>AndroidManifest.xml
-assets
-classes.dex
-lib
-META-INF
-org
-res
-resources.arsc
-</code></pre>
-
-<p>粗略一看，发现 <code>class.dex</code> 这个文件有5.9M，这应该就是主角。继续执行如下命令</p>
-
-<pre><code>$ file classes.dex
-classes.dex: Dalvik dex file version 035
-</code></pre>
-
-<p>因为没有开发过android应用，不明白用java开发的app和这个Dalvik dex file之间有什么关系？所以我们先跳出apk的视角。</p>
-
-<h5>android平台架构</h5>
-
-<p><img src="http://jqlblue.github.io/images/mobile/android_architecture.png" title="'android architecture images'" ></p>
-
-<p>如上图，android基于linux操作系统，使用linux内核与设备的硬件进行交互。在内核之上，又抽象出了一层，包括Dalvik虚拟机等。</p>
-
-<p>因为<code>dex</code>是<code>Dalvik VM</code> Executes的全称，即android <code>Dalvik</code>虚拟机执行程序。</p>
-
-<p>那一个apk的生产和执行过程将是：
-<code>*.java -&gt; *.class -&gt; classes.dex（classes.dex将由Dalvik VM转换成机器码，由linux内核交给cpu去执行）</code></p>
-
-<p>这样的话，在linux系统上使用profile软件的经验，也将派上用场。</p>
-
-<p>android相关基础知识先介绍到此，感兴趣的请进一步查阅本文后面的参看资料。</p>
-
-<h3>android应用性能分析</h3>
-
-<h5>apk启动速度</h5>
-
-<p>在分析之前，我们先看看android程序的执行流程
-<img src="http://jqlblue.github.io/images/mobile/android_application_execute_flow.png" title="'android application execute flow images'" ></p>
-
-<p>如上图，只要获取到启动ActivityManager所需要的时间，即是apk的启动时间。</p>
-
-<pre><code>adb logcat | grep ActivityManager
-</code></pre>
-
-<p>其中&#8221;Displayed&#8221;对应的时间，即是launch Activity对应的时间，也就是apk启动时间，也可以使用如下命令：</p>
-
-<pre><code>adb logcat -c &amp;&amp; adb logcat -s ActivityManager | grep  "Displayed"
-</code></pre>
-
-<ul>
-<li>要使用 <code>adb</code>，需要先用usb线连接电脑和手机，并在手机的<code>设置</code>&ndash;><code>开发者选项</code>中开启<code>USB调试</code></li>
-<li><code>adb</code>这个工具，可以通过在android sdk的platform-tools目录中找到。后面介绍的<code>systrace</code>也在这个目录。</li>
-</ul>
-
-
-<h5>页面渲染性能</h5>
-
-<p>android应用中的页面，是由android系统一帧，一帧地绘制的，其中每一帧的处理如下图：
-<img src="http://jqlblue.github.io/images/mobile/android_view_execute_flow.png" title="'android view execute flow images'" ></p>
-
-<p>即：
-<code>计算视图大小（measure） -&gt; 安置视图的位置（layout） -&gt; 绘制（draw）视图</code></p>
-
-<p>通过收集每帧的处理时间，即可以了解页面的渲染性能。</p>
-
-<blockquote><p>当fps（每秒处理帧数，页面刷新率）为60时，页面的渲染看起来会比较平滑，这就需要每帧的处理时间不能大于16ms（1000/60）</p></blockquote>
-
-<p>要检测一个应用在渲染页面时的每帧处理时间，通过如下命令，即可获得每帧的处理时间</p>
-
-<pre><code>adb shell dumpsys gfxinfo com.sina.weibo
-</code></pre>
-
-<p>在输出日志的<code>Profile</code>数据段，包含了三列<code>Draw</code>，<code>Process</code>，<code>Execute</code>分别对应的处理时间，单位是ms。这三列的总和，就是渲染每帧时的处理时间。如</p>
-
-<pre><code>Draw    Process Execute
-0.95    0.93    0.72
-0.84    1.16    0.56
-0.83    0.89    0.69
-1.32    2.15    1.14
-1.29    1.37    1.01
-</code></pre>
-
-<blockquote><p>在进行分析之前，需要在<code>设置</code>&ndash;><code>开发者选项</code>中点击<code>GPU呈现模式分析</code>，选择<code>在adb shell dumpsys gfxinfo中</code>。</p></blockquote>
-
-<p>收集步骤：</p>
-
-<pre><code>1.重新启动app
-2.在界面完全加载完之后，在界面上慢慢上下滑动几个像素
-3.在终端执行adb shell dumpsys gfxinfo com.sina.weibo
-</code></pre>
-
-<p>这时将在终端输出页面渲染时的最后128帧中每帧所花费的时间，将相关数据贴到excel表格中，点击其中的<code>insert</code>&ndash;><code>chart</code>，即可生成相关图表
-<img src="http://jqlblue.github.io/images/mobile/frame_render_time.png" title="'frame render time images'" ></p>
-
-<blockquote><p>其中<code>com.sina.weibo</code>就是app的包名</p></blockquote>
-
-<p>获取包名的方法:</p>
-
-<pre><code>adb shell pm list packages
-</code></pre>
-
-<h5>使用systrace进一步分析</h5>
-
-<p>通过收集该apk的启动速度和每帧的渲染时间，并与竟品进行对比发现。该app启动时间的确比较慢，也偶尔有丢帧的现象发生。如何近一步分析呢？这时就需要<code>systrace</code>了。</p>
-
-<p>示例使用方法如下：</p>
-
-<pre><code>cd android-sdk-linux/platform-tools/systrace
-python systrace.py --app=com.qihoo.appstore gfx view
-</code></pre>
-
-<p>上面这条命令将会在<code>android-sdk-linux/platform-tools/systrace</code>目录下生成<code>trace.html</code>。其中收集了包名为<code>com.qihoo.appstore</code>的应用在android系统上针对<code>gfx</code>和<code>view</code> category的执行数据。</p>
-
-<p><code>trace.html</code>在浏览器中打开如下图：
-<img src="http://jqlblue.github.io/images/mobile/android_systrace_output.png" title="'android systrace output images'" ></p>
-
-<p>可以使用如下方法，对<code>trace.html</code>进行进一步分析：
-* 通过鼠标点击左侧的<code>+</code>，<code>-</code>可以展开或者收缩相关显示数据
-* 通过键盘上的<code>a</code>，<code>d</code>可以使显示的内容沿着顶部的时间轴向左或者向右移动
-* 通过键盘上的<code>w</code>，<code>s</code>可以对显示的内容进行放大或者缩小
-* 使用鼠标点击内容页面的某一个块，在下方会显示详情
-* 使用鼠标选择一块内容页面，在下方会显示汇总信息</p>
-
-<p>将光标定位到最后一行，使用<code>w</code>进行放大，使用<code>d</code>向左移动到2260ms左右，如下图：
-<img src="http://jqlblue.github.io/images/mobile/android_systrace_output_zoom.png" title="'android systrace output detail images'" ></p>
-
-<p>发现对于那些<code>performTraversals</code>处理超过16ms的帧，其中<code>eglSwapBuffers</code>处理的时间都比较长，这应该就是问题所在。</p>
-
-<p>使用usb线连接上手机，在命令行下运行：</p>
-
-<pre><code>python systrace.py -h
-</code></pre>
-
-<p>可以查看相关使用方法。</p>
-
-<blockquote><p>systrace是在在android4.1上新增的工具，在4.1,4.2和4.3上使用的方法不同</p></blockquote>
-
-<p>reference：</p>
-
-<p>[^1] <a href="http://www.curious-creature.org/docs/android-performance-case-study-1.html">http://www.curious-creature.org/docs/android-performance-case-study-1.html</a></p>
-
-<p>[^2] <a href="http://www.curious-creature.org/docs/android-performance-case-study-1.html">http://www.curious-creature.org/docs/android-performance-case-study-1.html</a></p>
-
-<p>[^3] <a href="http://www.vogella.com/articles/AndroidTools/article.html">http://www.vogella.com/articles/AndroidTools/article.html</a></p>
-
-<p>[^4] <a href="http://blog.csdn.net/aaa2832/article/details/7849400">http://blog.csdn.net/aaa2832/article/details/7849400</a></p>
-
-<p>[^5] <a href="http://www.cnblogs.com/taobox/articles/3405931.html">http://www.cnblogs.com/taobox/articles/3405931.html</a></p>
-
-<p>[^6] <a href="http://bigflake.com/systrace/">http://bigflake.com/systrace/</a></p>
-
-<p>[^7] <a href="http://developer.android.com/tools/debugging/systrace.html">http://developer.android.com/tools/debugging/systrace.html</a></p>
-
-<p>[^8] <a href="http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html">http://kitoslab-eng.blogspot.com/2013/01/aprof-android-profiler-profiling-tool.html</a></p>
-
-<p>[^9] <a href="http://udinic.wordpress.com/tag/rendering/">http://udinic.wordpress.com/tag/rendering/</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在php5.5中使用pdo和mysql_escape_string的一个坑]]></title>
-    <link href="http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string/"/>
-    <updated>2013-11-16T18:04:00+08:00</updated>
-    <id>http://jqlblue.github.io/2013/11/16/pdo-mysql-escape-string</id>
-    <content type="html"><![CDATA[<p>最近在项目中使用了鸟哥的yar扩展，但是在php5.2.10环境中没有安装成功，所以将php升级到了5.5。</p>
-
-<!-- more -->
-
-
-<h3>升级步骤</h3>
-
-<ul>
-<li>安装php5.5.0</li>
-<li>检测代码兼容性</li>
-<li>从线上服务器日志中收集最热的一百条访问日志</li>
-<li>下线一台服务器，启动php5.5环境，根据日志中最热的请求进行重放</li>
-<li>检测服务器日志进行改进</li>
-</ul>
-
-
-<p>升级过程很顺利，但是上线后在日志中发现如下信息：</p>
-
-<pre><code>mysql_escape_string(): This function is deprecated; use mysql_real_escape_string() instead
-</code></pre>
-
-<p>于是顺手修复上线。鉴于最近没怎么写代码，手有点生，先发布到了测试环境测试没问题才上线。</p>
-
-<p>就在去茶水间接了一杯水的当儿，运营反馈说线上页面显示异常。于是马上回滚代码。</p>
-
-<p>问题代码如下：</p>
-
-<pre><code>$db = getDb();
-$a = mysql_real_escape_string($keyword);
-$sql = 'select info from table where keyword = ' . $a;
-$res = $db-&gt;getRow($sql);
-</code></pre>
-
-<p>通过调试，发现：</p>
-
-<pre><code>$keyword在mysql_real_escape_string处理之后，变成了false，所以在进行后面的查询时获取不到相应结果，页面就异常了。
-</code></pre>
-
-<p>再进一步调试发现：</p>
-
-<pre><code>getDb使用的是pdo。
-$dbh = new PDO('mysql:host=xxx;port=xxx;dbname=xxx', 'xxx', 'xxx');
-</code></pre>
-
-<p>于是原因浮出水面</p>
-
-<pre><code>1 在使用string mysql_real_escape_string时没有指定link_identifier
-2 所以会去找使用mysql_connect()打开的最后一个连接
-3 使用的是pdo，没有找到相关连接。于是尝试使用不带任何参数的mysql_connect()去建立一个连接来使用
-4 本机没有mysql server，自然建立连接失败。于是发生错误，并产生警告信息（E_WARNING）
-5 服务器上设置的错误报告等级已经屏蔽了E_WARNING，所以也没有监控到相关错误
 </code></pre>
 ]]></content>
   </entry>
