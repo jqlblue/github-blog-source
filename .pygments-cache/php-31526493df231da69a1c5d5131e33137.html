@@ -1,0 +1,61 @@
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Singleton</span>
+<span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+
+<span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$_instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">_handle</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+<span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+    <span class="c1">//logic no care</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
+<span class="p">{</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getObj</span><span class="p">());</span>
+    <span class="c1">//logic no care</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
+<span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
+</pre></div>

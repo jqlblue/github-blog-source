@@ -1,0 +1,42 @@
+<div class="highlight"><pre><span class="nv">PHP_VERSION</span><span class="o">=</span>5.5.0
+wget -c &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.php.net/get/php-$&quot;</span>&gt;http://www.php.net/get/php-<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>PHP_VERSION<span class="o">}</span>.tar.gz/from/this/mirror
+tar zxvf php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>.tar.gz
+<span class="nb">cd </span>php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+<span class="nv">PHP_PREFIX</span><span class="o">=</span>/usr/local/php-<span class="k">${</span><span class="nv">PHP_VERSION</span><span class="k">}</span>
+./configure <span class="se">\</span>
+&amp;mdash;prefix<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span> <span class="se">\</span>
+&amp;mdash;with-config-file-path<span class="o">=</span><span class="k">${</span><span class="nv">PHP_PREFIX</span><span class="k">}</span>/etc <span class="se">\</span>
+&amp;mdash;disable-debug <span class="se">\</span>
+&amp;mdash;enable-inline-optimization <span class="se">\</span>
+&amp;mdash;disable-all <span class="se">\</span>
+&amp;mdash;enable-fpm <span class="se">\</span>
+&amp;mdash;enable-libxml <span class="se">\</span>
+&amp;mdash;enable-session <span class="se">\</span>
+&amp;mdash;enable-xml <span class="se">\</span>
+&amp;mdash;enable-hash <span class="se">\</span>
+&amp;mdash;enable-mbstring <span class="se">\</span>
+&amp;mdash;with-layout<span class="o">=</span>GNU <span class="se">\</span>
+&amp;mdash;enable-filter <span class="se">\</span>
+&amp;mdash;with-pcre-regex <span class="se">\</span>
+&amp;mdash;with-zlib <span class="se">\</span>
+&amp;mdash;enable-json <span class="se">\</span>
+&amp;mdash;enable-mysqlnd <span class="se">\</span>
+&amp;mdash;enable-pdo <span class="se">\</span>
+&amp;mdash;with-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+&amp;mdash;with-mysqli<span class="o">=</span>mysqlnd <span class="se">\</span>
+&amp;mdash;with-pdo-mysql<span class="o">=</span>mysqlnd <span class="se">\</span>
+&amp;mdash;enable-simplexml <span class="se">\</span>
+&amp;mdash;enable-dom <span class="se">\</span>
+&amp;mdash;enable-phar <span class="se">\</span>
+&amp;mdash;enable-tokenizer <span class="se">\</span>
+&amp;mdash;enable-posix <span class="se">\</span>
+&amp;mdash;enable-xmlwriter <span class="se">\</span>
+&amp;mdash;enable-xmlreader <span class="se">\</span>
+&amp;mdash;with-curl <span class="se">\</span>
+&amp;mdash;with-iconv <span class="se">\</span>
+&amp;mdash;with-mcrypt <span class="se">\</span>
+&amp;mdash;enable-ctype <span class="se">\</span>
+&amp;mdash;enable-opcache
+make
+make install
+</pre></div>

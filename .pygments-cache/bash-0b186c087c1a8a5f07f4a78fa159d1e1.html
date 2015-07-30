@@ -1,0 +1,7 @@
+<div class="highlight"><pre><span class="c">#!/bin/sh</span>
+<span class="nv">SOURCE_ROOT</span><span class="o">=</span><span class="s1">&#39;/path/php-code&#39;</span>
+<span class="nv">PHP_BIN</span><span class="o">=</span><span class="s1">&#39;/usr/local/php-5.5/bin/php&#39;</span>
+<span class="k">for </span>file in <span class="k">$(</span>find <span class="k">${</span><span class="nv">SOURCE_ROOT</span><span class="k">}</span> -type f -iname <span class="s1">&#39;*.php&#39;</span><span class="k">)</span>; <span class="k">do</span>
+<span class="k">    </span><span class="nv">check_syntax</span><span class="o">=</span><span class="k">$(${</span><span class="nv">PHP_BIN</span><span class="k">}</span> -l <span class="nv">$file</span> | grep -v <span class="s1">&#39;No syntax errors detected&#39;</span><span class="k">)</span>
+<span class="k">done</span>
+</pre></div>

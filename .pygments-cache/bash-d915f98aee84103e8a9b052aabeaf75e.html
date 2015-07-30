@@ -1,0 +1,2 @@
+<div class="highlight"><pre>cat access_log | awk &amp;lsquo;<span class="o">{</span>print <span class="nv">$7</span><span class="o">}</span>&amp;rsquo; | awk -F &amp;ldquo;?&amp;rdquo; &amp;lsquo;<span class="o">{</span>print <span class="nv">$1</span><span class="o">}</span>&amp;rsquo; | sort | uniq -c | sort -nr
+</pre></div>

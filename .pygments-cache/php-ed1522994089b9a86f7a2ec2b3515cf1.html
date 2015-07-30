@@ -1,0 +1,26 @@
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">class</span> <span class="nc">Singleton</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="k">static</span> <span class="nv">$_instances</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">final</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">final</span> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$c</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$c</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

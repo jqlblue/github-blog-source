@@ -1,0 +1,13 @@
+<div class="highlight"><pre><span class="n">tc_raw_socket_out_init</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * On Linux when setting the protocol as IPPROTO_RAW,</span>
+<span class="cm">     * then by default the kernel sets the IP_HDRINCL option and</span>
+<span class="cm">     * thus does not prepend its own IP header.</span>
+<span class="cm">     */</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_RAW</span><span class="p">);</span>
+</pre></div>
