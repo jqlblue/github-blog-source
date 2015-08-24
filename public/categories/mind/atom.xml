@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mind | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/mind/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-07-31T07:40:36+08:00</updated>
+  <updated>2015-08-24T23:03:40+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[0821EP培训－去发现醒觉的力量]]></title>
+    <link href="http://jqlblue.github.io/2015/08/24/0821-the-road-of-awakening/"/>
+    <updated>2015-08-24T13:29:00+08:00</updated>
+    <id>http://jqlblue.github.io/2015/08/24/0821-the-road-of-awakening</id>
+    <content type="html"><![CDATA[<p>有部电影里说，我们知道很多道理，但是依旧过不好这一生。</p>
+
+<!--more-->
+
+
+<p>两天半的培训结束了，有收获，也有遗憾。</p>
+
+<p>前半天的培训，我更像个旁观者，仅仅是看着大家一个个上去自我介绍，然后我应付地上去做了个介绍。后面的游戏环节，虽然我很早意识到了需要多个组配合才能完成游戏，但是，我并没有为团队贡献太多，看着场上混乱的场景，我只是和另外一个组员去给别人拼图（拼好后被别的组拿走了）。在回家的路上，我决定第二天做两件自己不想做的事情。</p>
+
+<p>第二天的培训，自己的固有思维一直处于上风。我没有主动发言（曾经争取过一次机会，因为老师没有看到，就放弃了）。在最后的两队选队长pk环节，我也没有主动去争取。在找学员说伤心往事时，我的心门也没有完全打开。</p>
+
+<p>最后一天，我在组内主动分享我的感悟和经历，我奋力去冲破障碍。拿出自己的活力，很有信心地单腿跳着跨过毕业线。主动找助教合影，找别的组的学员索取联系方式。当我从学员身边走过，我感觉很轻松。当我坐车离开酒店时，心里暖暖地。</p>
+
+<p>这两天半的课程，或许不会马上对我所有改变，有所提升。但是，一些可以打破我固有思维模式的种子，已经种下。</p>
+
+<p>让自己打开心扉，卸下防御；让自己加强自己的进取心，加强那份求胜的渴望；让自己尝试做一些改变；去平衡事业，家庭，身体健康，金钱财物，心灵成长，教育学习，人际关系，休闲娱乐。这些，我已经意识到了。</p>
+
+<p>我已经不想一直安静地做一个技术男了，我可以去尝试小龙虾，可以去尝试各种稀奇古怪的美食，让我的生活有所不同。</p>
+
+<p>遗憾是，课堂中，我并没有去争取可以锻炼自己的机会，我还是会很在乎别人的眼光。</p>
+
+<p>接下来，自己会制订相关计划。至少，每天会坚持做两件自己之前没有尝试过的事情。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[再见360]]></title>
@@ -25,7 +55,7 @@
 
 <h1>360的历史</h1>
 
-<p><img src="/images/360_timeline.jpg" title="&lsquo;history of 360" ></p>
+<p>{% img /images/360_timeline.jpg &lsquo;history of 360 %}</p>
 
 <p>360的前身是奇虎，现在也叫<code>奇虎360</code>。奇虎当时有3个业务方向：</p>
 
@@ -61,8 +91,8 @@
 </ul>
 
 
-<p><img src="/images/360_bbs.jpg" title="&lsquo;bbs of 360" >
-<img src="/images/360_bbs_zhushou.jpg" title="'bbs of 360 zhushou" ></p>
+<p>{% img /images/360_bbs.jpg &lsquo;bbs of 360 %}
+{% img /images/360_bbs_zhushou.jpg 'bbs of 360 zhushou %}</p>
 
 <ul>
 <li>用户提交的任何反馈，都能在24小时内得到运营人员的反馈。</li>
@@ -85,7 +115,7 @@
 
 <p>360现在的产品，已经覆盖了<code>PC</code>，<code>手机</code>，<code>智能硬件</code>以及<code>海外市场</code>。</p>
 
-<p><img src="/images/360_product.jpg" title="&lsquo;product of 360" ></p>
+<p>{% img /images/360_product.jpg &lsquo;product of 360 %}</p>
 
 <p>在产品方面，老周经常会说的一个词叫<code>小白用户</code>。其<code>小白哲学</code>不仅体现在360的产品在功能和交互层面，让普通小白用户都可以轻易上手使用，还抓住了普通用户<code>宁信其有、不信其无</code>的心态。</p>
 
@@ -107,13 +137,13 @@
 
 <p>这或许就是曾经要成立360学院的初衷。</p>
 
-<p><img src="/images/360_xueyuan.jpg" title="&lsquo;institute of 360" ></p>
+<p>{% img /images/360_xueyuan.jpg &lsquo;institute of 360 %}</p>
 
 <h1>一些历史事件</h1>
 
 <h3>3q大战始末</h3>
 
-<p><img src="/images/3q_event.jpg" title="&lsquo;the war of 360 and qq" ></p>
+<p>{% img /images/3q_event.jpg &lsquo;the war of 360 and qq %}</p>
 
 <p>我没有第一时间接触到3q大战的始末，但是我加入360的时候，公司是不允许安装qq的。</p>
 

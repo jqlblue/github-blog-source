@@ -4,7 +4,7 @@
   <title><![CDATA[Category: collect | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/categories/collect/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-07-31T07:40:36+08:00</updated>
+  <updated>2015-08-24T23:03:40+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -25,13 +25,13 @@
 
 <p>一个典型的web app的架构如下：</p>
 
-<p><img src="/images/baas/app_struct.png" title="web app典型架构" ></p>
+<p>{% img /images/baas/app_struct.png web app典型架构 %}</p>
 
 <p>客户端或者浏览器调用后端服务，进行数据的写入和读取。让用户通过互联网，完成信息的交换。</p>
 
 <p>以一个b-s结构的web服务为例，其前后端基本架构大致如下：</p>
 
-<p><img src="/images/baas/simple_web_struct.png" title="web 服务的前后端基本架构" ></p>
+<p>{% img /images/baas/simple_web_struct.png web 服务的前后端基本架构 %}</p>
 
 <p>前端主要负责用户界面的布局和交互处理，后端包括：</p>
 
@@ -41,7 +41,7 @@
 
 <p>而一个要运行在生产环节下的后端服务架构，应该大致是下面这个样子：</p>
 
-<p><img src="/images/baas/web_struct.png" title="web web服务后端架构" ></p>
+<p>{% img /images/baas/web_struct.png web web服务后端架构 %}</p>
 
 <p>后端服务并不是直接对数据库进行写入和查询操作，每一次到达后端服务的请求，都附带着自身的业务逻辑。</p>
 
@@ -341,10 +341,10 @@ livereload浏览器扩展会连接本地的35729端口，当有新消息到来�
 
 <h3>可供参考的系统架构示例</h3>
 
-<p><img src="/images/e-commerce/e_1.png" title="电商平台基础技术架构" >
-<img src="/images/e-commerce/e_2.png" title="电商平台技术架构" ></p>
+<p>{% img /images/e-commerce/e_1.png 电商平台基础技术架构 %}
+{% img /images/e-commerce/e_2.png 电商平台技术架构 %}</p>
 
-<p><img src="/images/e-commerce/e_3.png" title="电商平台系统图" ></p>
+<p>{% img /images/e-commerce/e_3.png 电商平台系统图 %}</p>
 
 <h2>技术架构非功能性指标</h2>
 
