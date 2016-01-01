@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: web | Jqlblue's Blog]]></title>
   <link href="http://jqlblue.github.io/tags/web/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2015-08-24T23:03:40+08:00</updated>
+  <updated>2016-01-01T23:27:18+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -25,7 +25,7 @@
 
 <h1>360的历史</h1>
 
-<p>{% img /images/360_timeline.jpg &lsquo;history of 360 %}</p>
+<p><img src="/images/360_timeline.jpg" title="&lsquo;history of 360" ></p>
 
 <p>360的前身是奇虎，现在也叫<code>奇虎360</code>。奇虎当时有3个业务方向：</p>
 
@@ -61,8 +61,8 @@
 </ul>
 
 
-<p>{% img /images/360_bbs.jpg &lsquo;bbs of 360 %}
-{% img /images/360_bbs_zhushou.jpg 'bbs of 360 zhushou %}</p>
+<p><img src="/images/360_bbs.jpg" title="&lsquo;bbs of 360" >
+<img src="/images/360_bbs_zhushou.jpg" title="'bbs of 360 zhushou" ></p>
 
 <ul>
 <li>用户提交的任何反馈，都能在24小时内得到运营人员的反馈。</li>
@@ -85,7 +85,7 @@
 
 <p>360现在的产品，已经覆盖了<code>PC</code>，<code>手机</code>，<code>智能硬件</code>以及<code>海外市场</code>。</p>
 
-<p>{% img /images/360_product.jpg &lsquo;product of 360 %}</p>
+<p><img src="/images/360_product.jpg" title="&lsquo;product of 360" ></p>
 
 <p>在产品方面，老周经常会说的一个词叫<code>小白用户</code>。其<code>小白哲学</code>不仅体现在360的产品在功能和交互层面，让普通小白用户都可以轻易上手使用，还抓住了普通用户<code>宁信其有、不信其无</code>的心态。</p>
 
@@ -107,13 +107,13 @@
 
 <p>这或许就是曾经要成立360学院的初衷。</p>
 
-<p>{% img /images/360_xueyuan.jpg &lsquo;institute of 360 %}</p>
+<p><img src="/images/360_xueyuan.jpg" title="&lsquo;institute of 360" ></p>
 
 <h1>一些历史事件</h1>
 
 <h3>3q大战始末</h3>
 
-<p>{% img /images/3q_event.jpg &lsquo;the war of 360 and qq %}</p>
+<p><img src="/images/3q_event.jpg" title="&lsquo;the war of 360 and qq" ></p>
 
 <p>我没有第一时间接触到3q大战的始末，但是我加入360的时候，公司是不允许安装qq的。</p>
 
