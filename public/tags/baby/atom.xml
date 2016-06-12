@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: baby | Jqlblue's Blog]]></title>
+  <title><![CDATA[Tag: baby | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/tags/baby/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2016-01-01T23:28:48+08:00</updated>
+  <updated>2016-06-12T10:34:58+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -36,7 +36,7 @@
 
 <blockquote><p>小孩皮肤稚嫩，指甲长了，容易把自己抓伤。</p></blockquote>
 
-<p><img src="/images/kid-gang/jiandao.png" title="小剪刀" ></p>
+<p>{% img /images/kid-gang/jiandao.png 小剪刀 %}</p>
 
 <ul>
 <li>屁屁油</li>
@@ -45,7 +45,7 @@
 
 <blockquote><p>我们家小孩经常红屁屁，机缘巧合中发现了下面这个，强烈推荐。</p></blockquote>
 
-<p><img src="/images/kid-gang/pipiyou.png" title="屁屁油" ></p>
+<p>{% img /images/kid-gang/pipiyou.png 屁屁油 %}</p>
 
 <ul>
 <li>温度计</li>
@@ -54,7 +54,7 @@
 
 <blockquote><p>初生儿怕热，屋里挂个温度计，经常看看，不要让屋里温度过高。</p></blockquote>
 
-<p><img src="/images/kid-gang/wenduji.png" title="温度计" ></p>
+<p>{% img /images/kid-gang/wenduji.png 温度计 %}</p>
 
 <ul>
 <li>小夜灯</li>
@@ -63,7 +63,7 @@
 
 <blockquote><p>方便晚上给小孩喂奶，换尿布。</p></blockquote>
 
-<p><img src="/images/kid-gang/xiaoyedeng.png" title="小夜灯" ></p>
+<p>{% img /images/kid-gang/xiaoyedeng.png 小夜灯 %}</p>
 
 <ul>
 <li>爽身粉</li>
@@ -72,7 +72,7 @@
 
 <blockquote><p>小孩新生代谢旺盛，需要保持腋窝等部位的干燥。</p></blockquote>
 
-<p><img src="/images/kid-gang/songhuafeng.png" title="爽身粉" ></p>
+<p>{% img /images/kid-gang/songhuafeng.png 爽身粉 %}</p>
 
 <ul>
 <li>婴肤霜</li>
@@ -81,7 +81,7 @@
 
 <blockquote><p>基本上每个小孩都要长湿疹，下面这个婴肤霜不错。</p></blockquote>
 
-<p><img src="/images/kid-gang/yingfushuang.png" title="婴肤霜" ></p>
+<p>{% img /images/kid-gang/yingfushuang.png 婴肤霜 %}</p>
 
 <h1>尿不湿的选择</h1>
 
@@ -89,15 +89,15 @@
 
 <p>我们家小孩使用过的尿不湿品牌如下：</p>
 
-<p><img src="/images/kid-gang/niaobushi1.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi1.png 尿不湿 %}</p>
 
-<p><img src="/images/kid-gang/niaobushi2.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi2.png 尿不湿 %}</p>
 
-<p><img src="/images/kid-gang/niaobushi3.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi3.png 尿不湿 %}</p>
 
 <blockquote><p>如果小孩红屁屁比较严重，可以换成尿布试试。</p></blockquote>
 
-<p><img src="/images/kid-gang/niaobu.png" title="尿布" ></p>
+<p>{% img /images/kid-gang/niaobu.png 尿布 %}</p>
 
 <h1>FAQ</h1>
 
@@ -139,9 +139,9 @@
 </ul>
 
 
-<p><img src="/images/kid-gang/fare.jpg" title="发烧" ></p>
+<p>{% img /images/kid-gang/fare.jpg 发烧 %}</p>
 
-<p><img src="/images/kid-gang/out.jpg" title="呕吐" ></p>
+<p>{% img /images/kid-gang/out.jpg 呕吐 %}</p>
 
 <ul>
 <li>其他需要注意的事项</li>

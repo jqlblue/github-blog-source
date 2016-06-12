@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: fs | Jqlblue's Blog]]></title>
+  <title><![CDATA[Tag: fs | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/tags/fs/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2016-01-01T23:28:48+08:00</updated>
+  <updated>2016-06-12T10:34:58+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -44,14 +44,14 @@
 
 <p><em>磁盘的机械结构如下图</em>：</p>
 
-<p><img src="/images/os/disk-structure.png" title="&lsquo;disk strucrure" ></p>
+<p>{% img /images/os/disk-structure.png &lsquo;disk strucrure %}</p>
 
 <p>如上图，一块磁盘中有好几块<code>盘片</code>（platter），一个盘片上的盘面被划分成若干个同心圆（即<code>磁道</code>（track））。
 将磁盘上<code>机械臂</code>的<code>磁头</code>径向移动到盘面的相关位置（磁道）后，通过盘片在磁头下方的高速旋转，就可以读取并写入所在<code>柱面</code>（cylinder）上的数据。</p>
 
 <p><em>盘面的示意图如下</em>：</p>
 
-<p><img src="/images/os/disk-structure-2.gif" title="&lsquo;disk strucrure" ></p>
+<p>{% img /images/os/disk-structure-2.gif &lsquo;disk strucrure %}</p>
 
 <p>磁盘是个块设备，它的最小存储单位是<code>扇区</code>（sector），每个扇区存取512字节。</p>
 
@@ -63,7 +63,7 @@
 
 <p>linux文件系统的体系结构图如下：</p>
 
-<p><img src="/images/os/fs-structure.gif" title="&lsquo;linux file system strucrure" ></p>
+<p>{% img /images/os/fs-structure.gif &lsquo;linux file system strucrure %}</p>
 
 <p>用户态的程序要进行文件读写时，只要通过系统调用，调用VFS提供的接口就好。</p>
 
@@ -71,7 +71,7 @@
 
 <p>以ext2文件系统为例，其文件系统结构图示意如下：</p>
 
-<p><img src="/images/os/ext2-fs-structure.gif" title="&lsquo;ext2 file system strucrure" ></p>
+<p>{% img /images/os/ext2-fs-structure.gif &lsquo;ext2 file system strucrure %}</p>
 
 <ul>
 <li>一块硬盘会被划分成多个分区</li>
@@ -183,7 +183,7 @@
 
 <p>预读机制示意图</p>
 
-<p><img src="/images/os/fs-pre-read.gif" title="&lsquo;fs preread" ></p>
+<p>{% img /images/os/fs-pre-read.gif &lsquo;fs preread %}</p>
 ]]></content>
   </entry>
   
