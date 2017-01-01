@@ -4,7 +4,7 @@
   <title><![CDATA[Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2016-06-12T10:34:45+08:00</updated>
+  <updated>2017-01-01T22:59:06+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -12,6 +12,328 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[我的2016和很多书写体验]]></title>
+    <link href="http://jqlblue.github.io/2016/12/31/writing-in-2016-of-mine/"/>
+    <updated>2016-12-31T23:05:00+08:00</updated>
+    <id>http://jqlblue.github.io/2016/12/31/writing-in-2016-of-mine</id>
+    <content type="html"><![CDATA[<p>我是一个善于遗忘的人，经过后天的努力，渐渐练就了选择性记忆。所以当不安的时候，我就会开始写，尝试让我的文字，去触碰我内心那些最深，最真的地方。</p>
+
+<!--more-->
+
+
+<p>年初，我继续加入了一家创业公司，带着我作为一个互联网从业人员的执念。我期盼着通过我们的技术，去改变一个行业，改善我们的生活，make live easier。</p>
+
+<p>到现在回顾起来，那些让人欣慰的事情包括：</p>
+
+<ul>
+<li>推送消息时，服务器不再宕机</li>
+<li>商城，可以随意部署，随意修改</li>
+<li>周会终于可以自循环起来了</li>
+<li>又在要升级到php5.5的当儿，一口气升到了php7</li>
+</ul>
+
+
+<p>虽然花不少精力组建了一个最小化的数据团队。也一起构画了一个很理想的picture，连demo和可执行的实施计划都搞定了，但是，最终还是搁置了。</p>
+
+<p>如果说第一次加入创业公司的经历，是帮我开了一扇窗；那这段经历，就是真真切切地丰富了我的体验。</p>
+
+<p>我终于发现，程序员的世界，和现实世界，本就不在同一个空间。</p>
+
+<p>现实世界，并不是非黑即白。并不能简单地通过cap，或者几个9去评价一件事情是否靠谱。</p>
+
+<p>虽然我一直在致力于透明化产品的研发进程，但是，仍然会遇到一些黑暗的事情。或许，会被当做一个里外都不是人的角色。</p>
+
+<p>作为一个leader，一方面，要以公司利益为重；另一方面，还要和同你一起并肩作战的兄弟们站在一起，也要照顾到他们的利益，这本来就很难两全其美。</p>
+
+<p>此处，我要引用德兰修女的箴言。虽然我不是一个虔诚的基督教徒，但是这段文字，自上大学起，就一直在给我勇气和希望，让我要不忘初心。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>人们经常是不讲道理的、没有逻辑的和以自我为中心的
+</span><span class='line'>不管怎样，你要原谅他们
+</span><span class='line'>即使你是友善的，人们可能还是会说你自私和动机不良
+</span><span class='line'>不管怎样，你还是要友善
+</span><span class='line'>当你功成名就，你会有一些虚假的朋友
+</span><span class='line'>和一些真实的敌人
+</span><span class='line'>不管怎样，你还是要取得成功
+</span><span class='line'>即使你是诚实的和率直的，人们可能还是会欺骗你
+</span><span class='line'>不管怎样，你还是要诚实和率直
+</span><span class='line'>你多年来营造的东西
+</span><span class='line'>有人在一夜之间把它摧毁
+</span><span class='line'>不管怎样，你还是要去营造
+</span><span class='line'>如果你找到了平静和幸福，他们可能会嫉妒你
+</span><span class='line'>不管怎样，你还是要快乐
+</span><span class='line'>你今天做的善事，人们往往明天就会忘记
+</span><span class='line'>不管怎样，你还是要做善事
+</span><span class='line'>即使把你最好的东西给了这个世界
+</span><span class='line'>也许这些东西永远都不够
+</span><span class='line'>不管怎样，把你最好的东西给这个世界
+</span><span class='line'>你看，说到底，它是你和上帝之间的事
+</span><span class='line'>而决不是你和他人之间的事</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或许是步入中年危机，被生活所迫。生理洁癖和心里洁癖，都改善了很多。</p>
+
+<p>可以在被闺女和她的小朋友们作过的床上，照常入睡。也可以在给闺女喂完早饭后，淡然地吃掉一碗发胖的面条。</p>
+
+<p>正视被背叛，被欺骗，被利用；接受和这样的人共事。</p>
+
+<p>前几天又回顾了和EMO的交流，发现我最大的优势就是责任心很强，任何事情都可以放心地交给我。对于一个靠谱的人而言，如果有能力，有资源，想做，去做就好，这是你自己的事情，和别人无关。</p>
+
+<p>这一年，陪闺女的时间多了一些，很享受和闺女在一起的那些时刻：</p>
+
+<ul>
+<li>早上推门进来，躺在被窝和你一起用kindle看父与子</li>
+<li>出门或者分别时，对你说出那句稚嫩的再见</li>
+<li>睡醒时迷迷糊糊地叫你一声爸爸</li>
+<li>抱着她在电视上看铁甲钢拳，或者在手机上看神偷奶爸</li>
+<li>陪她去上早教课，看着她一点点成长。终于可以坐到圆圈时间结束，会自己去安慰哭闹的小朋友。</li>
+<li>拉着她的小手带她去超市。一路上对你说：“吃棒棒糖掉牙”，看到棒棒糖时又却迈不开腿。</li>
+</ul>
+
+
+<p>这一年，blog落下了，饭局也少了。</p>
+
+<p>要在技术的道路上走地更远，的确需要耐地住寂寞，但是，也需要经营自己的影响力。</p>
+
+<p>技术改变生活，这不是场一个人的战斗。</p>
+
+<p>前几天遇到了小白，发现他变瘦变帅了。</p>
+
+<p>我又想起了自己参加TA时宣言 &mdash; 我是一个主动，激情，有活力的男人。</p>
+
+<p>世事，或许会总不如我愿。</p>
+
+<p>未来，或许还有更糟的经历和体验。</p>
+
+<p>用心，尽力做好自己能做的，旦行好事，莫问前程。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mac终端穿墙技术汇总]]></title>
+    <link href="http://jqlblue.github.io/2016/11/17/mac-terminal-cross-gfw/"/>
+    <updated>2016-11-17T18:32:39+08:00</updated>
+    <id>http://jqlblue.github.io/2016/11/17/mac-terminal-cross-gfw</id>
+    <content type="html"><![CDATA[<p>作为一个互联网从业人员，要想在天朝愉快地工作，生活，目前必须正视墙（gfw）的存在。
+本文涉及的翻墙方法，主要针对mac系统。但大部分内容，同样适用于window和linux。也可以自行寻找相关替代品。</p>
+
+<!--more -->
+
+
+<h1>土豪的方法</h1>
+
+<p>如果你是一个使用mac系统的土豪，那么，访问这个网站 <a href="http://nssurge.com/">http://nssurge.com/</a> 就够了。</p>
+
+<h1>others</h1>
+
+<p>实际上，这才是本文的重点。</p>
+
+<h2>准备工作</h2>
+
+<p>我们需要先搭建一个ss（Shadowsocks）服务器，或者买个账号（<a href="https://shadowsocks.com/%EF%BC%89%E3%80%82">https://shadowsocks.com/%EF%BC%89%E3%80%82</a></p>
+
+<h3>搭建ss server</h3>
+
+<ul>
+<li>买个海外的云主机，各大云的香港或者海外节点，应该都能满足需求。</li>
+<li>安装 ss server
+在云主机的命令行下，执行如下命令</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pip install shadowsocks</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/shadowsocks/shadowsocks.git
+</span><span class='line'>cd shadowsocks
+</span><span class='line'>python setup.py</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>配置
+创建配置文件，如<code>/etc/shadowsocks.json</code>，示例内容如下</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>    "server":"my_server_ip",
+</span><span class='line'>    "server_port":8388,
+</span><span class='line'>    "local_port":1080,
+</span><span class='line'>    "password":"barfoo!",
+</span><span class='line'>    "timeout":600,
+</span><span class='line'>    "method":"table",
+</span><span class='line'>    "auth": true
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>配置文件是json格式，注意最后一行没有<code>,</code></p></blockquote>
+
+<ul>
+<li>启动ss server
+<code>ssserver -c /etc/shadowsocks.json -d start</code></li>
+<li>停止ss server
+<code>
+ssserver -c /etc/shadowsocks.json -d stop
+</code></li>
+</ul>
+
+
+<h3>安装ss 客户端</h3>
+
+<p>推荐 <a href="https://github.com/shadowsocks/ShadowsocksX-NG">ShadowsocksX-NG</a>，因为 <a href="https://github.com/shadowsocks/shadowsocks-iOS/releases">ShadowsocksX</a>已无法正常更新pac文件。</p>
+
+<p>至此，使用浏览器的话，就可以自由地在互联网上遨游了。当然，你会发现更好用的翻墙技术。</p>
+
+<h2>终端(terminal)翻墙</h2>
+
+<h3>亲测可用的方案</h3>
+
+<p>下载软件 <a href="https://www.proxifier.com/download.htm">proxifier</a>，仅支持windows和mac，收费软件。</p>
+
+<p>如果是学生的话，可以给我留言，我共享个注册码给你。其他人建立购买，在这物价横飞的时代，几百块，分分钟就花没了。</p>
+
+<p>shadowsocks代理属于socks5代理，通俗的理解，socks5只是局部代理。使用Proxifier把shadowsocks代理转全局代理，类vpn。所以，该方案实际上不局限于终端翻墙。</p>
+
+<h3>其他方案</h3>
+
+<p><a href="https://eliyar.biz/proxy-for-mac-terminal/">proxychains-ng</a>
+<a href="https://mba811.gitbooks.io/web-study/content/fq/fq3.html">tsocks</a></p>
+
+<h1>reference</h1>
+
+<p>[^1] <a href="https://shadowsocks.org/">https://shadowsocks.org/</a></p>
+
+<p>[^2] <a href="https://github.com/shadowsocks">https://github.com/shadowsocks</a></p>
+
+<p>[^3] <a href="https://shadowsocks.com/">https://shadowsocks.com/</a></p>
+
+<p>[^4] <a href="https://www.dou-bi.co/ss-jc7/">https://www.dou-bi.co/ss-jc7/</a></p>
+
+<p>[^5] <a href="http://www.voidcn.com/blog/shenshouer/article/p-6254512.html">http://www.voidcn.com/blog/shenshouer/article/p-6254512.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用charles在移动设备上捕获https数据包]]></title>
+    <link href="http://jqlblue.github.io/2016/07/01/charles-https/"/>
+    <updated>2016-07-01T00:38:16+08:00</updated>
+    <id>http://jqlblue.github.io/2016/07/01/charles-https</id>
+    <content type="html"><![CDATA[<p>对于互联网从业人员而言，掌握抓包，是必备技能。</p>
+
+<!--more-->
+
+
+<p><code>Charles</code>是一个http代理，工作模式如下图：</p>
+
+<p><img src="http://jqlblue.github.io/images/mobile/http_proxy.png" title="'抓包'" ></p>
+
+<p>但是默认只能抓http协议的数据包，要捕获https的数据包，需要进行相关配置。</p>
+
+<p>下文以<code>IOS</code>移动设备为例，讲述配置步骤（<code>android</code>设备类似）：</p>
+
+<ul>
+<li>在移动设备安装ssl证书</li>
+</ul>
+
+
+<p>Charles ssl证书的下载地址如下：</p>
+
+<p><a href="http://www.charlesproxy.com/getssl">http://www.charlesproxy.com/getssl</a></p>
+
+<p>在移动设备的浏览器中打开上述<code>Url</code>，即可进行安装。</p>
+
+<ul>
+<li>安装http代理<code>Charles</code></li>
+</ul>
+
+
+<p>软件下载地址如下：
+<a href="http://www.charlesproxy.com/latest-release/download.do">http://www.charlesproxy.com/latest-release/download.do</a></p>
+
+<ul>
+<li>启用http代理</li>
+</ul>
+
+
+<p>打开<code>Charles</code>软件，默认会启动一个监听本地8888端口的http代理， 也可以在<code>Charles</code>的设置中修改相关端口。</p>
+
+<ul>
+<li>配置<code>Charles</code>支持https</li>
+</ul>
+
+
+<p>在<code>Charles</code>中打开：</p>
+
+<pre><code>Proxy -&gt; SSL Proxying Settings
+</code></pre>
+
+<p>勾选</p>
+
+<pre><code>Enable SSL Proxying
+</code></pre>
+
+<p>然后在下方的<code>Locations</code>中点击</p>
+
+<pre><code>Add
+</code></pre>
+
+<p>添加需要抓https接口的域名。</p>
+
+<p>例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host:www.baidu.com
+</span><span class='line'>Port:443</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在移动设备上修改代理</li>
+</ul>
+
+
+<p><img src="http://jqlblue.github.io/images/mobile/ios_http_proxy.png" title="'ios设置代理'" ></p>
+
+<p>其中，<code>服务器</code>是安装了<code>Charles</code>软件的电脑的<code>IP</code>，端口是<code>Charles</code> http代理开启的端口。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[我的2015]]></title>
@@ -2487,823 +2809,6 @@ $ curl 'https://x.x.x.x/get_ips' -k
 
 <p>reference:
 [^1] <a href="http://curl.haxx.se/docs/sslcerts.html">http://curl.haxx.se/docs/sslcerts.html</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php中的单例模式面面观]]></title>
-    <link href="http://jqlblue.github.io/2014/04/26/singleton-pattern-in-php/"/>
-    <updated>2014-04-26T20:47:00+08:00</updated>
-    <id>http://jqlblue.github.io/2014/04/26/singleton-pattern-in-php</id>
-    <content type="html"><![CDATA[<p>最近在面试时发现好多人都喜欢在简历中添加“熟悉各种设计模式”那一项。但也不乏对于最为简单的单例，也仅限于书本上的一点认知，所以扯一扯php中单例模式的几种使用场景。</p>
-
-<!-- more -->
-
-
-<h1>何为单例模式</h1>
-
-<p>单例模式属于创建型的应用模式，可以确保某一个类只有一个实例。这在获取数据库，缓存服务器的连接句柄，以及获取配置信息方面非常方便。</p>
-
-<p>使用单例模式，可以减少在一次web请求中多次连接数据库或者解析配置文件等操作对系统资源的消耗，也可以避免大量的new操作。</p>
-
-<p>其UML结构图如下：</p>
-
-<p><img src="http://jqlblue.github.io/images/pattern/singleton-uml.png" title="singleton-uml" ></p>
-
-<p>在php中实现单例模式需要注意：</p>
-
-<ul>
-<li>需要一个静态变量保存实例</li>
-<li>需要提供一个公共的静态方法，用于返回需要获取的实例</li>
-<li>需要防止外部程序通过new和clone等操作产生相关实例，从而失去单例模式的意义</li>
-</ul>
-
-
-<h1>代码实现解析</h1>
-
-<p>一个单例模式的php实现大致如下:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上述代码通过<code>静态成员变量</code>保存创建的实例，通过将构造函数设置为私有的，并使用魔术方法<code>__clone</code>&ldquo;重载&#8221;clone方法以避免通过外部程序获取相关实例。</p>
-
-<p>由于php中的静态变量包括：<code>静态全局变量</code>，<code>静态局部变量</code>，<code>静态成员变量</code>，所以也可以通过<code>静态局部变量</code>来保存创建的实例。但是在子类中获取创建的实例时，会遇到一些问题。示例如下：</p>
-
-<h2>使用静态局部变量</h2>
-
-<figure class='code'><figcaption><span>singleton-static.php </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$_instance</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
-</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>$ php /.singleton-static.php
-object(Singleton)#2 (0) {
-}
-object(Singleton)#4 (0) {
-}
-</code></pre>
-
-<blockquote><p>此例没有获取到唯一实例，因为局部静态变量，也就是在函数中定义的静态变量。其信息是存储在zend vm为每个函数分配的一个私有符号表中。</p></blockquote>
-
-<p>php中当继承发生时，会进行函数的合并。UserModel中调用的，实际上是合并在UserModel中的getInstance，GroupModel中调用的，也是合并在GroupModel中的getInstance方法。</p>
-
-<p>因为是在两个不同方法的私有符号表中获取数据，所以取到的不是同一个实例。</p>
-
-<blockquote><p>可以将self换成parent试试</p></blockquote>
-
-<h2>使用静态成员变量</h2>
-
-<figure class='code'><figcaption><span>singleton-static-member.php </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$_instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instance</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getObj</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getUser</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">GroupModel</span> <span class="k">extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getGroup</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getObj</span><span class="p">());</span>
-</span><span class='line'>        <span class="c1">//logic no care</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nx">UserModel</span><span class="o">::</span><span class="na">getUser</span><span class="p">();</span>
-</span><span class='line'><span class="nx">GroupModel</span><span class="o">::</span><span class="na">getGroup</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>$ php /.singleton-static-member.php
-object(Singleton)#2 (0) {
-}
-object(Singleton)#2 (0) {
-}
-</code></pre>
-
-<blockquote><p>此时获取到了唯一实例，因为静态成员变量的信息是存储在类结构的 default_static_members 字段，为所有实例所共用。</p></blockquote>
-
-<h1>编写一个单例的基类</h1>
-
-<p>有时我们的项目中有个缓存类，还有数据库类，还有个文件操作类。想让这三个类都是单例的话，我们需要实现三个单例，这有点繁琐。于是我们可以创建一个单例的基类，要实现单例的类继承这个基类即可。直接上代码：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$_instances</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">final</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">__clone</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nb">trigger_error</span><span class="p">(</span><span class="s2">&quot;clone method is not allowed.&quot;</span><span class="p">,</span> <span class="nx">E_USER_ERROR</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">final</span> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getInstance</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$c</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$c</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$_instances</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Cache</span> <span class="k">Extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_connect</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">_connect</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getHandle</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Db</span> <span class="k">Extends</span> <span class="nx">Singleton</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$_handle</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_connect</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">_connect</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getHandle</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_handle</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>reference：</p>
-
-<p>[^1] <a href="http://www.php-internals.com/book/?p=chapt05/05-04-class-inherit-abstract">http://www.php-internals.com/book/?p=chapt05/05-04-class-inherit-abstract</a></p>
-
-<p>[^2] <a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F</a></p>
-
-<p>[^3] <a href="http://www.phptherightway.com/pages/Design-Patterns.html">http://www.phptherightway.com/pages/Design-Patterns.html</a></p>
-
-<p>[^4] <a href="http://rancoud.com/read-phps-opcode/">http://rancoud.com/read-phps-opcode/</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何静态编译php]]></title>
-    <link href="http://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
-    <updated>2014-04-09T18:13:00+08:00</updated>
-    <id>http://jqlblue.github.io/2014/04/09/statically-compile-php</id>
-    <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p>
-
-<p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p>
-
-<!-- more -->
-
-
-<p>安装步骤如下：</p>
-
-<h1>准备源文件</h1>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror
-</span><span class='line'>tar zxvf php-5.5.11.tar.gz
-</span><span class='line'>wget http://pecl.php.net/get/redis-2.2.5.tgz
-</span><span class='line'>tar xvf redis-2.2.5.tgz
-</span><span class='line'>mv redis-2.2.5 php-5.5.11/ext/redis</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>配置</h1>
-
-<h2>重新生成configure</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd php-5.5.11
-</span><span class='line'>rm -f ./configure
-</span><span class='line'>./buildconf --force</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>configure</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>./configure LDFLAGS=-static \
-</span><span class='line'>--prefix=/usr/local/php5-static \
-</span><span class='line'>--disable-all \
-</span><span class='line'>--enable-shared=no \
-</span><span class='line'>--enable-static=yes \
-</span><span class='line'>--enable-inline-optimization \
-</span><span class='line'>--enable-hash \
-</span><span class='line'>--enable-mbstring \
-</span><span class='line'>--with-layout=GNU \
-</span><span class='line'>--enable-filter \
-</span><span class='line'>--with-pcre-regex \
-</span><span class='line'>--with-zlib \
-</span><span class='line'>--enable-json \
-</span><span class='line'>--enable-ctype \
-</span><span class='line'>--disable-redis-session \
-</span><span class='line'>--enable-redis</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>修改Makefile</h2>
-
-<p>将</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>替换成</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)
-</span><span class='line'>BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>即：</p>
-
-<p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p>
-
-<h1>安装</h1>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>make LDFLAGS=-ldl
-</span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>检查</h1>
-
-<p>在命令行执行</p>
-
-<pre><code>$ file /usr/local/php5-static/bin/php
-/usr/local/php5-static/bin/php: ELF 64-bit LSB executable, AMD x86-64, version 1 (SYSV), for GNU/Linux 2.6.9, statically linked, for GNU/Linux 2.6.9, not stripped
-
-$ /usr/local/php5-static/bin/php -m
-[PHP Modules]
-Core
-ctype
-date
-ereg
-filter
-hash
-json
-mbstring
-pcre
-redis
-Reflection
-SPL
-standard
-zlib
-
-[Zend Modules]
-</code></pre>
-
-<p>因为可执行文件中包含了调试信息，所以体积较大</p>
-
-<pre><code>$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 18M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<p>可以通过<code>strip</code>命令移除调试信息</p>
-
-<pre><code>$ sudo strip /usr/local/php5-static/bin/php
-$ ll -h /usr/local/php5-static/bin/php
--rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php
-</code></pre>
-
-<table>
-<thead>
-<tr>
-<th align="center">原始文件大小</th>
-<th align="center"> 去除符号表后大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><code>18M</code>      </td>
-<td align="center"> <strong>6.1M</strong></td>
-</tr>
-</tbody>
-</table>
-
-
-<p><strong> reference :</strong></p>
-
-<p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p>
-
-<p>[^2] <a href="http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454">http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454</a></p>
-
-<p>[^3] <a href="http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html">http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html</a></p>
-
-<p>[^4] <a href="http://markmail.org/message/cpoenglavs4vwv32">http://markmail.org/message/cpoenglavs4vwv32</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[linux文件系统如何进行文件存取]]></title>
-    <link href="http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system/"/>
-    <updated>2014-03-29T13:32:00+08:00</updated>
-    <id>http://jqlblue.github.io/2014/03/29/read-wirite-on-linux-file-system</id>
-    <content type="html"><![CDATA[<p>乍一看，这个题目好像有点小儿科。</p>
-
-<p>写文件嘛</p>
-
-<pre><code>echo hello &gt; /tmp/foo
-</code></pre>
-
-<p>读文件嘛</p>
-
-<pre><code>cat /tmp/foo
-</code></pre>
-
-<p>对于普通文件的存取，的确可以使用上面的方法。但是在linux操作系统上，一
-切都是文件。除了<code>普通文件</code>，还包括：<code>目录</code>，<code>符号链接</code>，<code>IPC Endpoints</code>（如pipe，unix socket）和<code>设备文件</code>(块设备，字符设备)。</p>
-
-<p>当然，本文的重点不在于介绍相关操作技巧，而是希望可以探寻操作背后的机制。</p>
-
-<!-- more -->
-
-
-<p>我们要存取的文件，一般都是保存在普通的磁盘上，通过电磁变换来实现文件的读取和写入。所以我们先从磁盘说起。</p>
-
-<h3>磁盘物理结构</h3>
-
-<p><em>磁盘的机械结构如下图</em>：</p>
-
-<p><img src="http://jqlblue.github.io/images/os/disk-structure.png" title="'disk strucrure" ></p>
-
-<p>如上图，一块磁盘中有好几块<code>盘片</code>（platter），一个盘片上的盘面被划分成若干个同心圆（即<code>磁道</code>（track））。
-将磁盘上<code>机械臂</code>的<code>磁头</code>径向移动到盘面的相关位置（磁道）后，通过盘片在磁头下方的高速旋转，就可以读取并写入所在<code>柱面</code>（cylinder）上的数据。</p>
-
-<p><em>盘面的示意图如下</em>：</p>
-
-<p><img src="http://jqlblue.github.io/images/os/disk-structure-2.gif" title="'disk strucrure" ></p>
-
-<p>磁盘是个块设备，它的最小存储单位是<code>扇区</code>（sector），每个扇区存取512字节。</p>
-
-<p>为了提升文件的读取效率，文件系统会以<code>块</code>（block）为单位进行文件读取。块是linux系统上文件存取的最小单位，一个块一般为连续的8个扇区，即4K。</p>
-
-<p>直接对磁盘等硬件进行操作，是很困难的。不过操作系统的主要任务就是隐藏硬件，呈现良好，清晰，优雅，一致的抽象。linux文件系统对文件的处理进行了良好的抽象。</p>
-
-<h3>VFS虚拟文件系统</h3>
-
-<p>linux文件系统的体系结构图如下：</p>
-
-<p><img src="http://jqlblue.github.io/images/os/fs-structure.gif" title="'linux file system strucrure" ></p>
-
-<p>用户态的程序要进行文件读写时，只要通过系统调用，调用VFS提供的接口就好。</p>
-
-<p>虽然VFS需要调用ext2，ext3，NFS等具体的文件系统实现进行磁盘上文件的操作。但是它屏蔽了下层的各种异构文件系统的特点，为上层提供了统一的接口。</p>
-
-<p>以ext2文件系统为例，其文件系统结构图示意如下：</p>
-
-<p><img src="http://jqlblue.github.io/images/os/ext2-fs-structure.gif" title="'ext2 file system strucrure" ></p>
-
-<ul>
-<li>一块硬盘会被划分成多个分区</li>
-<li>每个分区挂载着相应的文件系统具体实现，如ext2</li>
-<li>为了减少需要管理的block的数量，在ext2文件系统产生了块组的概念。每个块组包含多个block，并且有独立的superblock和inode。</li>
-</ul>
-
-
-<p><em>相关名词说明</em></p>
-
-<p><code>Boot Sector</code></p>
-
-<pre><code>即引导扇区。包括：本分区的操作系统类型，数据区大小，根目录区允许的最大目录项
-</code></pre>
-
-<p><code>Super Block</code></p>
-
-<pre><code>超级块。定义了文件系统的静态结构，包括：分区中每个block的大小，分区中block group的数目，以及每个block group中有inode等。每个block group不一定都有超级块，其他block group中的超级块仅仅是block group 0中超级块的一个拷贝，以备当block group 0中的超级块损坏时可以对其进行恢复。Linux启动时，block group 0中的超级块的内容会被读入到内存中。
-</code></pre>
-
-<p><code>GDT</code></p>
-
-<pre><code>组描述符表。记录了块位图（Block Bitmap）所在块的块号，inode位图（inode Bitmap）所在块的块号，inode表（inode Table）所在块的起始块号，本组空闲块的个数等组内信息。文件系统根据这些信息来查找数据块位图，索引结点位图，索引结点表的位置
-</code></pre>
-
-<p><code>Block Bitmap</code></p>
-
-<pre><code>Ext2文件系统的数据块位图。其中每一位对应了一个数据块，某一位上位0时表示该位所对应的数据块空闲，反之表示该位所对应的数据块已经被分配。Data Block Bitmap占了1个块的空间，因此，一个组中的数据块的个数就已经决定了。如果每个块为b-byte，那么该Group Block就有8*b个块，可以存放（8*b）*b字节的数据
-</code></pre>
-
-<p><code>Inode Bitamp</code></p>
-
-<pre><code>inode节点位图。其工作方式跟Block Bitmap相同，只不过代表的是Inode的使用情况，每个位代表一个inode，如果是1则表示被使用，为1表示空闲
-</code></pre>
-
-<p><code>Inode Table</code></p>
-
-<pre><code>存储inode number对应文件的元信息，包括：文件类型，权限位，链接数（有多少文件名指向这个inode），文件数据块的位置。
-</code></pre>
-
-<p><code>Data Blocks</code></p>
-
-<pre><code>数据块存放文件的实际内容。需要特别指出的是，在Linux下目录也是一种文件。目录中的文件及子目录都以目录项（directory entry）的形式存放在该目录的数据块中。目录项中主要记录了文件的inode号，文件名以及文件类型等内容
-</code></pre>
-
-<p>Linux开机启动时，会首先载入MBR（主引导记录），MBR会告诉电脑从该设备的某一个分区来装载boot loader（boot loader储存有操作系统的相关信息，比如操作系统名称，操作系统内核 (kernel)所在位置等），通过boot loader会加载kernel，kernel通过initrd加载硬件驱动，在主分区表中搜索活动分区，加载引导分区，挂载文件系统，进行操作系统的启动。</p>
-
-<h3>文件查找示例</h3>
-
-<p>以查找文件/home/alex/foobar为例进行说明。</p>
-
-<p>假设根目录（ROOT directory），在磁盘空间上的inode number是2，其对应数据块的结构如下</p>
-
-<pre><code>    +----+-----+-----------------------------------------+
-#2  |. 2 |.. 2 | home 5 | usr 9 | tmp 11 | etc 23 | ...  |
-    +----+-----+-----------------------------------------+
-</code></pre>
-
-<p>通过跟目录下home目录的名字home，可以获取其inode number是5，其对应数据块的结构如下</p>
-
-<pre><code>    +----+-----+---------------------------------------------------+
-#5  |. 5 |.. 2 | alex 31 | leslie 36 | pat 39 | abcd0001 21 | ...  |
-    +----+-----+---------------------------------------------------+
-</code></pre>
-
-<p>通过home目录下alex目录的名字alex，可以获取其inode number是31，其数据块的结构如下</p>
-
-<pre><code>    +----+-----+---------------------------------------------------+
-#31 |. 31|.. 5 | foobar 12 | temp 15 | literature 7 | demo 6 | ... |
-    +----+-----+---------------------------------------------------+
-</code></pre>
-
-<p>继续查看inode number是12（foobar文件）的inode所对应的数据块结构，就可以获取路径为/home/alex/foobar的文件的数据内容。</p>
-
-<pre><code>    *-----------*
-#12 | file data |
-    *-----------*
-</code></pre>
-
-<p>从上面也可以看出</p>
-
-<ul>
-<li>目录也是一种文件，其中包含了该目录下子目录的名字和文件名，以及其对应的inode number。</li>
-<li>文件名和inode number，是多对一的关系。多个文件名可以对应同一个inode number（硬链接）</li>
-</ul>
-
-
-<p>为了访问路径为/home/alex/foobar的文件的数据，需要有合适的权限在根目录的inode，home目录的inode，alex目录的inode，foobar数据文件的inode。</p>
-
-<ul>
-<li>目录的inode权限，决定了是否有权限修改，移动，删除该目录，以及目录下的文件。</li>
-<li>文件的inode权限，决定了是否有权限读取或者修改该文件的内容。</li>
-</ul>
-
-
-<h3>文件存取流程</h3>
-
-<p>在进行文件存取时，实际上就是解析文件路径，加载相应分区上的inode table，获取对应的inode number，对inode number对于的数据块进行存取。</p>
-
-<p>对于访问过的文件路径，会被缓存在dentry目录项中。</p>
-
-<p>为了提升磁盘设备的IO性能，操作系统会使用内存作为磁盘设备的cache，并使用memory map方式在访问时建立与文件系统的缓存映射。文件系统的缓存，是以Page Cache为单位，一个Page Cache包含多个Buffer Cache。</p>
-
-<ul>
-<li><p>向文件中写入数据时，数据会先缓存在Page Cache中，内存中的这部分数据被标注为Dirty Page，linux系统上的pdflush守护进程会跟进系统设置将将这部分Dirty Page刷到磁盘上，也可以通过fsync系统调用在数据写入后强制刷到磁盘上。将写入的数据刷入磁盘时，是以Buffer Cache为单位，每次回写若干个Buffer Cache。</p></li>
-<li><p>读取文件内容时，系统会一次性连续读取包括所请求页面在内的多个页面（如预读页面个数为n）。如果请求的页面在page cache中命中的话，会从缓存中返回页面内容，增加读取的页面数量，异步读取2n个页面;如果请求的页面没有在page cache中命中，也会增加读取页面数量，同步读取2n个页面。</p></li>
-</ul>
-
-
-<p>预读机制示意图</p>
-
-<p><img src="http://jqlblue.github.io/images/os/fs-pre-read.gif" title="'fs preread" ></p>
 ]]></content>
   </entry>
   
