@@ -209,3 +209,11 @@ toc: true
 这时，打开手机上的google身份验证器App，输入对应的code，如下：
 
 {% img /images/2fa/google-authenticator.png google 验证器 flow %}
+
+reference：
+
+[^1] https://pthree.org/2014/04/15/time-based-one-time-passwords-how-it-works/
+
+[^2] https://garbagecollected.org/2014/09/14/how-google-authenticator-works/
+
+[^3] https://www.blackmoreops.com/2014/06/26/securing-ssh-two-factor-authentication-using-google-authenticator/

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/categories/devops/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2017-01-10T23:12:53+08:00</updated>
+  <updated>2017-01-10T23:38:13+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -253,6 +253,14 @@ Do you want to enable rate-limiting (y/n) y
 <p>这时，打开手机上的google身份验证器App，输入对应的code，如下：</p>
 
 <p>{% img /images/2fa/google-authenticator.png google 验证器 flow %}</p>
+
+<p>reference：</p>
+
+<p>[^1] <a href="https://pthree.org/2014/04/15/time-based-one-time-passwords-how-it-works/">https://pthree.org/2014/04/15/time-based-one-time-passwords-how-it-works/</a></p>
+
+<p>[^2] <a href="https://garbagecollected.org/2014/09/14/how-google-authenticator-works/">https://garbagecollected.org/2014/09/14/how-google-authenticator-works/</a></p>
+
+<p>[^3] <a href="https://www.blackmoreops.com/2014/06/26/securing-ssh-two-factor-authentication-using-google-authenticator/">https://www.blackmoreops.com/2014/06/26/securing-ssh-two-factor-authentication-using-google-authenticator/</a></p>
 ]]></content>
   </entry>
   
