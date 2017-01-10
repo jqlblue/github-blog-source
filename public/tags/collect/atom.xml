@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: collect | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/tags/collect/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2017-01-01T22:59:06+08:00</updated>
+  <updated>2017-01-10T23:12:53+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -27,7 +27,7 @@
 
 <p>2014年，我从数字离职，加入了一家创业公司。从居民楼搬到写字楼，和你们一起奋斗的日子，历历在目，感谢在有生之年，可以遇到你们。</p>
 
-<p><img src="/images/2015-of-mine/zq.jpg" title="住趣" ></p>
+<p>{% img /images/2015-of-mine/zq.jpg 住趣 %}</p>
 
 <h1>工作方面</h1>
 
@@ -102,7 +102,7 @@
 
 <p>马上要从天天艾米离开了，怀念一下那个让我有点感动的场景。</p>
 
-<p><img src="/images/2015-of-mine/ime.png" width="365"></p>
+<p>{% img /images/2015-of-mine/ime.png 365ime %}</p>
 ]]></content>
   </entry>
   

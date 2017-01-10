@@ -4,7 +4,7 @@
   <title><![CDATA[Category: collect | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/categories/collect/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2017-01-01T22:59:06+08:00</updated>
+  <updated>2017-01-10T23:12:53+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -27,7 +27,7 @@
 
 <p>2014年，我从数字离职，加入了一家创业公司。从居民楼搬到写字楼，和你们一起奋斗的日子，历历在目，感谢在有生之年，可以遇到你们。</p>
 
-<p><img src="/images/2015-of-mine/zq.jpg" title="住趣" ></p>
+<p>{% img /images/2015-of-mine/zq.jpg 住趣 %}</p>
 
 <h1>工作方面</h1>
 
@@ -102,7 +102,7 @@
 
 <p>马上要从天天艾米离开了，怀念一下那个让我有点感动的场景。</p>
 
-<p><img src="/images/2015-of-mine/ime.png" width="365"></p>
+<p>{% img /images/2015-of-mine/ime.png 365ime %}</p>
 ]]></content>
   </entry>
   
@@ -129,7 +129,7 @@
 
 <blockquote><p>小孩皮肤稚嫩，指甲长了，容易把自己抓伤。</p></blockquote>
 
-<p><img src="/images/kid-gang/jiandao.png" title="小剪刀" ></p>
+<p>{% img /images/kid-gang/jiandao.png 小剪刀 %}</p>
 
 <ul>
 <li>屁屁油</li>
@@ -138,7 +138,7 @@
 
 <blockquote><p>我们家小孩经常红屁屁，机缘巧合中发现了下面这个，强烈推荐。</p></blockquote>
 
-<p><img src="/images/kid-gang/pipiyou.png" title="屁屁油" ></p>
+<p>{% img /images/kid-gang/pipiyou.png 屁屁油 %}</p>
 
 <ul>
 <li>温度计</li>
@@ -147,7 +147,7 @@
 
 <blockquote><p>初生儿怕热，屋里挂个温度计，经常看看，不要让屋里温度过高。</p></blockquote>
 
-<p><img src="/images/kid-gang/wenduji.png" title="温度计" ></p>
+<p>{% img /images/kid-gang/wenduji.png 温度计 %}</p>
 
 <ul>
 <li>小夜灯</li>
@@ -156,7 +156,7 @@
 
 <blockquote><p>方便晚上给小孩喂奶，换尿布。</p></blockquote>
 
-<p><img src="/images/kid-gang/xiaoyedeng.png" title="小夜灯" ></p>
+<p>{% img /images/kid-gang/xiaoyedeng.png 小夜灯 %}</p>
 
 <ul>
 <li>爽身粉</li>
@@ -165,7 +165,7 @@
 
 <blockquote><p>小孩新生代谢旺盛，需要保持腋窝等部位的干燥。</p></blockquote>
 
-<p><img src="/images/kid-gang/songhuafeng.png" title="爽身粉" ></p>
+<p>{% img /images/kid-gang/songhuafeng.png 爽身粉 %}</p>
 
 <ul>
 <li>婴肤霜</li>
@@ -174,7 +174,7 @@
 
 <blockquote><p>基本上每个小孩都要长湿疹，下面这个婴肤霜不错。</p></blockquote>
 
-<p><img src="/images/kid-gang/yingfushuang.png" title="婴肤霜" ></p>
+<p>{% img /images/kid-gang/yingfushuang.png 婴肤霜 %}</p>
 
 <h1>尿不湿的选择</h1>
 
@@ -182,15 +182,15 @@
 
 <p>我们家小孩使用过的尿不湿品牌如下：</p>
 
-<p><img src="/images/kid-gang/niaobushi1.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi1.png 尿不湿 %}</p>
 
-<p><img src="/images/kid-gang/niaobushi2.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi2.png 尿不湿 %}</p>
 
-<p><img src="/images/kid-gang/niaobushi3.png" title="尿不湿" ></p>
+<p>{% img /images/kid-gang/niaobushi3.png 尿不湿 %}</p>
 
 <blockquote><p>如果小孩红屁屁比较严重，可以换成尿布试试。</p></blockquote>
 
-<p><img src="/images/kid-gang/niaobu.png" title="尿布" ></p>
+<p>{% img /images/kid-gang/niaobu.png 尿布 %}</p>
 
 <h1>FAQ</h1>
 
@@ -232,9 +232,9 @@
 </ul>
 
 
-<p><img src="/images/kid-gang/fare.jpg" title="发烧" ></p>
+<p>{% img /images/kid-gang/fare.jpg 发烧 %}</p>
 
-<p><img src="/images/kid-gang/out.jpg" title="呕吐" ></p>
+<p>{% img /images/kid-gang/out.jpg 呕吐 %}</p>
 
 <ul>
 <li>其他需要注意的事项</li>
@@ -257,13 +257,13 @@
 
 <p>一个典型的web app的架构如下：</p>
 
-<p><img src="/images/baas/app_struct.png" title="web app典型架构" ></p>
+<p>{% img /images/baas/app_struct.png web app典型架构 %}</p>
 
 <p>客户端或者浏览器调用后端服务，进行数据的写入和读取。让用户通过互联网，完成信息的交换。</p>
 
 <p>以一个b-s结构的web服务为例，其前后端基本架构大致如下：</p>
 
-<p><img src="/images/baas/simple_web_struct.png" title="web 服务的前后端基本架构" ></p>
+<p>{% img /images/baas/simple_web_struct.png web 服务的前后端基本架构 %}</p>
 
 <p>前端主要负责用户界面的布局和交互处理，后端包括：</p>
 
@@ -273,7 +273,7 @@
 
 <p>而一个要运行在生产环节下的后端服务架构，应该大致是下面这个样子：</p>
 
-<p><img src="/images/baas/web_struct.png" title="web web服务后端架构" ></p>
+<p>{% img /images/baas/web_struct.png web web服务后端架构 %}</p>
 
 <p>后端服务并不是直接对数据库进行写入和查询操作，每一次到达后端服务的请求，都附带着自身的业务逻辑。</p>
 

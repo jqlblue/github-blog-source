@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: https | Debug Hacks]]></title>
   <link href="http://jqlblue.github.io/tags/https/atom.xml" rel="self"/>
   <link href="http://jqlblue.github.io/"/>
-  <updated>2017-01-01T22:59:06+08:00</updated>
+  <updated>2017-01-10T23:12:53+08:00</updated>
   <id>http://jqlblue.github.io/</id>
   <author>
     <name><![CDATA[jqlblue]]></name>
@@ -25,7 +25,7 @@
 
 <p><code>Charles</code>是一个http代理，工作模式如下图：</p>
 
-<p><img src="/images/mobile/http_proxy.png" title="&lsquo;抓包&rsquo;" ></p>
+<p>{% img /images/mobile/http_proxy.png &lsquo;抓包&rsquo; %}</p>
 
 <p>但是默认只能抓http协议的数据包，要捕获https的数据包，需要进行相关配置。</p>
 
@@ -91,7 +91,7 @@ Port:443
 </ul>
 
 
-<p><img src="/images/mobile/ios_http_proxy.png" title="&lsquo;ios设置代理&rsquo;" ></p>
+<p>{% img /images/mobile/ios_http_proxy.png &lsquo;ios设置代理&rsquo; %}</p>
 
 <p>其中，<code>服务器</code>是安装了<code>Charles</code>软件的电脑的<code>IP</code>，端口是<code>Charles</code> http代理开启的端口。</p>
 ]]></content>
