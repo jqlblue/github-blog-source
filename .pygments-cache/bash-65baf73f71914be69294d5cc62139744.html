@@ -1,2 +1,0 @@
-<div class="highlight"><pre>cat access.log | awk -F <span class="s2">&quot;[ ?]&quot;</span> <span class="s1">&#39;{urls[$7]++} END {for(key in urls)print urls[key],&quot;\t&quot;,key}&#39;</span> | sort -nr
-</pre></div>

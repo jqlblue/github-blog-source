@@ -1,2 +1,0 @@
-<div class="highlight"><pre>cat access.log | awk -F &amp;ldquo;<span class="o">[</span> ?<span class="o">]</span>&amp;rdquo; &amp;lsquo;<span class="o">{</span>urls<span class="o">[</span><span class="nv">$7</span><span class="o">]</span>++<span class="o">}</span> END <span class="o">{</span><span class="k">for</span><span class="o">(</span>key in urls<span class="o">)</span>print urls<span class="o">[</span>key<span class="o">]</span>,&amp;ldquo;<span class="se">\t</span>&amp;rdquo;,key<span class="o">}</span>&amp;rsquo; | sort -nr
-</pre></div>
