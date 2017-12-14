@@ -1,7 +1,7 @@
 .DS_Store
 Gemfile.lock
-.pygments-cache
-.sass-cache
-_deploy
-public
-blog
+.pygments-cache/
+.sass-cache/
+_deploy/
+public/
+blog/
